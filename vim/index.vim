@@ -1,6 +1,6 @@
-source ~/dotfiles/vim/plugins.vm
-source ~/dotfiles/vim/commands.vm
-source ~/dotfiles/vim/syntax/javascript.vm
+source ~/dotfiles/vim/plugins.vim
+source ~/dotfiles/vim/commands.vim
+source ~/dotfiles/vim/syntax/javascript.vim
 
 " options
 set backspace=indent,eol,start
