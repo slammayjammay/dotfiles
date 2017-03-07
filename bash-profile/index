@@ -3,6 +3,7 @@ __git_complete go _git_checkout
 __git_complete gm _git_merge
 __git_complete gb _git_branch
 
+# git aliases
 alias gm="git merge"
 alias push="git push"
 alias pull="git pull"
@@ -13,8 +14,11 @@ alias gc="git commit -m"
 alias stash="git stash"
 alias pop="git stash pop"
 alias goma="git checkout master"
+
+# npm aliases
+alias nr="npm run"
+alias npmi="npm install"
 alias publish="npm publish"
-alias desktop="cd ~/Desktop"
 
 # aliases for github packages
 alias gd="git-diff-glob --pager"
@@ -22,3 +26,6 @@ alias gall="git-commit-all"
 alias gl="git-log --pager"
 alias goof="git-checkout-file"
 alias ga="git-add-file"
+
+# other
+alias desktop="cd ~/Desktop"
