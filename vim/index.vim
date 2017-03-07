@@ -1,6 +1,6 @@
 source ~/dotfiles/vim/plugins.vim
 source ~/dotfiles/vim/commands.vim
-source ~/dotfiles/vim/syntax/javascript.vim
+source ~/dotfiles/vim/keybindings.vim
 
 " options
 set backspace=indent,eol,start
@@ -18,3 +18,6 @@ highlight Identifier ctermfg=blue
 highlight IncSearch ctermbg=blue
 highlight MatchParen ctermbg=blue
 highlight ColorColumn ctermbg=darkgray
+highlight Identifier ctermfg=blue
+highlight es6InstanceMethod ctermfg=red
+highlight es6InstanceMethodArgs ctermfg=white
