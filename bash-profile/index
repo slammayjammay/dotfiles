@@ -1,3 +1,8 @@
+source ~/dotfiles/bash-profile/.git-completion.bash
+__git_complete go _git_checkout
+__git_complete gm _git_merge
+__git_complete gb _git_branch
+
 alias gm="git merge"
 alias push="git push"
 alias pull="git pull"
