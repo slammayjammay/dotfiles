@@ -1,5 +1,3 @@
-nvm use 6
-
 alias gm="git merge"
 alias push="git push"
 alias pull="git pull"
@@ -11,9 +9,11 @@ alias stash="git stash"
 alias pop="git stash pop"
 alias goma="git checkout master"
 alias publish="npm publish"
+alias desktop="cd ~/Desktop"
+
+# aliases for github packages
 alias gd="git-diff-glob --pager"
 alias gall="git-commit-all"
 alias gl="git-log --pager"
 alias goof="git-checkout-file"
 alias ga="git-add-file"
-alias desktop="cd ~/Desktop"
