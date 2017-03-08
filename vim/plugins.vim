@@ -4,7 +4,6 @@ Plug 'https://github.com/scrooloose/nerdtree'
 Plug 'jiangmiao/auto-pairs'
 Plug 'airblade/vim-gitgutter'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'vim-scripts/RltvNmbr.vim'
 call plug#end()
 
 " ctrlp options
@@ -18,7 +17,3 @@ let g:ctrlp_dont_split = 'NERD'
 " NERDTree options
 let g:NERDTreeShowLineNumbers=1
 let g:NERDTreeShowHidden=1
-
-" RltvNmbr options
-au VimEnter * silent call RltvNmbr#RltvNmbrCtrl(1)
-au BufNew,BufRead * silent call RltvNmbr#RltvNmbrCtrl(1)
