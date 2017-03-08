@@ -4,6 +4,7 @@ Plug 'https://github.com/scrooloose/nerdtree'
 Plug 'jiangmiao/auto-pairs'
 Plug 'airblade/vim-gitgutter'
 Plug 'editorconfig/editorconfig-vim'
+Plug 'othree/html5.vim'
 call plug#end()
 
 " ctrlp options
