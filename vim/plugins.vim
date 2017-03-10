@@ -5,6 +5,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'airblade/vim-gitgutter'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'othree/html5.vim'
+Plug 'tpope/vim-surround'
 call plug#end()
 
 " ctrlp options
