@@ -19,3 +19,4 @@ let g:ctrlp_dont_split = 'NERD'
 " NERDTree options
 let g:NERDTreeShowLineNumbers=1
 let g:NERDTreeShowHidden=1
+let g:NERDTreeIgnore=['\.DS_Store$']
