@@ -9,6 +9,7 @@ set incsearch
 set nowrap
 set autoindent
 set colorcolumn=80
+set splitright
 
 " colors
 syntax on
