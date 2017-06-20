@@ -11,5 +11,5 @@ nnoremap ¬ :tabnext<CR>
 inoremap <C-j> <esc>:tabprevious<CR>
 inoremap <C-S-l> <esc>:tabnext<CR>
 inoremap <C-t> <esc>:tabnew<CR>:e .<CR>
-inoremap ∆ :tabprevious<CR>
-inoremap ¬ :tabnext<CR>
+inoremap ∆ <esc>:tabprevious<CR>
+inoremap ¬ <esc>:tabnext<CR>
