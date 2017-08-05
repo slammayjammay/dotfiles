@@ -26,8 +26,11 @@ pluginsPaths.forEach(pluginDir => {
 });
 
 output();
-output('Copied hyper plugins to ~/.hyper_plugins.');
 runChild(`cp -r ${pluginsBase}/* ${join(HOME_DIR, '.hyper_plugins/local/')}`)
+output('Copied hyper plugins.');
+
+runChild(`cp ${resolve('./hyper/.hyper.js')} ${HOME_DIR}`);
+output('Copied hyper config file.');
 
 output();
 
