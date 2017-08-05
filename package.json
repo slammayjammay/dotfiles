@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "Dotfiles",
   "main": "install.js",
-  "scripts": {
-    "install": "node install"
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/slammayjammay/dotfiles.git"
