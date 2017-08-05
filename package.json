@@ -1,0 +1,23 @@
+{
+  "name": "dotfiles",
+  "version": "1.0.0",
+  "description": "Dotfiles",
+  "main": "install.js",
+  "scripts": {
+    "install": "node install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/slammayjammay/dotfiles.git"
+  },
+  "keywords": [],
+  "author": "Scott McKenzie",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/slammayjammay/dotfiles/issues"
+  },
+  "homepage": "https://github.com/slammayjammay/dotfiles#readme",
+  "dependencies": {
+    "chalk": "^2.0.1"
+  }
+}
