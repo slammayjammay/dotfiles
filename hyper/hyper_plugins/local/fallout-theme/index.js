@@ -6,7 +6,8 @@
 // =============================================================================
 
 const VIM_OPEN_OUTPUT = /\[\?2004h\[\?1049h\[\?1h\=\[\?2004h/;
-const VIM_CLOSE_OUTPUT = /\[\?25l\[\?2004l\[44;1H\[K\[44;1H\[\?2004l\[\?1l>\[\?12l\[\?25h\[\?1049l/;
+const VIM_CLOSE_OUTPUT = /\[\?25l\[\?2004l.*/;
+
 // for some reason, the terminal does not clear after exiting vim. This variable
 // is set in the plugin component, where execute the `clear` command in Hyper.
 let clearTerminal;
