@@ -11,6 +11,8 @@ exports.decorateConfig = (config) => {
 
 			.fallout .hyper_main {
 				background-image: url(http://i.imgur.com/NFc1CXK.jpg) !important;
+				background-size: cover;
+				background-position: center;
 			}
 			.fallout .hyper_main::before {
 				opacity: 0 !important;
