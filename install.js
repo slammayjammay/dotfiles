@@ -1,6 +1,6 @@
 const { spawnSync, execSync } = require('child_process');
 const { resolve, join } = require('path');
-const { existsSync, readdirSync } = require('fs');
+const { existsSync, readdirSync, statSync } = require('fs');
 const chalk = require('chalk');
 
 const HOME_DIR = execSync('cd ~ && pwd').toString().trim();
@@ -21,6 +21,10 @@ output(chalk.bold('hyper'));
 const pluginsBase = resolve('./hyper/hyper_plugins/local');
 const pluginsPaths = readdirSync(pluginsBase);
 pluginsPaths.forEach(pluginDir => {
+	if (!statSync(join(pluginsBase, pluginDir)).isDirectory()) {
+		return;
+	}
+
 	output(`Installing plugin ${pluginDir}...`);
 	runChild(`cd ${join(pluginsBase, pluginDir)} && npm install && npm run build -- --hide-modules --progress`);
 });
