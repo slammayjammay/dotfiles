@@ -19,7 +19,8 @@ exports.decorateConfig = (config) => {
 		termCSS: `
 			${config.termCSS || ''}
 
-			.fallout x-row, .fallout x-row span {
+			.fallout x-screen, .fallout x-row, .fallout x-row span {
+				font-family: "Fixedsys Excelsior 3.01" !important;
 				color: lightgreen !important;
 				text-shadow: 0 0 10px lightgreen !important;
 			}
@@ -27,6 +28,19 @@ exports.decorateConfig = (config) => {
 			.fallout .cursor-node {
 				background-color: lightgreen !important;
 				border-color: lightgreen !important;
+			}
+
+			/*
+				When changing fonts, the cursor position will not be updated. We need
+				to match the new font size and spacing as close as we can to whatever
+				font loaded when starting hyper.
+			*/
+			.fallout x-screen {
+				font-size: 14px !important;
+				letter-spacing: 0.016em !important;
+			}
+			.fallout x-row {
+				line-height: 1em !important;
 			}
 		`
 	});
