@@ -4,7 +4,7 @@
   "description": "Dotfiles",
   "main": "install.js",
   "scripts": {
-    "install": "node scripts/install.js",
+    "go": "node scripts/install.js",
     "dev:fallout": "node scripts/plugin-dev fallout-theme"
   },
   "repository": {
