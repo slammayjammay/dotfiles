@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Dotfiles",
   "main": "install.js",
-  "scripts": {},
+  "scripts": {
+    "install": "node scripts/install.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/slammayjammay/dotfiles.git"
@@ -17,5 +19,8 @@
   "homepage": "https://github.com/slammayjammay/dotfiles#readme",
   "dependencies": {
     "chalk": "^2.0.1"
+  },
+  "devDependencies": {
+    "webpack": "^3.5.2"
   }
 }
