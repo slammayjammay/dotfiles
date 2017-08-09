@@ -4,13 +4,16 @@ const { readdirSync, statSync } = require('fs');
 const chalk = require('chalk');
 
 module.exports = (homeDirectory) => {
-	const SOURCE = join(homeDirectory, 'dotfiles', 'hyper/hyper_plugins/local');
-	const DESTINATION = join(homeDirectory, '.hyper_plugins/local');
+	const SOURCE = join(homeDirectory, 'dotfiles', 'hyper');
+	const PLUGINS_BASE_PATH = join(SOURCE, 'hyper_plugins/local');
+	const CONFIG_DESTINATION = join(homeDirectory, '.hyper.js');
+	const PLUGINS_DESTINATION = join(homeDirectory, '.hyper_plugins/local');
 
 	function getPluginPaths() {
-		return readdirSync(SOURCE).map(file => join(SOURCE, file)).filter(file => {
-			return statSync(file).isDirectory(); // only directories
-		});
+		return readdirSync(PLUGINS_BASE_PATH)
+			.map(file => join(PLUGINS_BASE_PATH, file))
+			// only directories
+			.filter(file => statSync(file).isDirectory());
 	}
 
 	function installPlugin(path) {
@@ -28,7 +31,7 @@ module.exports = (homeDirectory) => {
 	function copyPlugin(path) {
 		process.stdout.write(chalk.bold(`Copying plugin ${basename(path)}...`));
 
-		execSync(`cp -r ${path} ${DESTINATION}`, { stdio: 'inherit' });
+		execSync(`cp -r ${path} ${PLUGINS_DESTINATION}`, { stdio: 'inherit' });
 		console.log('done.');
 	}
 
@@ -47,6 +50,11 @@ module.exports = (homeDirectory) => {
 			pluginPaths.forEach(path => {
 				copyPlugin(path);
 			});
+
+			// also copy hyper config file
+			process.stdout.write('Coyping hyper config file...');
+			execSync(`cp ${join(SOURCE, '.hyper.js')} ${CONFIG_DESTINATION}`);
+			console.log('done.');
 		},
 
 		install(pluginName) {
