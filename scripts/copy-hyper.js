@@ -17,8 +17,10 @@ module.exports = (homeDirectory) => {
 		console.log();
 		console.log(chalk.bold.green(`Installing plugin ${basename(path)}...`));
 
-		execSync(`cd ${path} && npm install && npm run build -- --hide-modules --progress`, { stdio: 'inherit' });
-		copyPlugin(path);
+		execSync(
+			`cd ${path} && npm install && npm run build -- --hide-modules --progress`, 
+			{ stdio: 'inherit' }
+		);
 
 		console.log();
 	}

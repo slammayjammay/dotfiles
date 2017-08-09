@@ -13,6 +13,7 @@ copyVim(HOME_DIRECTORY);
 console.log();
 
 copyHyper.installAll();
+copyHyper.copyAll();
 console.log();
 
 console.log(chalk.bold.green('Installation successfull!'));
