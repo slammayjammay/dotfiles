@@ -17,7 +17,7 @@ module.exports = {
     cursorShape: 'BLOCK',
 
     // set to true for blinking cursor
-    cursorBlink: true,
+    cursorBlink: false,
 
     // color of the text
     foregroundColor: '#fff',
@@ -118,7 +118,7 @@ module.exports = {
   //   `hyperpower`
   //   `@company/project`
   //   `project#1.0.1`
-  plugins: ['hypernasa', 'hyperterm-cursor'],
+  plugins: ['hypernasa', 'hyperterm-cursor', 'hyper-blink'],
 
   // in development, you can create a directory under
   // `~/.hyper_plugins/local/` and include it here
