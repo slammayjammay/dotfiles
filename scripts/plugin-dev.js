@@ -1,13 +1,19 @@
 const { join, resolve } = require('path');
-const { exec } = require('child_process');
+const { execSync } = require('child_process');
+const { statSync } = require('fs');
 const webpack = require('webpack');
 const chalk = require('chalk');
 
-const args = process.argv.slice(2);
-const pluginDir = args[0];
+const HOME_DIRECTORY = execSync(`cd ~ && pwd`).toString().trim();
 
-const PLUGIN_BASE_PATH = join(__dirname, `hyper/hyper_plugins/local/`);
-const PLUGIN_PATH = join(PLUGIN_BASE_PATH, pluginDir);
+const { install } = require('./copy-hyper')(HOME_DIRECTORY);
+
+
+const args = process.argv.slice(2);
+const pluginName = args[0];
+
+const PLUGIN_BASE_PATH = join(HOME_DIRECTORY, 'dotfiles', `hyper/hyper_plugins/local/`);
+const PLUGIN_PATH = join(PLUGIN_BASE_PATH, pluginName);
 const PLUGIN_CONFIG = require(join(PLUGIN_PATH, 'webpack.config.js'));
 
 // in the plugin's webpack config file, context defaults to process.cwd().
@@ -30,5 +36,8 @@ compiler.watch({
 	}
 
 	console.log(chalk.green('Compiled successfully.'));
-	console.log()
+	console.log(`Installing ${pluginName}...`);
+
+	install(pluginName);
+	console.log('Waiting...');
 });
