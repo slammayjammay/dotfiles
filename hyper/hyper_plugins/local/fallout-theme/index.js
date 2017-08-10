@@ -48,8 +48,9 @@ exports.middleware = (store) => (next) => (action) => {
 			});
 		}
 
-		// lol
-		if (/fallout!: command not found/.test(data)) {
+		// test the data with a regex that does not match itself, so that if a user
+		// types a command like "cat ${this_file}" we don't toggle fallout.
+		if (/fallout!*: command not found/.test(data)) {
 			store.dispatch({
 				type: 'TOGGLE_FALLOUT'
 			});
@@ -111,9 +112,9 @@ exports.decorateTerm = (Term, { React }) => {
     }
 
 		componentWillReceiveProps(nextProps) {
-			// if (this.enabled && nextProps.receivedOutput !== this.props.receivedOutput) {
-			// 	setTimeout(() => this.output());
-			// }
+			if (this.enabled && nextProps.receivedOutput !== this.props.receivedOutput) {
+				// this.output();
+			}
 
 			if (nextProps.fallout && !this.props.fallout) {
 				this.enableFallout();
@@ -130,6 +131,67 @@ exports.decorateTerm = (Term, { React }) => {
 
 			this.term.prefs_.set('font-family', '"Fixedsys Excelsior 3.01"')
 			this.term.setFontSize(14);
+
+			// capture any text outputted to the terminal screen BEFORE hyper does.
+			// this way we can (hopefully) manually output any text that will be sent
+			// to the terminal screen.
+
+			// return a promise when the screen is drawn
+			this.term.scheduleRedraw = function() {
+				return new Promise(resolve => {
+					if (this.timeouts_.redraw) {
+						return;
+					}
+
+					const self = this;
+
+					this.timeouts_.redraw = setTimeout(function() {
+						delete self.timeouts_.redraw;
+						self.scrollPort_.redraw_();
+						resolve();
+					}, 0);
+				});
+			}.bind(this.term);
+
+
+			let willReceiveOutput = false;
+
+			const oldKeystroke = this.term.io.onVTKeystroke.bind(this.term.io);
+			this.term.io.onVTKeystroke = function(str) {
+				if (str.includes('\n') || str.includes('\r')) {
+					willReceiveOutput = true;
+					oldKeystroke(str);
+					return;
+				}
+				oldKeystroke(str);
+			}.bind(this.term.io);
+
+			const oldPrint = this.term.interpret.bind(this.term);
+			this.term.interpret = function(str) {
+				if (willReceiveOutput) {
+
+					setTimeout(() => {
+						this.scheduleRedraw().then(() => {
+							console.log(str);
+							oldPrint(str);
+							willReceiveOutput = false;
+						});
+					}, 1000);
+					return;
+				}
+
+				oldPrint(str);
+			}.bind(this.term);
+
+			// setTimeout(() => {
+			// 	this.term.print('something something something something');
+			// }, 1000);
+
+
+
+
+
+
 
 			this.mainBody.classList.add('fallout');
 			this.termBody.classList.add('fallout');
