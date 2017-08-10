@@ -41,9 +41,8 @@ compiler.watch({
 	}
 
 	console.log(chalk.green('Compiled successfully.'));
-	console.log(`Installing ${pluginName}...`);
+	console.log(`Copying ${pluginName}...`);
 
-	install(pluginName);
 	copy(pluginName);
 	console.log('Waiting...');
 });
