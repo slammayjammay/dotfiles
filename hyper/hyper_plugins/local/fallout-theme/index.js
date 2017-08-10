@@ -25,7 +25,6 @@ exports.decorateConfig = (config) => {
 			${config.termCSS || ''}
 
 			.fallout x-screen, .fallout x-row, .fallout x-row span {
-				font-family: "Fixedsys Excelsior 3.01" !important;
 				color: lightgreen !important;
 				text-shadow: 0 0 10px lightgreen !important;
 			}
@@ -33,19 +32,6 @@ exports.decorateConfig = (config) => {
 			.fallout .cursor-node {
 				background-color: lightgreen !important;
 				border-color: lightgreen !important;
-			}
-
-			/*
-				When changing fonts, the cursor position will not be updated. We need
-				to match the new font size and spacing as close as we can to whatever
-				font loaded when starting hyper.
-			*/
-			.fallout x-screen {
-				font-size: 14px !important;
-				letter-spacing: 0.016em !important;
-			}
-			.fallout x-row {
-				line-height: 1em !important;
 			}
 		`
 	});
@@ -125,9 +111,9 @@ exports.decorateTerm = (Term, { React }) => {
     }
 
 		componentWillReceiveProps(nextProps) {
-			if (this.enabled && nextProps.receivedOutput !== this.props.receivedOutput) {
-				setTimeout(() => this.output());
-			}
+			// if (this.enabled && nextProps.receivedOutput !== this.props.receivedOutput) {
+			// 	setTimeout(() => this.output());
+			// }
 
 			if (nextProps.fallout && !this.props.fallout) {
 				this.enableFallout();
@@ -141,6 +127,9 @@ exports.decorateTerm = (Term, { React }) => {
 		enableFallout() {
 			this.enabled = true;
 			this.cursor = this.cursor || this.termBody.querySelector('.cursor-node');
+
+			this.term.scrollPort_.setFontFamily('Fixedsys Excelsior 3.01');
+			this.term.setFontSize(12);
 
 			this.mainBody.classList.add('fallout');
 			this.termBody.classList.add('fallout');
