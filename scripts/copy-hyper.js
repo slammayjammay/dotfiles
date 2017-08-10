@@ -78,7 +78,7 @@ module.exports = (homeDirectory) => {
 				throw new Error(`No plugin by the name of ${pluginName}`);
 			}
 
-			installPlugin(pluginPath);
+			copyPlugin(pluginPath);
 		}
 	};
 };

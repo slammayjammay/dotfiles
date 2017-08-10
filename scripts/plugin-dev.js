@@ -6,8 +6,7 @@ const chalk = require('chalk');
 
 const HOME_DIRECTORY = execSync(`cd ~ && pwd`).toString().trim();
 
-const { install } = require('./copy-hyper')(HOME_DIRECTORY);
-
+const { install, copy } = require('./copy-hyper')(HOME_DIRECTORY);
 
 const args = process.argv.slice(2);
 const pluginName = args[0];
@@ -20,6 +19,10 @@ const PLUGIN_CONFIG = require(join(PLUGIN_PATH, 'webpack.config.js'));
 // we want to set it to the desired plugin directory
 PLUGIN_CONFIG.context = PLUGIN_PATH;
 
+PLUGIN_CONFIG.resolve = Object.assign({}, PLUGIN_CONFIG.resolve, {
+	modules: [PLUGIN_PATH, 'node_modules']
+});
+
 const compiler = webpack(PLUGIN_CONFIG);
 
 compiler.watch({
@@ -31,7 +34,9 @@ compiler.watch({
 
 	if (stats.hasErrors()) {
 		console.log(chalk.red('Compilation failed'));
-		console.log(stats.toJson('errors-only'));
+		stats.toJson('errors-only').errors.forEach(error => {
+			console.log(error);
+		});
 		return;
 	}
 
@@ -39,5 +44,6 @@ compiler.watch({
 	console.log(`Installing ${pluginName}...`);
 
 	install(pluginName);
+	copy(pluginName);
 	console.log('Waiting...');
 });
