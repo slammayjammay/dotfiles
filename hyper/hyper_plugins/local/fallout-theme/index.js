@@ -128,8 +128,8 @@ exports.decorateTerm = (Term, { React }) => {
 			this.enabled = true;
 			this.cursor = this.cursor || this.termBody.querySelector('.cursor-node');
 
-			this.term.scrollPort_.setFontFamily('Fixedsys Excelsior 3.01');
-			this.term.setFontSize(12);
+			this.term.prefs_.set('font-family', '"Fixedsys Excelsior 3.01"')
+			this.term.setFontSize(14);
 
 			this.mainBody.classList.add('fallout');
 			this.termBody.classList.add('fallout');
