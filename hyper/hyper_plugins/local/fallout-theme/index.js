@@ -6,6 +6,11 @@ import 'gsap';
 // 1) Sets the background image to a retro computer screen.
 // 2) Colors text as green.
 // 3) Animates output, as if being typed to the screen.
+
+// TODO:
+// 1) If output is being typed and the user presses a key, skip to the end state
+//    of the animation.
+// 2) Don't type out individual whitespace characters. Instead, group them.
 // =============================================================================
 
 exports.decorateConfig = (config) => {
