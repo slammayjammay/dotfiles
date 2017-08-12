@@ -284,7 +284,7 @@ exports.decorateTerm = (Term, { React }) => {
 					}
 
 					i += 1;
-				}, 10);
+				}, 5);
 			});
 		}
 
