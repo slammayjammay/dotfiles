@@ -123,6 +123,7 @@ exports.decorateTerm = (Term, { React }) => {
 				this.enableFallout();
 				this.term.onVTKeystroke('\n');
       } else if (!nextProps.fallout && this.props.fallout) {
+				console.log('disabling');
 				this.disableFallout();
 				this.term.onVTKeystroke('\n');
       }
@@ -131,6 +132,11 @@ exports.decorateTerm = (Term, { React }) => {
 		enableFallout() {
 			this.enabled = true;
 			this.cursor = this.cursor || this.termBody.querySelector('.cursor-node');
+
+			this.oldPrefs = {
+				fontFamily: this.term.prefs_.get('font-family'),
+				fontSize: this.term.prefs_.get('font-size')
+			};
 
 			this.term.prefs_.set('font-family', '"Fixedsys Excelsior 3.01"')
 			this.term.setFontSize(14);
@@ -144,10 +150,11 @@ exports.decorateTerm = (Term, { React }) => {
 			// it's possible that 'interpret' is called multiple times when printing
 			// output, so we have to make sure to capture each interpreted string.
 
+			const self = this;
 			let willReceiveOutput = false;
 
 			// override 'onVTKeystroke'
-			const oldKeystroke = this.term.io.onVTKeystroke.bind(this.term.io);
+			this.oldKeystroke = this.term.io.onVTKeystroke.bind(this.term.io);
 			this.term.io.onVTKeystroke = function(str) {
 				willReceiveOutput = false;
 
@@ -155,13 +162,11 @@ exports.decorateTerm = (Term, { React }) => {
 						willReceiveOutput = true;
 				}
 
-				oldKeystroke(str);
+				self.oldKeystroke(str);
 			}.bind(this.term.io);
 
-			const self = this;
-
 			// override 'interpret'
-			const interpret = this.term.interpret.bind(this.term);
+			this.oldInterpret = this.term.interpret.bind(this.term);
 			this.term.interpret = function(str) {
 				// intercept the output
 				if (willReceiveOutput) {
@@ -169,10 +174,8 @@ exports.decorateTerm = (Term, { React }) => {
 					return;
 				}
 
-				interpret(str);
+				self.oldInterpret(str);
 			}.bind(this.term);
-
-			this.defaultPrint = interpret;
 
 			this.mainBody.classList.add('fallout');
 			this.termBody.classList.add('fallout');
@@ -180,6 +183,12 @@ exports.decorateTerm = (Term, { React }) => {
 
 		disableFallout() {
 			this.enabled = false;
+			this.term.prefs_.set('font-family', this.oldPrefs.fontFamily);
+			this.term.setFontSize(this.oldPrefs.fontSize);
+
+			this.term.io.onVTKeystroke = this.oldKeystroke;
+			this.term.interpret = this.oldInterpret;
+
 			this.mainBody.classList.remove('fallout');
 			this.termBody.classList.remove('fallout');
 		}
@@ -189,8 +198,6 @@ exports.decorateTerm = (Term, { React }) => {
 			this._capturedOutput.push(...lines);
 
 			if (!this.isOutputting) {
-				console.log('start outputting');
-
 				this.isOutputting = true;
 				this.alreadyOutputFirstLine = false;
 
@@ -225,7 +232,7 @@ exports.decorateTerm = (Term, { React }) => {
 			const line = this._capturedOutput.shift();
 
 			if (this.alreadyOutputFirstLine) {
-				this.defaultPrint('\n\r');
+				this.oldInterpret('\n\r');
 			}
 
 			await this.outputLine(line);
@@ -248,14 +255,13 @@ exports.decorateTerm = (Term, { React }) => {
 				}
 
 				const screen = this.term.screen_;
-
 				const currentRow = screen.cursorRowNode_;
 
 				// print the line so we have access to the text and cursor position.
 				// hide the row right before so the full text doesn't flash before we
 				// start the typing animation.
 				currentRow.style.opacity = 0;
-				this.defaultPrint(line);
+				this.oldInterpret(line);
 				const text = screen.getLineText_(currentRow);
 				const { row, column } = screen.cursorPosition;
 				screen.clearCursorRow();
