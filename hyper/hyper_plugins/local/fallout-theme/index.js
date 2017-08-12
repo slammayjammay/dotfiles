@@ -5,6 +5,7 @@ import 'gsap';
 // Fallout terminal theme.
 // 1) Sets the background image to a retro computer screen.
 // 2) Colors text as green.
+// 3) Animates output, as if being typed to the screen.
 // =============================================================================
 
 exports.decorateConfig = (config) => {
@@ -113,10 +114,6 @@ exports.decorateTerm = (Term, { React }) => {
     }
 
 		componentWillReceiveProps(nextProps) {
-			// if (this.enabled && nextProps.receivedOutput !== this.props.receivedOutput) {
-				// this.output();
-			// }
-
 			if (nextProps.fallout && !this.props.fallout) {
 				this.enableFallout();
 				this.term.onVTKeystroke('\n');
@@ -241,117 +238,42 @@ exports.decorateTerm = (Term, { React }) => {
 
 		animateLine(line) {
 			return new Promise(async resolve => {
-				// let hterm do whatever it needs to do to print a line
+				if (!this.alreadyOutputFirstLine) {
+					return resolve();
+				}
+
+				const screen = this.term.screen_;
+
+				const currentRow = screen.cursorRowNode_;
+
+				// print the line so we have access to the text and cursor position.
+				// hide the row right before so the full text doesn't flash before we
+				// start the typing animation.
+				currentRow.style.opacity = 0;
 				this.defaultPrint(line);
+				const text = screen.getLineText_(currentRow);
+				const { row, column } = screen.cursorPosition;
+				screen.clearCursorRow();
+				currentRow.style.opacity = '';
 
-				// then get the text on that line
-				const currentRow = this.term.screen_.cursorRowNode_;
-				const text = this.term.screen_.getLineText_(currentRow);
+				// print increasingly larger substrings of the line text, updating the
+				// cursor as the line gets longer.
+				let i = 1;
+				const id = setInterval(() => {
+					screen.setCursorPosition(row, 0);
+					screen.overwriteString(text.slice(0, i + 1));
+					screen.setCursorPosition(row, i);
+					this.term.scheduleSyncCursorPosition_();
 
-				this.term.screen_.clearCursorRow();
-				this.term.screen_.overwriteString(text);
-				this.term.screen_.maybeClipCurrentRow();
-
-
-
-
-				resolve();
-
-				// const currentRow = this.term.screen_.cursorRowNode_;
-				// const text = currentRow.textContent.split('');
-				//
-				// currentRow.innerHTML = '';
-				//
-				// const id = setInterval(() => {
-				// 	if (text.length === 0) {
-				// 		clearInterval(id);
-				// 		resolve();
-				// 		return;
-				// 	}
-				//
-				// 	currentRow.innerHTML += text.shift();
-				// }, 10);
-			});
-		}
-
-		// async output() {
-		// 	this.outputting = true;
-		//
-		// 	// get all rows that have text content
-		// 	// note this does not include the next prompted line
-		// 	const rows = (() => {
-		// 		const els = this.termBody.querySelectorAll('x-row');
-		//
-		// 		// discard all rows before the line the cursor is on.
-		// 		const cursorPos = parseFloat(this.cursor.style.top);
-		// 		// though the terminal has entered the text, the cursor position hasn't
-		// 		// updated?
-		// 		const currentRowIdx = (cursorPos + 14) / 14; // divide by font size
-		//
-		// 		return [].slice.call(els, currentRowIdx).filter(el => el.textContent.length > 0);
-		// 	})();
-		//
-		// 	// the animation for the last row will be special
-		// 	const lastRow = rows[rows.length - 1].nextSibling;
-		// 	TweenMax.set(lastRow, { opacity: 0 });
-		//
-		// 	console.log(lastRow);
-		//
-		// 	// hide all rows and the cursor
-		// 	TweenMax.set(rows, { opacity: 0 });
-		// 	this.cursor.style.visibility = 'hidden';
-		//
-		// 	// it seems that writing to a row's textContent removes some listener, or
-		// 	// something, somewhere, because text will not appear when typing into the
-		// 	// terminal. instead, find another way to do the same animation WITHOUT
-		// 	// writing to textContent.
-		// 	lastRow.style.position = 'relative';
-		//
-		// 	const fakeRow = document.createElement('x-row');
-		// 	TweenMax.set(fakeRow, {
-		// 		position: 'absolute',
-		// 		top: '0px',
-		// 		left: '0px',
-		// 		width: '100%',
-		// 		height: '100%',
-		// 		opacity: 0
-		// 	});
-		// 	fakeRow.textContent = lastRow.textContent;
-		// 	lastRow.appendChild(fakeRow);
-		//
-		// 	// animate
-		// 	for (const row of rows) {
-		// 		await this.outputRow(row);
-		// 	}
-		//
-		// 	await this.outputRow(fakeRow);
-		// 	TweenMax.set(lastRow, {
-		// 		opacity: 1,
-		// 		clearProps: 'all',
-		// 		onComplete: () => fakeRow.remove()
-		// 	});
-		//
-		// 	// show the cursor
-		// 	this.cursor.style.visibility = '';
-		// 	this.cursor.setAttribute('focus', true);
-		//
-		// 	this.outputting = false;
-		// }
-
-		outputRow(row) {
-			return new Promise(resolve => {
-				const letters = row.textContent.split('');
-				row.textContent = '';
-				TweenMax.set(row, { opacity: 1 });
-
-				const intervalId = setInterval(() => {
-					row.textContent = `${row.textContent}${letters.shift()}`;
-
-					if (letters.length === 0) {
-						clearInterval(intervalId);
+					if (i >= text.length - 1) {
+						clearTimeout(id);
+						screen.setCursorPosition(row, i + 1);
+						screen.maybeClipCurrentRow();
 						resolve();
 					}
-				}, 50);
+
+					i += 1;
+				}, 10);
 			});
 		}
 
