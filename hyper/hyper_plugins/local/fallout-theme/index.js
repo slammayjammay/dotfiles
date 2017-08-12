@@ -95,6 +95,7 @@ exports.decorateTerm = (Term, { React }) => {
 		constructor(...args) {
 			super(...args);
 			this._onTerminal = this._onTerminal.bind(this);
+			this._capturedOutput = [];
 		}
 
 		_onTerminal(term) {
@@ -112,9 +113,9 @@ exports.decorateTerm = (Term, { React }) => {
     }
 
 		componentWillReceiveProps(nextProps) {
-			if (this.enabled && nextProps.receivedOutput !== this.props.receivedOutput) {
+			// if (this.enabled && nextProps.receivedOutput !== this.props.receivedOutput) {
 				// this.output();
-			}
+			// }
 
 			if (nextProps.fallout && !this.props.fallout) {
 				this.enableFallout();
@@ -132,66 +133,44 @@ exports.decorateTerm = (Term, { React }) => {
 			this.term.prefs_.set('font-family', '"Fixedsys Excelsior 3.01"')
 			this.term.setFontSize(14);
 
-			// capture any text outputted to the terminal screen BEFORE hyper does.
-			// this way we can (hopefully) manually output any text that will be sent
-			// to the terminal screen.
-
-			// return a promise when the screen is drawn
-			this.term.scheduleRedraw = function() {
-				return new Promise(resolve => {
-					if (this.timeouts_.redraw) {
-						return;
-					}
-
-					const self = this;
-
-					this.timeouts_.redraw = setTimeout(function() {
-						delete self.timeouts_.redraw;
-						self.scrollPort_.redraw_();
-						resolve();
-					}, 0);
-				});
-			}.bind(this.term);
-
+			// to animate output, we have to capture the text before hterm prints it
+			// to the screen. once we have it, we can manually call this.term.print(),
+			// hopefully.
+			// 'onVTKeystroke' and 'interpret' are called on every keystroke.
+			// 'interpret' is called again for any output that will be printed, so
+			// that's where we will intercept it.
+			// it's possible that 'interpret' is called multiple times when printing
+			// output, so we have to make sure to capture each interpreted string.
 
 			let willReceiveOutput = false;
 
+			// override 'onVTKeystroke'
 			const oldKeystroke = this.term.io.onVTKeystroke.bind(this.term.io);
 			this.term.io.onVTKeystroke = function(str) {
+				willReceiveOutput = false;
+
 				if (str.includes('\n') || str.includes('\r')) {
-					willReceiveOutput = true;
-					oldKeystroke(str);
-					return;
+						willReceiveOutput = true;
 				}
+
 				oldKeystroke(str);
 			}.bind(this.term.io);
 
-			const oldPrint = this.term.interpret.bind(this.term);
-			this.term.interpret = function(str) {
-				if (willReceiveOutput) {
+			const self = this;
 
-					setTimeout(() => {
-						this.scheduleRedraw().then(() => {
-							console.log(str);
-							oldPrint(str);
-							willReceiveOutput = false;
-						});
-					}, 1000);
+			// override 'interpret'
+			const interpret = this.term.interpret.bind(this.term);
+			this.term.interpret = function(str) {
+				// intercept the output
+				if (willReceiveOutput) {
+					self.captureOutput(str);
 					return;
 				}
 
-				oldPrint(str);
+				interpret(str);
 			}.bind(this.term);
 
-			// setTimeout(() => {
-			// 	this.term.print('something something something something');
-			// }, 1000);
-
-
-
-
-
-
+			this.defaultPrint = interpret;
 
 			this.mainBody.classList.add('fallout');
 			this.termBody.classList.add('fallout');
@@ -203,69 +182,161 @@ exports.decorateTerm = (Term, { React }) => {
 			this.termBody.classList.remove('fallout');
 		}
 
+		captureOutput(string) {
+			const lines = string.split('\n').filter(s => s.length > 0);
+			this._capturedOutput.push(...lines);
+
+			if (!this.isOutputting) {
+				console.log('start outputting');
+
+				this.isOutputting = true;
+				this.alreadyOutputFirstLine = false;
+
+				// sometimes output will be captured separately -- for example the user
+				// may enter a command, and two or more pieces of the output is
+				// captured. it's possible that the first piece is captured and printed
+				// before the second piece is captured. we don't want this behavior, as
+				// it makes it harder to determine if the output is related to the same
+				// command.
+				// set a minimum amount of time before we reset and essentially begin
+				// listening for output again.
+				this.MIN_DELAY_BEFORE_RESET = 1000;
+				this.start = new Date();
+
+				this.output();
+			}
+		}
+
 		async output() {
-			this.outputting = true;
+			if (this._capturedOutput.length === 0) {
+				const end = new Date();
+				const elapsed = end - this.start;
 
-			// get all rows that have text content
-			// note this does not include the next prompted line
-			const rows = (() => {
-				const els = this.termBody.querySelectorAll('x-row');
-
-				// discard all rows before the line the cursor is on.
-				const cursorPos = parseFloat(this.cursor.style.top);
-				// though the terminal has entered the text, the cursor position hasn't
-				// updated?
-				const currentRowIdx = (cursorPos + 14) / 14; // divide by font size
-
-				return [].slice.call(els, currentRowIdx).filter(el => el.textContent.length > 0);
-			})();
-
-			// the animation for the last row will be special
-			const lastRow = rows[rows.length - 1].nextSibling;
-			TweenMax.set(lastRow, { opacity: 0 });
-
-			console.log(lastRow);
-
-			// hide all rows and the cursor
-			TweenMax.set(rows, { opacity: 0 });
-			this.cursor.style.visibility = 'hidden';
-
-			// it seems that writing to a row's textContent removes some listener, or
-			// something, somewhere, because text will not appear when typing into the
-			// terminal. instead, find another way to do the same animation WITHOUT
-			// writing to textContent.
-			lastRow.style.position = 'relative';
-
-			const fakeRow = document.createElement('x-row');
-			TweenMax.set(fakeRow, {
-				position: 'absolute',
-				top: '0px',
-				left: '0px',
-				width: '100%',
-				height: '100%',
-				opacity: 0
-			});
-			fakeRow.textContent = lastRow.textContent;
-			lastRow.appendChild(fakeRow);
-
-			// animate
-			for (const row of rows) {
-				await this.outputRow(row);
+				if (elapsed > this.MIN_DELAY_BEFORE_RESET) {
+					this.isOutputting = false;
+				} else {
+					setTimeout(() => this.output(), 0);
+				}
+				return;
 			}
 
-			await this.outputRow(fakeRow);
-			TweenMax.set(lastRow, {
-				opacity: 1,
-				clearProps: 'all',
-				onComplete: () => fakeRow.remove()
-			});
+			const line = this._capturedOutput.shift();
 
-			// show the cursor
-			this.cursor.style.visibility = '';
-			this.cursor.setAttribute('focus', true);
+			if (this.alreadyOutputFirstLine) {
+				this.defaultPrint('\n\r');
+			}
 
-			this.outputting = false;
+			await this.outputLine(line);
+			this.alreadyOutputFirstLine = true;
+
+			this.output();
 		}
+
+		outputLine(line) {
+			return new Promise(async resolve => {
+				await this.animateLine(line);
+				resolve();
+			});
+		}
+
+		animateLine(line) {
+			return new Promise(async resolve => {
+				// let hterm do whatever it needs to do to print a line
+				this.defaultPrint(line);
+
+				// then get the text on that line
+				const currentRow = this.term.screen_.cursorRowNode_;
+				const text = this.term.screen_.getLineText_(currentRow);
+
+				this.term.screen_.clearCursorRow();
+				this.term.screen_.overwriteString(text);
+				this.term.screen_.maybeClipCurrentRow();
+
+
+
+
+				resolve();
+
+				// const currentRow = this.term.screen_.cursorRowNode_;
+				// const text = currentRow.textContent.split('');
+				//
+				// currentRow.innerHTML = '';
+				//
+				// const id = setInterval(() => {
+				// 	if (text.length === 0) {
+				// 		clearInterval(id);
+				// 		resolve();
+				// 		return;
+				// 	}
+				//
+				// 	currentRow.innerHTML += text.shift();
+				// }, 10);
+			});
+		}
+
+		// async output() {
+		// 	this.outputting = true;
+		//
+		// 	// get all rows that have text content
+		// 	// note this does not include the next prompted line
+		// 	const rows = (() => {
+		// 		const els = this.termBody.querySelectorAll('x-row');
+		//
+		// 		// discard all rows before the line the cursor is on.
+		// 		const cursorPos = parseFloat(this.cursor.style.top);
+		// 		// though the terminal has entered the text, the cursor position hasn't
+		// 		// updated?
+		// 		const currentRowIdx = (cursorPos + 14) / 14; // divide by font size
+		//
+		// 		return [].slice.call(els, currentRowIdx).filter(el => el.textContent.length > 0);
+		// 	})();
+		//
+		// 	// the animation for the last row will be special
+		// 	const lastRow = rows[rows.length - 1].nextSibling;
+		// 	TweenMax.set(lastRow, { opacity: 0 });
+		//
+		// 	console.log(lastRow);
+		//
+		// 	// hide all rows and the cursor
+		// 	TweenMax.set(rows, { opacity: 0 });
+		// 	this.cursor.style.visibility = 'hidden';
+		//
+		// 	// it seems that writing to a row's textContent removes some listener, or
+		// 	// something, somewhere, because text will not appear when typing into the
+		// 	// terminal. instead, find another way to do the same animation WITHOUT
+		// 	// writing to textContent.
+		// 	lastRow.style.position = 'relative';
+		//
+		// 	const fakeRow = document.createElement('x-row');
+		// 	TweenMax.set(fakeRow, {
+		// 		position: 'absolute',
+		// 		top: '0px',
+		// 		left: '0px',
+		// 		width: '100%',
+		// 		height: '100%',
+		// 		opacity: 0
+		// 	});
+		// 	fakeRow.textContent = lastRow.textContent;
+		// 	lastRow.appendChild(fakeRow);
+		//
+		// 	// animate
+		// 	for (const row of rows) {
+		// 		await this.outputRow(row);
+		// 	}
+		//
+		// 	await this.outputRow(fakeRow);
+		// 	TweenMax.set(lastRow, {
+		// 		opacity: 1,
+		// 		clearProps: 'all',
+		// 		onComplete: () => fakeRow.remove()
+		// 	});
+		//
+		// 	// show the cursor
+		// 	this.cursor.style.visibility = '';
+		// 	this.cursor.setAttribute('focus', true);
+		//
+		// 	this.outputting = false;
+		// }
 
 		outputRow(row) {
 			return new Promise(resolve => {
