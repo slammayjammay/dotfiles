@@ -123,7 +123,6 @@ exports.decorateTerm = (Term, { React }) => {
 				this.enableFallout();
 				this.term.onVTKeystroke('\n');
       } else if (!nextProps.fallout && this.props.fallout) {
-				console.log('disabling');
 				this.disableFallout();
 				this.term.onVTKeystroke('\n');
       }
@@ -158,8 +157,9 @@ exports.decorateTerm = (Term, { React }) => {
 			this.term.io.onVTKeystroke = function(str) {
 				willReceiveOutput = false;
 
-				if (str.includes('\n') || str.includes('\r')) {
+				if (str.includes('\r')) {
 						willReceiveOutput = true;
+						self.oldInterpret('\n\r');
 				}
 
 				self.oldKeystroke(str);
@@ -194,12 +194,10 @@ exports.decorateTerm = (Term, { React }) => {
 		}
 
 		captureOutput(string) {
-			const lines = string.split('\n').filter(s => s.length > 0);
-			this._capturedOutput.push(...lines);
+			this._capturedOutput.push(string);
 
 			if (!this.isOutputting) {
 				this.isOutputting = true;
-				this.alreadyOutputFirstLine = false;
 
 				// sometimes output will be captured separately -- for example the user
 				// may enter a command, and two or more pieces of the output is
@@ -229,16 +227,33 @@ exports.decorateTerm = (Term, { React }) => {
 				return;
 			}
 
-			const line = this._capturedOutput.shift();
+			const string = this._capturedOutput.shift();
 
-			if (this.alreadyOutputFirstLine) {
-				this.oldInterpret('\n\r');
+			if (!string.includes('\n')) {
+				this.outputLine(string);
+			} else {
+				const lines = string.split('\n').filter(s => s !== '');
+
+				// remove any leading carriage returns. we will do this manually.
+				if (/^\r$/.test(lines[0])) {
+					lines.shift();
+				}
+
+				// await this.outputLine(line);
+				await this.outputLines(lines);
 			}
 
-			await this.outputLine(line);
-			this.alreadyOutputFirstLine = true;
-
 			this.output();
+		}
+
+		outputLines(lines) {
+			return new Promise(async resolve => {
+				for (let line of lines) {
+					await this.outputLine(line);
+					this.oldInterpret('\n\r');
+				}
+				resolve();
+			});
 		}
 
 		outputLine(line) {
@@ -250,10 +265,6 @@ exports.decorateTerm = (Term, { React }) => {
 
 		animateLine(line) {
 			return new Promise(async resolve => {
-				if (!this.alreadyOutputFirstLine) {
-					return resolve();
-				}
-
 				const screen = this.term.screen_;
 				const currentRow = screen.cursorRowNode_;
 
@@ -274,12 +285,12 @@ exports.decorateTerm = (Term, { React }) => {
 					screen.setCursorPosition(row, 0);
 					screen.overwriteString(text.slice(0, i + 1));
 					screen.setCursorPosition(row, i);
+					screen.maybeClipCurrentRow();
 					this.term.scheduleSyncCursorPosition_();
 
 					if (i >= text.length - 1) {
 						clearTimeout(id);
 						screen.setCursorPosition(row, i + 1);
-						screen.maybeClipCurrentRow();
 						resolve();
 					}
 
