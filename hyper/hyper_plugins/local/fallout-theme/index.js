@@ -101,7 +101,7 @@ exports.decorateTerm = (Term, { React }) => {
 		constructor(...args) {
 			super(...args);
 			this._onTerminal = this._onTerminal.bind(this);
-			this._capturedOutput = [];
+			this._capturedOutput = '';
 		}
 
 		_onTerminal(term) {
@@ -130,7 +130,6 @@ exports.decorateTerm = (Term, { React }) => {
 
 		enableFallout() {
 			this.enabled = true;
-			this.cursor = this.cursor || this.termBody.querySelector('.cursor-node');
 
 			this.oldPrefs = {
 				fontFamily: this.term.prefs_.get('font-family'),
@@ -140,14 +139,16 @@ exports.decorateTerm = (Term, { React }) => {
 			this.term.prefs_.set('font-family', '"Fixedsys Excelsior 3.01"')
 			this.term.setFontSize(14);
 
-			// to animate output, we have to capture the text before hterm prints it
-			// to the screen. once we have it, we can manually call this.term.print(),
-			// hopefully.
-			// 'onVTKeystroke' and 'interpret' are called on every keystroke.
-			// 'interpret' is called again for any output that will be printed, so
+			// to animate output, we have to capture the text before HTerm prints it
+			// to the screen. this way we can control how HTerm scrolls when output
+			// is printed.
+			// HTerm's #onVTKeystroke and #interpret are called on every keystroke.
+			// #interpret is called again for any output that will be printed, so
 			// that's where we will intercept it.
-			// it's possible that 'interpret' is called multiple times when printing
-			// output, so we have to make sure to capture each interpreted string.
+			// we will ovewrite these instance methods so that we can capture the
+			// output before it is written to the screen.
+			// warning: this is done with almost no knowledge of the inner workings of
+			// HTerm.
 
 			const self = this;
 			let willReceiveOutput = false;
@@ -194,40 +195,24 @@ exports.decorateTerm = (Term, { React }) => {
 		}
 
 		captureOutput(string) {
-			this._capturedOutput.push(string);
+			this._capturedOutput += string;
 
-			if (!this.isOutputting) {
-				this.isOutputting = true;
-
-				// sometimes output will be captured separately -- for example the user
-				// may enter a command, and two or more pieces of the output is
-				// captured. it's possible that the first piece is captured and printed
-				// before the second piece is captured. we don't want this behavior, as
-				// it makes it harder to determine if the output is related to the same
-				// command.
-				// set a minimum amount of time before we reset and essentially begin
-				// listening for output again.
-				this.MIN_DELAY_BEFORE_RESET = 1000;
-				this.start = new Date();
-
-				this.output();
+			if (this.isOutputting) {
+				return;
 			}
+
+			this.isOutputting = true;
+			this.output();
 		}
 
 		async output() {
 			if (this._capturedOutput.length === 0) {
-				const end = new Date();
-				const elapsed = end - this.start;
-
-				if (elapsed > this.MIN_DELAY_BEFORE_RESET) {
-					this.isOutputting = false;
-				} else {
-					setTimeout(() => this.output(), 0);
-				}
+				this.isOutputting = false;
 				return;
 			}
 
-			const string = this._capturedOutput.shift();
+			const string = this._capturedOutput;
+			this._capturedOutput = '';
 
 			if (!string.includes('\n')) {
 				this.outputLine(string);
@@ -239,7 +224,6 @@ exports.decorateTerm = (Term, { React }) => {
 					lines.shift();
 				}
 
-				// await this.outputLine(line);
 				await this.outputLines(lines);
 			}
 
