@@ -1,5 +1,6 @@
 require('babel-polyfill');
 import 'gsap';
+import OutputEmitter from './OutputEmitter';
 
 // =============================================================================
 // Fallout terminal theme.
@@ -139,44 +140,19 @@ exports.decorateTerm = (Term, { React }) => {
 			this.term.prefs_.set('font-family', '"Fixedsys Excelsior 3.01"')
 			this.term.setFontSize(14);
 
-			// to animate output, we have to capture the text before HTerm prints it
-			// to the screen. this way we can control how HTerm scrolls when output
-			// is printed.
-			// HTerm's #onVTKeystroke and #interpret are called on every keystroke.
-			// #interpret is called again for any output that will be printed, so
-			// that's where we will intercept it.
-			// we will ovewrite these instance methods so that we can capture the
-			// output before it is written to the screen.
-			// warning: this is done with almost no knowledge of the inner workings of
-			// HTerm.
+			this.outputEmitter = this.outputEmitter || new OutputEmitter(this.term);
+			this.outputEmitter.hijack();
 
-			const self = this;
-			let willReceiveOutput = false;
+			// manually enter newline when enter is pressed
+			this.outputEmitter.on('enter', () => {
+				this.outputEmitter.defaultInterpret('\n\r');
+			});
 
-			// override 'onVTKeystroke'
-			this.oldKeystroke = this.term.io.onVTKeystroke.bind(this.term.io);
-			this.term.io.onVTKeystroke = function(str) {
-				willReceiveOutput = false;
-
-				if (str.includes('\r')) {
-						willReceiveOutput = true;
-						self.oldInterpret('\n\r');
-				}
-
-				self.oldKeystroke(str);
-			}.bind(this.term.io);
-
-			// override 'interpret'
-			this.oldInterpret = this.term.interpret.bind(this.term);
-			this.term.interpret = function(str) {
-				// intercept the output
-				if (willReceiveOutput) {
-					self.captureOutput(str);
-					return;
-				}
-
-				self.oldInterpret(str);
-			}.bind(this.term);
+			// intercept output that would be printed to the screen.
+			// we will manually enter this output later.
+			this.outputEmitter.on('output', string => {
+				this.captureOutput(string);
+			})
 
 			this.mainBody.classList.add('fallout');
 			this.termBody.classList.add('fallout');
@@ -187,8 +163,7 @@ exports.decorateTerm = (Term, { React }) => {
 			this.term.prefs_.set('font-family', this.oldPrefs.fontFamily);
 			this.term.setFontSize(this.oldPrefs.fontSize);
 
-			this.term.io.onVTKeystroke = this.oldKeystroke;
-			this.term.interpret = this.oldInterpret;
+			this.outputEmitter.unHijack();
 
 			this.mainBody.classList.remove('fallout');
 			this.termBody.classList.remove('fallout');
@@ -234,7 +209,7 @@ exports.decorateTerm = (Term, { React }) => {
 			return new Promise(async resolve => {
 				for (let line of lines) {
 					await this.outputLine(line);
-					this.oldInterpret('\n\r');
+					this.outputEmitter.defaultInterpret('\n\r');
 				}
 				resolve();
 			});
@@ -256,7 +231,7 @@ exports.decorateTerm = (Term, { React }) => {
 				// hide the row right before so the full text doesn't flash before we
 				// start the typing animation.
 				currentRow.style.opacity = 0;
-				this.oldInterpret(line);
+				this.outputEmitter.defaultInterpret(line);
 				const text = screen.getLineText_(currentRow);
 				const { row, column } = screen.cursorPosition;
 				screen.clearCursorRow();
