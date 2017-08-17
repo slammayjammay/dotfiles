@@ -5,7 +5,8 @@
   "main": "install.js",
   "scripts": {
     "setup": "node scripts/install.js",
-    "dev:fallout": "node scripts/plugin-dev fallout-theme"
+    "dev:fallout": "node scripts/plugin-dev fallout-theme",
+    "dev:typed": "node scripts/plugin-dev hyper-typed-output"
   },
   "repository": {
     "type": "git",
