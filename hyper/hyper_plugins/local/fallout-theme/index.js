@@ -156,7 +156,7 @@ exports.decorateTerm = (Term, { React }) => {
 			// we will manually enter this output later.
 			this.outputEmitter.on('output', string => {
 				this.captureOutput(string);
-			})
+			});
 
 			this.mainBody.classList.add('fallout');
 			this.termBody.classList.add('fallout');
