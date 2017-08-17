@@ -122,14 +122,12 @@ exports.decorateTerm = (Term, { React }) => {
 		componentWillReceiveProps(nextProps) {
 			if (nextProps.fallout && !this.props.fallout) {
 				this.enableFallout();
-				this.term.onVTKeystroke('\n');
       } else if (!nextProps.fallout && this.props.fallout) {
 				this.disableFallout();
-				this.term.onVTKeystroke('\n');
       }
     }
 
-		enableFallout() {
+		async enableFallout() {
 			this.enabled = true;
 
 			this.oldPrefs = {
@@ -143,19 +141,11 @@ exports.decorateTerm = (Term, { React }) => {
 			this.outputEmitter = this.outputEmitter || new OutputEmitter(this.term);
 			this.outputEmitter.hijack();
 
-			const getPromptString = (string) => {
-				if (string.includes('$')) {
-					const prompt = string.slice(0, string.indexOf('$'));
-					this.promptString = prompt;
+			// get the prompt text. useful for detecting when output ends
+			this.promptString = await this.getPromptString();
 
-					this.outputEmitter.removeListener('output', getPromptString);
-				}
-			};
-			this.outputEmitter.on('output', getPromptString);
-
-			setTimeout(() => {
-				this.term.onVTKeystroke('\n\r');
-			}, 0);
+			// clear the screen
+			this.term.onVTKeystroke('clear\n');
 
 			// manually enter newline when enter is pressed
 			this.outputEmitter.on('enter', () => {
@@ -181,6 +171,21 @@ exports.decorateTerm = (Term, { React }) => {
 
 			this.mainBody.classList.remove('fallout');
 			this.termBody.classList.remove('fallout');
+		}
+
+		getPromptString() {
+			return new Promise(resolve => {
+				const getPromptString = (string) => {
+					if (string.includes('$')) {
+						const prompt = string.slice(0, string.indexOf('$'));
+
+						this.outputEmitter.removeListener('output', getPromptString);
+						resolve(prompt);
+					}
+				};
+				this.outputEmitter.on('output', getPromptString);
+				this.term.onVTKeystroke('\n\r');
+			});
 		}
 
 		captureOutput(string) {
