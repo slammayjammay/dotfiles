@@ -4,29 +4,41 @@
 // TODO:
 // 1) If output is being typed and the user presses a key, skip to the end state
 //    of the animation.
-// 2) Many things break when output overflows lines.
+// 2) Many things break when output wraps lines.
 // =============================================================================
 
 import 'babel-polyfill';
 import OutputEmitter from './OutputEmitter';
 
+// defaults
+const DEFAULT_CONFIG = {
+	enabled: true
+};
+
 exports.reduceUI = (state, action) => {
   switch (action.type) {
-		case 'TOGGLE_TYPED_OUTPUT':
-			return state.set('typedOutput', !state.typedOutput);
+		case 'CONFIG_LOAD':
+		case 'CONFIG_RELOAD': {
+			const config = Object.assign(
+				{}, DEFAULT_CONFIG, action.config.hyperTypedOutput
+			);
+			return state.set('hyperTypedOutput:enabled', config.enabled);
+		}
+		case 'HYPER_TYPED_OUTPUT:TOGGLE':
+			return state.set('hyperTypedOutput:enabled', !state['hyperTypedOutput:enabled']);
   }
   return state;
 };
 
 exports.mapTermsState = (state, map) => {
   return Object.assign(map, {
-    typedOutput: state.ui.typedOutput
+    'hyperTypedOutput:enabled': state.ui['hyperTypedOutput:enabled']
   });
 };
 
 const passProps = (uid, parentProps, props) => {
   return Object.assign(props, {
-    typedOutput: parentProps.typedOutput
+    'hyperTypedOutput:enabled': parentProps['hyperTypedOutput:enabled']
   });
 };
 
@@ -49,14 +61,20 @@ exports.decorateTerm = (Term, { React }) => {
     }
 
 		componentWillReceiveProps(nextProps) {
-			if (nextProps.typedOutput && !this.props.typedOutput) {
+			const enabled = 'hyperTypedOutput:enabled';
+
+			if (nextProps[enabled] && !this.props[enabled]) {
 				this.enable();
-      } else if (!nextProps.typedOutput && this.props.typedOutput) {
+      } else if (!nextProps[enabled] && this.props[enabled]) {
 				this.disable();
-      }
+			}
     }
 
 		async enable() {
+			if (this.enabled) {
+				return;
+			}
+
 			this.enabled = true;
 
 			// enables us to capture the output before it's printed to the screen
@@ -82,6 +100,10 @@ exports.decorateTerm = (Term, { React }) => {
 		}
 
 		disable() {
+			if (!this.enabled) {
+				return;
+			}
+
 			this.enabled = false;
 			this.outputEmitter.unHijack();
 		}

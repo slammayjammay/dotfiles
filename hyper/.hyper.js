@@ -109,7 +109,12 @@ module.exports = {
     // ==================================================================
     // Plugin options
     // ==================================================================
-    hypernasa: hypernasa()
+    hypernasa: {
+	    overlayOpacity: 0.75
+	  },
+		hyperTypedOutput: {
+			enabled: false
+		}
   },
 
   // a list of plugins to fetch and install from npm
@@ -125,9 +130,3 @@ module.exports = {
   // to load it and avoid it being `npm install`ed
   localPlugins: ['fallout-theme', 'hyper-typed-output']
 };
-
-function hypernasa() {
-  return {
-    overlayOpacity: 0.75
-  };
-}

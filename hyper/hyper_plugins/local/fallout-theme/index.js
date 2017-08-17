@@ -51,7 +51,7 @@ exports.middleware = (store) => (next) => (action) => {
 
 			// enable "typed-output" plugin
 			store.dispatch({
-				type: 'TOGGLE_TYPED_OUTPUT'
+				type: 'HYPER_TYPED_OUTPUT:TOGGLE'
 			});
 			shouldDoNextAction = false;
 		}
