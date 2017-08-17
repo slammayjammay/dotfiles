@@ -18,30 +18,32 @@ exports.decorateConfig = (config) => {
 		css: `
 			${config.css || ''}
 
+			/* Fallout background image */
 			.fallout .hyper_main {
 				background-image: url(http://i.imgur.com/NFc1CXK.jpg) !important;
 				background-size: cover;
 				background-position: center;
 			}
 			.fallout .hyper_main::before {
-				opacity: 0 !important;
+				opacity: 0 !important; // hypernasa puts an overlay here: disable it.
 			}
 		`,
 		termCSS: `
 			${config.termCSS || ''}
 
+			/* Color the cursor and text light green */
 			.fallout x-screen, .fallout x-row, .fallout x-row span {
 				color: lightgreen !important;
 				text-shadow: 0 0 10px lightgreen !important;
 			}
-
 			.fallout .cursor-node {
 				background-color: lightgreen !important;
 				border-color: lightgreen !important;
 			}
 		`
 	});
-}
+};
+
 exports.middleware = (store) => (next) => (action) => {
 	let shouldDoNextAction = true;
 
