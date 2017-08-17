@@ -1,5 +1,4 @@
 require('babel-polyfill');
-import 'gsap';
 import OutputEmitter from './OutputEmitter';
 
 // =============================================================================
