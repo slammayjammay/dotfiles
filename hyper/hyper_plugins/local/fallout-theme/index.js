@@ -143,6 +143,20 @@ exports.decorateTerm = (Term, { React }) => {
 			this.outputEmitter = this.outputEmitter || new OutputEmitter(this.term);
 			this.outputEmitter.hijack();
 
+			const getPromptString = (string) => {
+				if (string.includes('$')) {
+					const prompt = string.slice(0, string.indexOf('$'));
+					this.promptString = prompt;
+
+					this.outputEmitter.removeListener('output', getPromptString);
+				}
+			};
+			this.outputEmitter.on('output', getPromptString);
+
+			setTimeout(() => {
+				this.term.onVTKeystroke('\n\r');
+			}, 0);
+
 			// manually enter newline when enter is pressed
 			this.outputEmitter.on('enter', () => {
 				this.outputEmitter.defaultInterpret('\n\r');
@@ -206,11 +220,25 @@ exports.decorateTerm = (Term, { React }) => {
 		}
 
 		outputLines(lines) {
+			if (lines.length === 0) {
+				return Promise.resolve();
+			}
+
 			return new Promise(async resolve => {
+				const lastLine = lines.pop();
+
 				for (let line of lines) {
 					await this.outputLine(line);
 					this.outputEmitter.defaultInterpret('\n\r');
 				}
+
+				await this.outputLine(lastLine);
+
+				const lastLineIsPrompt = lastLine.indexOf(this.promptString) > -1;
+				if (!lastLineIsPrompt) {
+					this.outputEmitter.defaultInterpret('\n\r');
+				}
+
 				resolve();
 			});
 		}
