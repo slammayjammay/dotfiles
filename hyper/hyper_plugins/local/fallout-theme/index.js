@@ -11,7 +11,7 @@ import OutputEmitter from './OutputEmitter';
 // TODO:
 // 1) If output is being typed and the user presses a key, skip to the end state
 //    of the animation.
-// 2) Don't type out individual whitespace characters. Instead, group them.
+// 2) Many things break when output overflows lines.
 // =============================================================================
 
 exports.decorateConfig = (config) => {
@@ -273,12 +273,29 @@ exports.decorateTerm = (Term, { React }) => {
 				// print increasingly larger substrings of the line text, updating the
 				// cursor as the line gets longer.
 				let i = 1;
+				let currentCharIsWhitespace, lastCharWasWhitespace;
+
 				const id = setInterval(() => {
+					currentCharIsWhitespace = /\s/.test(text[i]);
+
+					if (lastCharWasWhitespace && currentCharIsWhitespace) {
+						while (/\s/.test(text[i])) {
+							i += 1;
+						}
+
+						if (i >= text.length - 1) {
+							i = text.length - 1;
+							currentCharIsWhitespace = /\s/.test(text[i]);
+						}
+					}
+
 					screen.setCursorPosition(row, 0);
 					screen.overwriteString(text.slice(0, i + 1));
 					screen.setCursorPosition(row, i);
 					screen.maybeClipCurrentRow();
 					this.term.scheduleSyncCursorPosition_();
+
+					lastCharWasWhitespace = currentCharIsWhitespace;
 
 					if (i >= text.length - 1) {
 						clearTimeout(id);
