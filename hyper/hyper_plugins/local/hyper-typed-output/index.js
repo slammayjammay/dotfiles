@@ -7,7 +7,6 @@
 // 2) Many things break when output wraps lines.
 // =============================================================================
 
-import 'babel-polyfill';
 import OutputEmitter from './OutputEmitter';
 
 // defaults
