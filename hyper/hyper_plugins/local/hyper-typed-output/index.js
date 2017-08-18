@@ -5,6 +5,8 @@
 // 1) If output is being typed and the user presses a key, skip to the end state
 //    of the animation.
 // 2) Many things break when output wraps lines.
+// 3) HTerm styles text (bold, colors, etc.) by wrapping them in spans. This is
+//    currently ignored, meaning no fanciness :(
 // =============================================================================
 
 import 'babel-polyfill';
@@ -167,7 +169,7 @@ exports.decorateTerm = (Term, { React }) => {
 			return new Promise(async resolve => {
 				const lastLine = lines.pop();
 
-				for (let line of lines) {
+				for (const line of lines) {
 					await this.outputLine(line);
 					this.outputEmitter.defaultInterpret('\n\r');
 				}
@@ -183,11 +185,70 @@ exports.decorateTerm = (Term, { React }) => {
 			});
 		}
 
-		outputLine(line) {
-			return new Promise(async resolve => {
+		/**
+		 * Somewhat of a misnomer -- it's possible that the string is longer than
+		 * the viewport width, in which case we have to wrap it around to the next
+		 * line(s). This is easily handled internally by HTerm, but since we want to
+		 * control scrolling when we print we have to do it ourselves.
+		 *
+		 * @param {string} string - The string to print.
+		 */
+		async outputLine(string) {
+			const screen = this.term.screen_;
+			const TextAttributes = screen.textAttributes.constructor;
+			const startRow = screen.cursorRowNode_;
+			const { row, col } = screen.cursorPosition;
+
+			// tricky...the number of columns a string will take up is not equal to
+			// the string's length. e.g. tab characters are length 1 but take up
+			// around 8 columns.
+			// the only way to really find out the column length of a string is to
+			// print it to the screen, and then use TextAttributes' nodeWidth().
+			// however if the string wraps multiple lines then those lines will be
+			// scrolled before their text is animated.
+
+			// a shitty workaround is to trick HTerm's screen into thinking it doesn't
+			// have to do this.
+			// const viewportWidth = screen.columnCount_;
+			// screen.columnCount_ = 1000; // that should be good enough.
+			const viewportWidth = this.term.screenSize.width;
+			this.term.screenSize.width = 1000000000;
+
+			// hide the row so the text doesn't flash
+			startRow.style.opacity = 0;
+			this.outputEmitter.defaultInterpret(string);
+
+			// if (screen.cursorRowNode_ !== startRow) {
+			// 	console.log('cursor node changed');
+			// 	screen.setCursorPosition(row, col);
+			// 	console.log(screen.cursorRowNode_ === startRow);
+			// }
+
+			string = screen.getLineText_(startRow);
+			const stringWidth = TextAttributes.nodeWidth(startRow);
+			this.term.screenSize.width = viewportWidth;
+
+			console.log('new string', string);
+			console.log('stringWidth', stringWidth);
+
+			screen.clearCursorRow();
+			startRow.style.opacity = '';
+
+
+			// split string up into chunks of viewportWidth at most
+			const reg = new RegExp(`.{1,${viewportWidth}}`, 'g');
+			const lines = string.match(reg);
+
+			const lastLine = lines.pop();
+
+			for (const line of lines) {
 				await this.animateLine(line);
-				resolve();
-			});
+				this.outputEmitter.defaultInterpret('\n\r');
+			}
+
+			await this.animateLine(lastLine);
+
+			return Promise.resolve();
 		}
 
 		animateLine(line) {
@@ -195,18 +256,23 @@ exports.decorateTerm = (Term, { React }) => {
 				const screen = this.term.screen_;
 				const currentRow = screen.cursorRowNode_;
 
-				// print the line so we have access to the text and cursor position.
+				// print the line so we have access to the text.
 				// hide the row right before so the full text doesn't flash before we
 				// start the typing animation.
-				currentRow.style.opacity = 0;
-				this.outputEmitter.defaultInterpret(line);
-				const text = screen.getLineText_(currentRow);
-				const { row, column } = screen.cursorPosition;
-				screen.clearCursorRow();
-				currentRow.style.opacity = '';
+				// currentRow.style.opacity = 0;
+				// this.outputEmitter.defaultInterpret(line);
+				// const text = screen.getLineText_(currentRow).split('');
+				// screen.clearCursorRow();
+				// currentRow.style.opacity = '';
+
+				const text = line.split('');
+
+
+				let char = '';
 
 				// print increasingly larger substrings of the line text, updating the
 				// cursor as the line gets longer.
+				let start = 0;
 				let i = 1;
 				let currentCharIsWhitespace, lastCharWasWhitespace;
 
@@ -219,27 +285,28 @@ exports.decorateTerm = (Term, { React }) => {
 						}
 
 						if (i >= text.length - 1) {
-							i = text.length - 1;
+							i = text.length;
 							currentCharIsWhitespace = /\s/.test(text[i]);
 						}
 					}
 
-					screen.setCursorPosition(row, 0);
-					screen.overwriteString(text.slice(0, i + 1));
-					screen.setCursorPosition(row, i);
-					screen.maybeClipCurrentRow();
+					char += text.slice(start, i).join('');
+
+					screen.insertString(char);
 					this.term.scheduleSyncCursorPosition_();
 
 					lastCharWasWhitespace = currentCharIsWhitespace;
 
-					if (i >= text.length - 1) {
+					if (i >= text.length) {
 						clearTimeout(id);
-						screen.setCursorPosition(row, i + 1);
+						this.term.scheduleSyncCursorPosition_();
 						resolve();
 					}
 
+					start = i;
 					i += 1;
-				}, 5);
+					char = '';
+				}, 100);
 			});
 		}
 
