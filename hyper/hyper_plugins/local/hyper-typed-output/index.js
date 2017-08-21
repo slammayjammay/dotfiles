@@ -203,40 +203,37 @@ exports.decorateTerm = (Term, { React }) => {
 			// around 8 columns.
 			// the only way to really find out the column length of a string is to
 			// print it to the screen, and then use TextAttributes' nodeWidth().
-			// however if the string wraps multiple lines then those lines will be
-			// scrolled before their text is animated.
-
-			// a shitty workaround is to trick HTerm's screen into thinking it doesn't
-			// have to do this.
-			// const viewportWidth = screen.columnCount_;
-			// screen.columnCount_ = 1000; // that should be good enough.
-			const viewportWidth = this.term.screenSize.width;
-			this.term.screenSize.width = 1000000000;
 
 			// hide the row so the text doesn't flash
 			startRow.style.opacity = 0;
+
+			// if the string wraps multiple lines then those lines will be scrolled
+			// before their text is animated. a shitty workaround is to trick HTerm's
+			// screen into thinking it doesn't have to do this.
+			const viewportWidth = this.term.screenSize.width;
+			const columnCount = this.term.screen_.columnCount_;
+			this.term.screenSize.width = 1000000000;
+			this.term.screen_.columnCount_ = 1000000000;
+
 			this.outputEmitter.defaultInterpret(string);
 
-			// if (screen.cursorRowNode_ !== startRow) {
-			// 	console.log('cursor node changed');
-			// 	screen.setCursorPosition(row, col);
-			// 	console.log(screen.cursorRowNode_ === startRow);
-			// }
+			this.term.screenSize.width = viewportWidth;
+			this.term.screen_.columnCount_ = columnCount;
 
 			string = screen.getLineText_(startRow);
 			const stringWidth = TextAttributes.nodeWidth(startRow);
-			this.term.screenSize.width = viewportWidth;
-
-			console.log('new string', string);
-			console.log('stringWidth', stringWidth);
 
 			screen.clearCursorRow();
 			startRow.style.opacity = '';
 
+			// newlines will be taken care of
+			if (string === '') {
+				return;
+			}
 
 			// split string up into chunks of viewportWidth at most
 			const reg = new RegExp(`.{1,${viewportWidth}}`, 'g');
-			const lines = string.match(reg);
+			let lines = string.match(reg);
 
 			const lastLine = lines.pop();
 
@@ -246,7 +243,6 @@ exports.decorateTerm = (Term, { React }) => {
 			}
 
 			await this.animateLine(lastLine);
-
 			return Promise.resolve();
 		}
 
@@ -305,7 +301,7 @@ exports.decorateTerm = (Term, { React }) => {
 					start = i;
 					i += 1;
 					char = '';
-				}, 100);
+				}, 5);
 			});
 		}
 
