@@ -9,7 +9,6 @@
 //    currently ignored, meaning no fanciness :(
 // =============================================================================
 
-import 'babel-polyfill';
 import OutputEmitter from './OutputEmitter';
 
 // defaults

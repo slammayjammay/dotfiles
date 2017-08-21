@@ -5,20 +5,5 @@ module.exports = {
 		filename: 'index.js',
 		libraryTarget: 'commonjs'
 	},
-	target: 'node',
-	module: {
-		loaders: [
-			{
-				loader: 'babel-loader',
-				test: /.js$/,
-				query: {
-					presets: [
-						'es2015',
-						'react',
-						'stage-2'
-					].map(preset => require.resolve(`babel-preset-${preset}`))
-				}
-			}
-		]
-	}
+	target: 'node'
 };
