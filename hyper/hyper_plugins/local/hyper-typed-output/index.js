@@ -4,8 +4,7 @@
 // TODO:
 // 1) If output is being typed and the user presses a key, skip to the end state
 //    of the animation.
-// 2) Many things break when output wraps lines.
-// 3) HTerm styles text (bold, colors, etc.) by wrapping them in spans. This is
+// 2) HTerm styles text (bold, colors, etc.) by wrapping them in spans. This is
 //    currently ignored, meaning no fanciness :(
 // =============================================================================
 
