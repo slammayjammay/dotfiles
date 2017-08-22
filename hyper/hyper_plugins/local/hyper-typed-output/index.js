@@ -125,6 +125,12 @@ exports.decorateTerm = (Term, { React }) => {
 		}
 
 		captureOutput(string) {
+			// alternate screen crap
+			if (string.includes('\[?1049h') || string.includes('\[?1049l')) {
+				this.outputEmitter.defaultInterpret(string);
+				return;
+			}
+
 			this._capturedOutput += string;
 
 			if (this.isOutputting) {
@@ -246,23 +252,12 @@ exports.decorateTerm = (Term, { React }) => {
 			return Promise.resolve();
 		}
 
-		animateLine(line) {
+		animateLine(string) {
 			return new Promise(async resolve => {
 				const screen = this.term.screen_;
 				const currentRow = screen.cursorRowNode_;
 
-				// print the line so we have access to the text.
-				// hide the row right before so the full text doesn't flash before we
-				// start the typing animation.
-				// currentRow.style.opacity = 0;
-				// this.outputEmitter.defaultInterpret(line);
-				// const text = screen.getLineText_(currentRow).split('');
-				// screen.clearCursorRow();
-				// currentRow.style.opacity = '';
-
-				const text = line.split('');
-
-
+				const text = string.split('');
 				let char = '';
 
 				// print increasingly larger substrings of the line text, updating the
