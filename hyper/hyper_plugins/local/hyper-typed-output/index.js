@@ -4,8 +4,7 @@
 // TODO:
 // 1) If output is being typed and the user presses a key, skip to the end state
 //    of the animation.
-// 2) HTerm styles text (bold, colors, etc.) by wrapping them in spans. This is
-//    currently ignored, meaning no fanciness :(
+// 2) Sometimes at the end of outputting, an extra newline will be inserted.
 // =============================================================================
 
 import OutputEmitter from './OutputEmitter';
@@ -94,9 +93,7 @@ exports.decorateTerm = (Term, { React }) => {
 
 			// intercept output that would be printed to the screen.
 			// we will manually enter this output later.
-			this.outputEmitter.on('output', string => {
-				this.captureOutput(string);
-			});
+			this.outputEmitter.on('output', string => this.captureOutput(string));
 		}
 
 		disable() {
@@ -136,6 +133,7 @@ exports.decorateTerm = (Term, { React }) => {
 				return;
 			}
 
+			this.beginReceiveOutputDate = new Date();
 			this.isOutputting = true;
 			this.output();
 		}
@@ -143,6 +141,18 @@ exports.decorateTerm = (Term, { React }) => {
 		async output() {
 			if (this._capturedOutput.length === 0) {
 				this.isOutputting = false;
+
+				// we only want the block in the timeout to fire once. when receiving
+				// output from HTerm, sometimes there will be an initial wait before
+				// this.output is called, and sometimes it will be nearly instantaneous.
+				// this is the threshold we wait before triggering the timeout.
+				const DELAY = 10;
+				if (new Date() - this.beginReceiveOutputDate > DELAY) {
+					clearTimeout(this.id);
+					this.id = setTimeout(() => this.rewriteCursorRow(), 0);
+					this.beginReceiveOutputDate = null;
+				}
+
 				return;
 			}
 
@@ -150,9 +160,14 @@ exports.decorateTerm = (Term, { React }) => {
 			this._capturedOutput = '';
 
 			if (!string.includes('\n')) {
-				this.outputLine(string);
+				await this.outputLine(string);
 			} else {
-				const lines = string.split('\n').filter(s => s !== '');
+				const lines = string.split('\n').filter(s => {
+					return !(
+						// remove all of the following
+						s === '' || s === ' '
+					);
+				});
 
 				// remove any leading carriage returns. we will do this manually.
 				if (/^\r$/.test(lines[0])) {
@@ -171,17 +186,8 @@ exports.decorateTerm = (Term, { React }) => {
 			}
 
 			return new Promise(async resolve => {
-				const lastLine = lines.pop();
-
 				for (const line of lines) {
 					await this.outputLine(line);
-					this.outputEmitter.defaultInterpret('\n\r');
-				}
-
-				await this.outputLine(lastLine);
-
-				const lastLineIsPrompt = lastLine.indexOf(this.promptString) > -1;
-				if (!lastLineIsPrompt) {
 					this.outputEmitter.defaultInterpret('\n\r');
 				}
 
@@ -195,22 +201,19 @@ exports.decorateTerm = (Term, { React }) => {
 		 * line(s). This is easily handled internally by HTerm, but since we want to
 		 * control scrolling when we print we have to do it ourselves.
 		 *
+		 * We also are not outputting the actual string given. We will hand it off
+		 * to HTerm first so it can apply styles, etc., and then read it from the
+		 * x-row it was printed to.
+		 *
 		 * @param {string} string - The string to print.
 		 */
 		async outputLine(string) {
 			const screen = this.term.screen_;
 			const TextAttributes = screen.textAttributes.constructor;
-			const startRow = screen.cursorRowNode_;
-			const { row, col } = screen.cursorPosition;
-
-			// tricky...the number of columns a string will take up is not equal to
-			// the string's length. e.g. tab characters are length 1 but take up
-			// around 8 columns.
-			// the only way to really find out the column length of a string is to
-			// print it to the screen, and then use TextAttributes' nodeWidth().
+			const currentRow = screen.cursorRowNode_;
 
 			// hide the row so the text doesn't flash
-			startRow.style.opacity = 0;
+			currentRow.style.opacity = 0;
 
 			// if the string wraps multiple lines then those lines will be scrolled
 			// before their text is animated. a shitty workaround is to trick HTerm's
@@ -219,50 +222,108 @@ exports.decorateTerm = (Term, { React }) => {
 			const columnCount = this.term.screen_.columnCount_;
 			this.term.screenSize.width = 1000000000;
 			this.term.screen_.columnCount_ = 1000000000;
-
 			this.outputEmitter.defaultInterpret(string);
-
 			this.term.screenSize.width = viewportWidth;
 			this.term.screen_.columnCount_ = columnCount;
 
-			string = screen.getLineText_(startRow);
-			const stringWidth = TextAttributes.nodeWidth(startRow);
+			string = screen.getLineText_(currentRow);
 
+			// not sure why, but we need to clone each child node
+			const originalNodes = [].map.call(currentRow.childNodes, el => el.cloneNode(true));
 			screen.clearCursorRow();
-			startRow.style.opacity = '';
+			currentRow.style.opacity = '';
 
-			// newlines will be taken care of
+			// newlines will automatically be taken care of
 			if (string === '') {
 				return;
 			}
 
-			// split string up into chunks of viewportWidth at most
-			const reg = new RegExp(`.{1,${viewportWidth}}`, 'g');
-			let lines = string.match(reg);
+			// split up the string into substrings of length viewportWidth
+			const substrings = [];
+			const substringIndices = [];
+			let startIdx = 0;
 
-			const lastLine = lines.pop();
+			while (startIdx < string.length) {
+				const substring = string.slice(startIdx, startIdx + viewportWidth);
 
-			for (const line of lines) {
-				await this.animateLine(line);
+				substrings.push(substring);
+				substringIndices.push(startIdx + substring.length);
+
+				startIdx += substring.length;
+			}
+
+			// an array of arrays, with each array containing text element containers
+			// occupying the row
+			const rows = [];
+
+			// we will insert text element containers into this, and when we encounter
+			// a new row we will shove it into "rows" and reset
+			let rowEls = [];
+			let currentLineIdx = 0;
+
+			originalNodes.forEach(originalNode => {
+				const clone = originalNode.cloneNode(true);
+				const text = originalNode.textContent;
+				let currentLineText = substrings[currentLineIdx];
+
+				if (text.length > currentLineText.length) {
+					// this node's text content is too long for the row. split up the
+					// clone into two -- one to hold the text that can fit on this row,
+					// and one to hold the rest on the next row
+					clone.textContent = currentLineText;
+					rowEls.push(clone);
+
+					// on to the next line
+					rows.push(rowEls);
+					rowEls = [];
+					currentLineIdx += 1;
+
+					const wrappedClone = originalNode.cloneNode(true);
+					wrappedClone.textContent = text.slice(currentLineText.length);
+					rowEls.push(wrappedClone);
+				} else {
+					// remove the current node's textContent from the line
+					substrings[currentLineIdx] = currentLineText.slice(text.length);
+					rowEls.push(clone);
+				}
+			});
+
+			// don't forget the last one
+			rows.push(rowEls);
+
+			const lastRow = rows.pop();
+			for (const rowEls of rows) {
+				await this.animateLine(rowEls);
 				this.outputEmitter.defaultInterpret('\n\r');
 			}
 
-			await this.animateLine(lastLine);
+			await this.animateLine(lastRow);
 			return Promise.resolve();
 		}
 
-		animateLine(string) {
-			return new Promise(async resolve => {
-				const screen = this.term.screen_;
-				const currentRow = screen.cursorRowNode_;
+		/**
+		 * @param {array} rowEls - The text element containers that inhabit this row.
+		 */
+		async animateLine(rowEls) {
+			for (const el of rowEls) {
+				const currentRow = this.term.screen_.cursorRowNode_;
+				currentRow.appendChild(el);
+				await this.animateElementText(el);
+			}
 
-				const text = string.split('');
+			return Promise.resolve();
+		}
+
+		animateElementText(el) {
+			return new Promise(resolve => {
+				const text = el.textContent.split('');
+				el.textContent = '';
+
+				const { row, column } = this.term.screen_.cursorPosition;
+
 				let char = '';
-
-				// print increasingly larger substrings of the line text, updating the
-				// cursor as the line gets longer.
 				let start = 0;
-				let i = 1;
+				let i = 0;
 				let currentCharIsWhitespace, lastCharWasWhitespace;
 
 				const id = setInterval(() => {
@@ -280,23 +341,43 @@ exports.decorateTerm = (Term, { React }) => {
 					}
 
 					char += text.slice(start, i).join('');
+					el.textContent += char;
 
-					screen.insertString(char);
+					// move the cursor as text is printed
+					this.term.screen_.cursorPosition.move(row, column + i);
 					this.term.scheduleSyncCursorPosition_();
 
 					lastCharWasWhitespace = currentCharIsWhitespace;
 
 					if (i >= text.length) {
 						clearTimeout(id);
+						this.term.screen_.cursorPosition.move(row, column + i);
 						this.term.scheduleSyncCursorPosition_();
 						resolve();
+					} else {
+						start = i;
+						i += 1;
+						char = '';
 					}
-
-					start = i;
-					i += 1;
-					char = '';
 				}, 5);
 			});
+		}
+
+		/**
+		 * When we animate text, we directly manipulate the text content of
+		 * <x-row>. If you do this on the row that the cursor is on, for some
+		 * reason HTerm will throw a tantrum and not show any text you type to
+		 * the terminal.
+		 * Solution: check if the last line printed was the prompt (flimsy) and
+		 * rewrite textContent using HTerm's API. Unfortunately this means that
+		 * any inner element to style text will be removed.
+		 */
+		rewriteCursorRow() {
+			const screen = this.term.screen_;
+			const string = screen.cursorRowNode_.textContent;
+			screen.clearCursorRow(screen.cursorRowNode_);
+			screen.overwriteString(string);
+			this.term.scheduleSyncCursorPosition_();
 		}
 
 		render() {
