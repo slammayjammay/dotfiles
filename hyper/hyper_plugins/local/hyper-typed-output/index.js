@@ -45,7 +45,7 @@ exports.getTermProps = passProps;
 exports.getTermGroupProps = passProps;
 
 exports.decorateTerm = (Term, { React }) => {
-	class VimColorSwitcher extends React.Component {
+	class HyperTypedOutput extends React.Component {
 		constructor(...args) {
 			super(...args);
 			this._capturedOutput = '';
@@ -387,5 +387,5 @@ exports.decorateTerm = (Term, { React }) => {
 		}
 	}
 
-	return VimColorSwitcher;
+	return HyperTypedOutput;
 };
