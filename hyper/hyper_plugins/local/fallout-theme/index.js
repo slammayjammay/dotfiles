@@ -45,14 +45,12 @@ exports.middleware = (store) => (next) => (action) => {
 		// test the data with a regex that does not match itself, so that if a user
 		// types a command like "cat ${this_file}" we don't toggle fallout.
 		if (/fallout!*: command not found/.test(data)) {
-			store.dispatch({
-				type: 'TOGGLE_FALLOUT'
-			});
+			store.dispatch({ type: 'TOGGLE_FALLOUT' });
+			shouldDoNextAction = false;
+		}
 
-			// enable "typed-output" plugin
-			store.dispatch({
-				type: 'HYPER_TYPED_OUTPUT:TOGGLE'
-			});
+		if (/animate!*: command not found/.test(data)) {
+			store.dispatch({ type: 'HYPER_TYPED_OUTPUT:TOGGLE' });
 			shouldDoNextAction = false;
 		}
 	}
