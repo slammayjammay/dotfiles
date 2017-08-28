@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "When clearing the screen, also clear scrollback buffers",
   "main": "index.js",
-  "scripts": {
-    "build": "echo fake building"
-  },
+  "scripts": {},
   "keywords": [
     "hyper",
     "hyperterm",
