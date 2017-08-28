@@ -1,0 +1,17 @@
+{
+  "name": "hyper-clear-scrollback",
+  "version": "1.0.0",
+  "description": "When clearing the screen, also clear scrollback buffers",
+  "main": "index.js",
+  "scripts": {
+    "build": "echo fake building"
+  },
+  "keywords": [
+    "hyper",
+    "hyperterm",
+    "scrollback",
+    "clear"
+  ],
+  "author": "Scott McKenzie",
+  "license": "ISC"
+}
