@@ -15,30 +15,30 @@ const DEFAULT_CONFIG = {
 };
 
 exports.reduceUI = (state, action) => {
-  switch (action.type) {
-		case 'CONFIG_LOAD':
-		case 'CONFIG_RELOAD': {
-			const config = Object.assign(
-				{}, DEFAULT_CONFIG, action.config.hyperTypedOutput
-			);
-			return state.set('hyperTypedOutput:enabled', config.enabled);
-		}
-		case 'HYPER_TYPED_OUTPUT:TOGGLE':
-			return state.set('hyperTypedOutput:enabled', !state['hyperTypedOutput:enabled']);
-  }
-  return state;
+	switch (action.type) {
+	case 'CONFIG_LOAD':
+	case 'CONFIG_RELOAD': {
+		const config = Object.assign(
+			{}, DEFAULT_CONFIG, action.config.hyperTypedOutput
+		);
+		return state.set('hyperTypedOutput:enabled', config.enabled);
+	}
+	case 'HYPER_TYPED_OUTPUT:TOGGLE':
+		return state.set('hyperTypedOutput:enabled', !state['hyperTypedOutput:enabled']);
+	}
+	return state;
 };
 
 exports.mapTermsState = (state, map) => {
-  return Object.assign(map, {
-    'hyperTypedOutput:enabled': state.ui['hyperTypedOutput:enabled']
-  });
+	return Object.assign(map, {
+		'hyperTypedOutput:enabled': state.ui['hyperTypedOutput:enabled']
+	});
 };
 
 const passProps = (uid, parentProps, props) => {
-  return Object.assign(props, {
-    'hyperTypedOutput:enabled': parentProps['hyperTypedOutput:enabled']
-  });
+	return Object.assign(props, {
+		'hyperTypedOutput:enabled': parentProps['hyperTypedOutput:enabled']
+	});
 };
 
 exports.getTermProps = passProps;
@@ -54,20 +54,20 @@ exports.decorateTerm = (Term, { React }) => {
 		_onTerminal(term) {
 			this.term = term;
 
-      if (this.props.onTerminal) {
+			if (this.props.onTerminal) {
 				this.props.onTerminal(term);
 			}
-    }
+		}
 
 		componentWillReceiveProps(nextProps) {
 			const enabled = 'hyperTypedOutput:enabled';
 
 			if (nextProps[enabled] && !this.props[enabled]) {
 				this.enable();
-      } else if (!nextProps[enabled] && this.props[enabled]) {
+			} else if (!nextProps[enabled] && this.props[enabled]) {
 				this.disable();
 			}
-    }
+		}
 
 		async enable() {
 			if (this.enabled) {
@@ -122,7 +122,7 @@ exports.decorateTerm = (Term, { React }) => {
 
 		captureOutput(string) {
 			// alternate screen crap
-			if (string.includes('\[?1049h') || string.includes('\[?1049l')) {
+			if (string.includes('[?1049h') || string.includes('[?1049l')) {
 				this.outputEmitter.defaultInterpret(string);
 				return;
 			}
@@ -209,7 +209,6 @@ exports.decorateTerm = (Term, { React }) => {
 		 */
 		async outputLine(string) {
 			const screen = this.term.screen_;
-			const TextAttributes = screen.textAttributes.constructor;
 			const currentRow = screen.cursorRowNode_;
 
 			// hide the row so the text doesn't flash
