@@ -35,8 +35,8 @@ class OutputEmitter extends EventEmitter {
 			willReceiveOutput = false;
 
 			if (str.includes('\r')) {
-					willReceiveOutput = true;
-					self.emit('enter');
+				willReceiveOutput = true;
+				self.emit('enter');
 			}
 
 			self.oldKeystroke(str);

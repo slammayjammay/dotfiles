@@ -4,7 +4,9 @@
   "description": "Animates output as if being typed to the terminal",
   "main": "dist/index.js",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "lint": "npx eslint . --ignore-pattern dist/*",
+    "lint:fix": "npx eslint --fix . --ignore-pattern dist/*"
   },
   "keywords": [
     "hyper",
@@ -22,6 +24,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "babel-regenerator-runtime": "^6.5.0",
+    "eslint": "^4.5.0",
     "webpack": "^3.5.5"
   },
   "dependencies": {}
