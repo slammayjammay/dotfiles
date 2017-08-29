@@ -104,8 +104,10 @@ exports.decorateTerm = (Term, { React }) => {
 		componentWillReceiveProps(nextProps) {
 			if (nextProps.fallout && !this.props.fallout) {
 				this.enableFallout();
-      } else if (!nextProps.fallout && this.props.fallout) {
+				this.term.onVTKeystroke('\r');
+			} else if (!nextProps.fallout && this.props.fallout) {
 				this.disableFallout();
+				this.term.onVTKeystroke('\r');
       }
     }
 
