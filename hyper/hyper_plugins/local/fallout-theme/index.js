@@ -40,8 +40,8 @@ exports.decorateConfig = (config) => {
 exports.middleware = (store) => (next) => (action) => {
 	let shouldDoNextAction = true;
 
-  if (action.type === 'SESSION_ADD_DATA') {
-    const { data } = action;
+	if (action.type === 'SESSION_ADD_DATA') {
+		const { data } = action;
 
 		// test the data with a regex that does not match itself, so that if a user
 		// types a command like "cat ${this_file}" we don't toggle fallout.
@@ -62,23 +62,23 @@ exports.middleware = (store) => (next) => (action) => {
 };
 
 exports.reduceUI = (state, action) => {
-  switch (action.type) {
-		case 'TOGGLE_FALLOUT':
-			return state.set('fallout', !state.fallout);
-  }
-  return state;
+	switch (action.type) {
+	case 'TOGGLE_FALLOUT':
+		return state.set('fallout', !state.fallout);
+	}
+	return state;
 };
 
 exports.mapTermsState = (state, map) => {
-  return Object.assign(map, {
-    fallout: state.ui.fallout
-  });
+	return Object.assign(map, {
+		fallout: state.ui.fallout
+	});
 };
 
 const passProps = (uid, parentProps, props) => {
-  return Object.assign(props, {
-    fallout: parentProps.fallout
-  });
+	return Object.assign(props, {
+		fallout: parentProps.fallout
+	});
 };
 
 exports.getTermProps = passProps;
@@ -94,13 +94,13 @@ exports.decorateTerm = (Term, { React }) => {
 		_onTerminal(term) {
 			this.term = term;
 
-      if (this.props.onTerminal) {
+			if (this.props.onTerminal) {
 				this.props.onTerminal(term);
 			}
 
 			this.mainBody = document.body;
 			this.termBody = term.document_.body;
-    }
+		}
 
 		componentWillReceiveProps(nextProps) {
 			if (nextProps.fallout && !this.props.fallout) {
@@ -109,8 +109,8 @@ exports.decorateTerm = (Term, { React }) => {
 			} else if (!nextProps.fallout && this.props.fallout) {
 				this.disableFallout();
 				this.term.onVTKeystroke('\r');
-      }
-    }
+			}
+		}
 
 		enableFallout() {
 			this.enabled = true;
@@ -122,7 +122,7 @@ exports.decorateTerm = (Term, { React }) => {
 
 			// we must set change the font through HTerm's API so that it can render
 			// the cursor properly
-			this.term.prefs_.set('font-family', '"Fixedsys Excelsior 3.01"')
+			this.term.prefs_.set('font-family', '"Fixedsys Excelsior 3.01"');
 			this.term.setFontSize(14);
 
 			this.mainBody.classList.add('fallout');
