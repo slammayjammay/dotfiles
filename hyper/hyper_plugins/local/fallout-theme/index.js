@@ -27,6 +27,7 @@ exports.decorateConfig = (config) => {
 			.fallout x-screen, .fallout x-row, .fallout x-row span {
 				color: lightgreen !important;
 				text-shadow: 0 0 10px lightgreen !important;
+				background-color: transparent !important;
 			}
 			.fallout .cursor-node {
 				background-color: lightgreen !important;
