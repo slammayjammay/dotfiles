@@ -4,9 +4,11 @@
   "description": "Dotfiles",
   "main": "install.js",
   "scripts": {
-    "setup": "node scripts/install.js",
+    "copy": "node scripts/copy",
+    "build": "node scripts/copy --build",
     "dev:fallout": "node scripts/plugin-dev fallout-theme",
-    "dev:typed": "node scripts/plugin-dev hyper-typed-output"
+    "dev:typed": "node scripts/plugin-dev hyper-typed-output",
+    "setup": "node scripts/install.js"
   },
   "repository": {
     "type": "git",

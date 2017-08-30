@@ -6,7 +6,7 @@ const chalk = require('chalk');
 
 const HOME_DIRECTORY = execSync(`cd ~ && pwd`).toString().trim();
 
-const { install, copy } = require('./copy-hyper')(HOME_DIRECTORY);
+const { install, copy } = require('./helpers/copy-hyper')(HOME_DIRECTORY);
 
 const args = process.argv.slice(2);
 const pluginName = args[0];

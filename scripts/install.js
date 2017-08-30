@@ -6,8 +6,8 @@ const chalk = require('chalk');
 const HOME_DIRECTORY = execSync('cd ~ && pwd').toString().trim();
 
 // sub-scripts
-const copyVim = require('./copy-vim');
-const copyHyper = require('./copy-hyper')(HOME_DIRECTORY);
+const copyVim = require('./helpers/copy-vim');
+const copyHyper = require('./helpers/copy-hyper')(HOME_DIRECTORY);
 
 copyVim(HOME_DIRECTORY);
 console.log();
