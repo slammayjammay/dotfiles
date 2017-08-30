@@ -30,12 +30,16 @@ module.exports = {
 
     // custom css to embed in the main window
     css: `
+			/* why isn't backgroundColor taking effect? */
+			._main {
+        background-color: #000;
+			}
 			/* make tab borders more visible */
-			.tab_tab {
+			._tab {
 				border-color: #777777 !important;
 				color: white !important;
 			}
-			.tab_tab:not(.tab_active) {
+			._tab:not(._active) {
 				color: gray !important;
 			}
 		`,

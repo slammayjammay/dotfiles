@@ -11,12 +11,12 @@ exports.decorateConfig = (config) => {
 			${config.css || ''}
 
 			/* Fallout background image */
-			.fallout .hyper_main {
+			.fallout ._main {
 				background-image: url(http://i.imgur.com/NFc1CXK.jpg) !important;
 				background-size: cover;
 				background-position: center;
 			}
-			.fallout .hyper_main::before {
+			.fallout ._main::before {
 				opacity: 0 !important; // hypernasa puts an overlay here: disable it.
 			}
 		`,
