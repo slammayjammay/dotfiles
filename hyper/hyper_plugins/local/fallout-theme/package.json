@@ -4,12 +4,15 @@
   "description": "A custom theme almost identical to hyper-krftwrk",
   "main": "dist/index.js",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "lint": "eslint . --ignore-pattern dist/",
+    "lint:fix": "eslint --fix . --ignore-pattern dist/"
   },
   "keywords": [],
   "author": "Scott McKenzie",
   "license": "ISC",
   "devDependencies": {
+    "eslint": "^4.5.0",
     "webpack": "^3.4.1"
   },
   "dependencies": {}

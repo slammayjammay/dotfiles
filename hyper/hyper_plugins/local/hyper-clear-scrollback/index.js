@@ -1,7 +1,7 @@
 let clearScreenAndScrollbackFn;
 
 exports.middleware = (store) => (next) => (action) => {
-  if (action.type === 'SESSION_CLEAR_ACTIVE') {
+	if (action.type === 'SESSION_CLEAR_ACTIVE') {
 		clearScreenAndScrollbackFn && clearScreenAndScrollbackFn();
 	}
 
