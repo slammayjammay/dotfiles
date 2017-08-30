@@ -1,0 +1,10 @@
+{
+  "name": "hypernasa-fix",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "Scott McKenzie",
+  "license": "ISC"
+}
