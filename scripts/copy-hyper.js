@@ -31,7 +31,7 @@ module.exports = (homeDirectory) => {
 	function copyPlugin(path) {
 		process.stdout.write(chalk.bold(`Copying plugin ${basename(path)}...`));
 
-		execSync(`cp -r ${path} ${PLUGINS_DESTINATION}`, { stdio: 'inherit' });
+		execSync(`cp -r ${path} ${PLUGINS_DESTINATION} || true`, { stdio: 'inherit' });
 		console.log('done.');
 	}
 
