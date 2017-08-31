@@ -24,9 +24,7 @@ PLUGIN_CONFIG.resolve = Object.assign({}, PLUGIN_CONFIG.resolve, {
 
 const compiler = webpack(PLUGIN_CONFIG);
 
-compiler.watch({
-	context: PLUGIN_PATH
-}, (err, stats) => {
+compiler.watch({ context: PLUGIN_PATH }, (err, stats) => {
 	if (err) {
 		throw err;
 	}
