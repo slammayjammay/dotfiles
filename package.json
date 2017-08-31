@@ -8,6 +8,8 @@
     "build": "node scripts/copy --build",
     "dev:fallout": "node scripts/plugin-dev fallout-theme",
     "dev:typed": "node scripts/plugin-dev hyper-typed-output",
+    "lint": "eslint **/*.js",
+    "lint:fix": "eslint --fix **/*.js",
     "setup": "node scripts/install.js"
   },
   "repository": {
@@ -25,6 +27,7 @@
     "chalk": "^2.0.1"
   },
   "devDependencies": {
+    "eslint": "^4.5.0",
     "webpack": "^3.5.2"
   }
 }
