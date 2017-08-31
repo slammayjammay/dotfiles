@@ -1,6 +1,4 @@
-const { spawnSync, execSync } = require('child_process');
-const { resolve, join } = require('path');
-const { existsSync, readdirSync, statSync } = require('fs');
+const { execSync } = require('child_process');
 const chalk = require('chalk');
 
 const HOME_DIRECTORY = execSync('cd ~ && pwd').toString().trim();
