@@ -1,0 +1,11 @@
+{
+  "name": "keymaps",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": ""
+  },
+  "author": "Scott McKenzie",
+  "license": "ISC"
+}
