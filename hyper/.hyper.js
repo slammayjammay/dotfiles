@@ -118,6 +118,9 @@ module.exports = {
 	  },
 		hyperTypedOutput: {
 			enabled: false
+		},
+		hypercwd: {
+			initialWorkingDirectory: '~/Desktop'
 		}
   },
 
@@ -127,7 +130,7 @@ module.exports = {
   //   `hyperpower`
   //   `@company/project`
   //   `project#1.0.1`
-  plugins: ['hypernasa', 'hyperterm-cursor', 'hyper-blink'],
+  plugins: ['hypernasa', 'hyperterm-cursor', 'hyper-blink', 'hypercwd'],
 
   // in development, you can create a directory under
   // `~/.hyper_plugins/local/` and include it here
