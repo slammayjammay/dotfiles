@@ -5,6 +5,7 @@ source ~/dotfiles/vim/keybindings.vim
 " options
 set backspace=indent,eol,start
 set relativenumber!
+set number
 set incsearch
 set nowrap
 set autoindent
