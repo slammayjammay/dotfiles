@@ -22,3 +22,6 @@ highlight ColorColumn ctermbg=darkgray
 highlight Identifier ctermfg=blue
 highlight es6InstanceMethod ctermfg=red
 highlight es6InstanceMethodArgs ctermfg=white
+" set `.inc` syntax to html
+au BufReadPost *.inc set syntax=html
+au BufReadPost *.hbs set syntax=html
