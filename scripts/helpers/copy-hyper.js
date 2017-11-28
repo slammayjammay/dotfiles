@@ -35,6 +35,11 @@ module.exports = (homeDirectory) => {
 		console.log('done.');
 	}
 
+	function copyHyperConfig() {
+		console.log('Coyping hyper config file...');
+		execSync(`cp ${join(SOURCE, '.hyper.js')} ${CONFIG_DESTINATION}`);
+	}
+
 	return {
 		installAll() {
 			console.log(chalk.bold('Hyper'));
@@ -52,8 +57,7 @@ module.exports = (homeDirectory) => {
 			});
 
 			// also copy hyper config file
-			process.stdout.write('Coyping hyper config file...');
-			execSync(`cp ${join(SOURCE, '.hyper.js')} ${CONFIG_DESTINATION}`);
+			copyHyperConfig();
 			console.log('done.');
 		},
 
@@ -79,6 +83,10 @@ module.exports = (homeDirectory) => {
 			}
 
 			copyPlugin(pluginPath);
+		},
+
+		copyHyperConfig() {
+			copyHyperConfig();
 		}
 	};
 };
