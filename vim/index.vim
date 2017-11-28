@@ -1,6 +1,7 @@
 source ~/dotfiles/vim/plugins.vim
 source ~/dotfiles/vim/commands.vim
 source ~/dotfiles/vim/keybindings.vim
+source ~/dotfiles/vim/macros.vim
 
 " options
 set backspace=indent,eol,start
