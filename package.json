@@ -5,9 +5,11 @@
   "main": "install.js",
   "scripts": {
     "copy": "node scripts/copy",
+    "copy:config": "node scripts/copy --copy-config",
     "build": "node scripts/copy --build",
     "dev:fallout": "node scripts/plugin-dev fallout-theme",
     "dev:typed": "node scripts/plugin-dev hyper-typed-output",
+    "dev:nasa": "node scripts/plugin-dev hypernasa",
     "lint": "eslint **/*.js",
     "lint:fix": "eslint --fix **/*.js",
     "setup": "node scripts/install.js"

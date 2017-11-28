@@ -113,9 +113,6 @@ module.exports = {
     // ==================================================================
     // Plugin options
     // ==================================================================
-    hypernasa: {
-	    overlayOpacity: 0.75
-	  },
 		hyperTypedOutput: {
 			enabled: false
 		},
@@ -130,12 +127,15 @@ module.exports = {
   //   `hyperpower`
   //   `@company/project`
   //   `project#1.0.1`
-  plugins: ['hypernasa', 'hyperterm-cursor', 'hyper-blink', 'hypercwd'],
+  plugins: ['hyperterm-cursor', 'hyper-blink', 'hypercwd'],
 
   // in development, you can create a directory under
   // `~/.hyper_plugins/local/` and include it here
   // to load it and avoid it being `npm install`ed
   localPlugins: [
-		'keymaps', 'fallout-theme', 'hyper-typed-output', 'hyper-clear-scrollback'
+		'keymaps',
+		'fallout-theme',
+		'hyper-typed-output',
+		'hypernasa'
 	]
 };
