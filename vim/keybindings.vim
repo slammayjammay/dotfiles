@@ -13,3 +13,10 @@ inoremap <C-S-l> <esc>:tabnext<CR>
 inoremap <C-t> <esc>:tabnew<CR>:e .<CR>
 inoremap ∆ <esc>:tabprevious<CR>
 inoremap ¬ <esc>:tabnext<CR>
+
+" SNIPPETS
+" append console.log() with indent
+nnoremap <leader>log aconsole.log()<esc>==f)i
+
+" surround entire line inside a console.log()
+nnoremap <leader>c ^iconsole.log(<esc>$a);<esc>
