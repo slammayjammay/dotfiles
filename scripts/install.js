@@ -10,7 +10,9 @@ const copyHyper = require('./helpers/copy-hyper')(HOME_DIRECTORY);
 copyVim(HOME_DIRECTORY);
 console.log();
 
-copyHyper.installAll();
+if (process.argv.includes('--build')) {
+	copyHyper.installAll();
+}
 copyHyper.copyAll();
 console.log();
 
