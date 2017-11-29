@@ -16,8 +16,8 @@ exports.decorateConfig = (config) => {
 				background-size: cover;
 				background-position: center;
 			}
-			.fallout .hyper_main::before {
-				opacity: 0 !important; // hypernasa puts an overlay here: disable it.
+			.fallout .hypernasa {
+				opacity: 0 !important; // remove hypernasa image
 			}
 		`,
 		termCSS: `
@@ -105,10 +105,8 @@ exports.decorateTerm = (Term, { React }) => {
 		componentWillReceiveProps(nextProps) {
 			if (nextProps.fallout && !this.props.fallout) {
 				this.enableFallout();
-				this.term.onVTKeystroke('\r');
 			} else if (!nextProps.fallout && this.props.fallout) {
 				this.disableFallout();
-				this.term.onVTKeystroke('\r');
 			}
 		}
 
