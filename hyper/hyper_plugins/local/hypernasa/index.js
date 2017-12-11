@@ -92,7 +92,7 @@ exports.decorateHyper = (Hyper, { React }) => {
 
 			// looping only works if the parameter "playlist=${video-id}" is given
 			try {
-				const regexMatch = /embed\/(\w*)/.exec(parsedURL.pathname);
+				const regexMatch = /embed\/([\w-]*)/.exec(parsedURL.pathname);
 				additionalParams.push(`playlist=${regexMatch[1]}`);
 			} catch (e) {
 				console.warn('Hypernasa internal error: could not parse youtube video id.');
@@ -100,8 +100,46 @@ exports.decorateHyper = (Hyper, { React }) => {
 
 			videoURL += parsedURL.query === null ? '?' : '&';
 			videoURL += additionalParams.join('&');
-			iframe.setAttribute('src', videoURL);
 
+			// mute the video.
+			// directly accessing the video element inside the iframe and muting it
+			// does not work, I'm assuming because of some youtube embed javascript.
+			// the best way to mute the video is probably to load the external script
+			// that gives access to the youtube player API. I don't want to do this.
+			// instead, here's some messy logic with a timeout that sets the 'muted'
+			// property on the video. seems to work...
+			iframe.addEventListener('load', () => {
+				const video = iframe.contentDocument.querySelector('video');
+
+				// because we pause the video for a bit, hide the iframe to avoid the
+				// thumbnail flash
+				iframe.style.opacity = 0;
+				video.addEventListener('ended', () => iframe.style.opacity = 0);
+
+				const onPlay = () => {
+					// remove the event listener so that it doesn't fire when we play
+					// the video below
+					video.removeEventListener('play', onPlay);
+
+					video.pause();
+
+					setTimeout(() => {
+						video.muted = true;
+						video.play();
+
+						// add this listener back after the video plays and fires the 'play'
+						// event (hopefully)
+						setTimeout(() => {
+							video.addEventListener('play', onPlay);
+							iframe.style.opacity = '';
+						}, 300);
+					}, 300);
+				};
+
+				video.addEventListener('play', onPlay);
+			});
+
+			iframe.setAttribute('src', videoURL);
 			return iframe;
 		}
 
