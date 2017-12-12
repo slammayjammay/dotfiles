@@ -126,14 +126,15 @@ exports.decorateHyper = (Hyper, { React }) => {
 					setTimeout(() => {
 						video.muted = true;
 						video.play();
+						console.log('her');
 
 						// add this listener back after the video plays and fires the 'play'
 						// event (hopefully)
 						setTimeout(() => {
 							video.addEventListener('play', onPlay);
 							iframe.style.opacity = '';
-						}, 300);
-					}, 300);
+						}, 1000);
+					}, 1000);
 				};
 
 				video.addEventListener('play', onPlay);
