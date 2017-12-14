@@ -121,12 +121,6 @@ exports.decorateTerm = (Term, { React }) => {
 		}
 
 		captureOutput(string) {
-			// alternate screen crap
-			if (string.includes('[?1049h') || string.includes('[?1049l')) {
-				this.outputEmitter.defaultInterpret(string);
-				return;
-			}
-
 			this._capturedOutput += string;
 
 			if (this.isOutputting) {
@@ -139,6 +133,15 @@ exports.decorateTerm = (Term, { React }) => {
 		}
 
 		async output() {
+			if (this._capturedOutput.includes('[?1049h') || this._capturedOutput.includes('[?1049l')) {
+				this._isAlternateScreen = true;
+			}
+
+			if (this._isAlternateScreen) {
+				this.outputEmitter.defaultInterpret(this._capturedOutput);
+				this._capturedOutput = '';
+			}
+
 			if (this._capturedOutput.length === 0) {
 				this.isOutputting = false;
 
@@ -151,6 +154,7 @@ exports.decorateTerm = (Term, { React }) => {
 					clearTimeout(this.id);
 					this.id = setTimeout(() => this.rewriteCursorRow(), 0);
 					this.beginReceiveOutputDate = null;
+					this._isAlternateScreen = false;
 				}
 
 				return;
