@@ -7,6 +7,7 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'othree/html5.vim'
 Plug 'tpope/vim-surround'
 Plug 'vim-syntastic/syntastic'
+Plug 'https://github.com/vim-scripts/SyntaxAttr.vim'
 call plug#end()
 
 " ctrlp options
