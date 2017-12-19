@@ -20,3 +20,6 @@ nnoremap <leader>log aconsole.log()<esc>==f)i
 
 " surround entire line inside a console.log()
 nnoremap <leader>c ^iconsole.log(<esc>$a);<esc>
+
+" alternative mapping for saving
+nnoremap <leader>w :w<CR>
