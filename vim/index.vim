@@ -11,6 +11,7 @@ set nowrap
 set autoindent
 set colorcolumn=80
 set splitright
+set expandtab
 
 " colors
 syntax on
