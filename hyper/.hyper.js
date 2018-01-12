@@ -127,7 +127,13 @@ module.exports = {
   //   `hyperpower`
   //   `@company/project`
   //   `project#1.0.1`
-  plugins: ['hyperterm-cursor', 'hyper-blink', 'hypercwd', 'gitrocket'],
+  plugins: [
+		'hyperterm-cursor',
+		'hyper-blink',
+		'hypercwd',
+		'gitrocket',
+		'hyperterm-tabs'
+	],
 
   // in development, you can create a directory under
   // `~/.hyper_plugins/local/` and include it here
