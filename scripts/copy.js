@@ -29,4 +29,5 @@ plugins.forEach(plugin => {
 
 if (SHOULD_COPY_CONFIG) {
 	copyHyperConfig();
+	console.log('done');
 }
