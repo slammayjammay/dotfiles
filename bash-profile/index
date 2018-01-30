@@ -34,3 +34,4 @@ alias ga="git-add-file"
 
 # other
 alias desktop="cd ~/Desktop"
+alias cleark="clear && printf '\e[3J]'"
