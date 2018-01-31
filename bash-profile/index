@@ -1,7 +1,7 @@
 # show git branch
 export GITAWAREPROMPT=~/dotfiles/git-aware-prompt
 source "${GITAWAREPROMPT}/main.sh"
-export PS1="\u@\h \W \[$txtcyn\]\$git_branch\[$txtred\]\$git_dirty\[$txtrst\]\$ "
+export PS1="\u \W \[$txtcyn\]\$git_branch\[$txtred\]\$git_dirty\[$txtrst\]\$ "
 
 source ~/dotfiles/bash-profile/.git-completion.bash
 __git_complete go _git_checkout
