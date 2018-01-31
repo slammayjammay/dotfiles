@@ -35,3 +35,21 @@ alias ga="git-add-file"
 # other
 alias desktop="cd ~/Desktop"
 alias cleark="clear && printf '\e[3J'"
+
+# alternate screen stuff
+function newscreen() {
+	name=$1
+
+	screen -dmS $name
+	screen -S $name -p 0 -X stuff "cd `pwd`
+	cleark
+
+	"
+}
+
+function killscreens() {
+	for name in "$@"; do
+		screen -S $name -X quit
+	done
+}
+
