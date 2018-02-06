@@ -4,7 +4,6 @@
 // 1) Sets the background image to a retro terminal screen.
 // 2) Colors text and cursor light green.
 // =============================================================================
-
 exports.decorateConfig = (config) => {
 	return Object.assign({}, config, {
 		css: `
@@ -32,6 +31,11 @@ exports.decorateConfig = (config) => {
 			.fallout .cursor-node {
 				background-color: lightgreen !important;
 				border-color: lightgreen !important;
+			}
+
+			/* Color scroll bar green */
+			x-screen::-webkit-scrollbar-thumb {
+				background-color: #005f00;
 			}
 		`
 	});
@@ -121,7 +125,7 @@ exports.decorateTerm = (Term, { React }) => {
 			// we must set change the font through HTerm's API so that it can render
 			// the cursor properly
 			this.term.prefs_.set('font-family', '"Fixedsys Excelsior 3.01"');
-			this.term.setFontSize(14);
+			this.term.setFontSize(18);
 
 			this.mainBody.classList.add('fallout');
 			this.termBody.classList.add('fallout');
