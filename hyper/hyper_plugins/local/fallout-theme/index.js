@@ -34,7 +34,7 @@ exports.decorateConfig = (config) => {
 			}
 
 			/* Color scroll bar green */
-			x-screen::-webkit-scrollbar-thumb {
+			.fallout x-screen::-webkit-scrollbar-thumb {
 				background-color: #005f00;
 			}
 		`
