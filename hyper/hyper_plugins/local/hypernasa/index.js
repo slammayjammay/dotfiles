@@ -55,16 +55,7 @@ exports.decorateTerm = (Term, { React }) => {
 		constructor(...args) {
 			super(...args);
 
-			this._onDecorated = this._onDecorated.bind(this);
-
 			this.fetchImage();
-		}
-
-		_onDecorated(term) {
-			// set opacity as > 0 because of silly (IMO) xterm source code
-			// https://github.com/xtermjs/xterm.js/blob/d4b75e49092de01beca7628c0e37da6e1eea29ef/src/renderer/BaseRenderLayer.ts#L178-L185
-			const textLayer = term.term.renderer._renderLayers[0];
-			textLayer.setTransparency(term.term.renderer._terminal, 0.0001);
 		}
 
 		fetchImage() {
@@ -172,7 +163,6 @@ exports.decorateTerm = (Term, { React }) => {
 
 		render() {
 			return React.createElement(Term, Object.assign({}, this.props, {
-				onDecorated: this._onDecorated
 			}));
 		}
 	}
