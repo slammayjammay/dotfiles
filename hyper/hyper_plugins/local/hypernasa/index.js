@@ -9,6 +9,36 @@ const OPTIONS = {
 	fallbackImageURL: 'http://www.baltana.com/files/wallpapers-1/Universe-02885.jpg'
 };
 
+exports.decorateConfig = (config) => {
+	return Object.assign({}, config, {
+		css: `
+		${config.css || ''}
+
+		.hypernasa, .hypernasa-image {
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+		}
+
+		.hypernasa-image {
+			background-size: cover;
+			background-position: center;
+		}
+
+		.hypernasa-iframe {
+			border: none;
+		}
+
+		// i don't know why Hyper works the way it does sometimes...
+		.xterm-viewport {
+			background: transparent !important;
+		}
+		`
+	});
+};
+
 exports.reduceUI = (state, action) => {
 	switch (action.type) {
 		case 'CONFIG_LOAD':
@@ -20,11 +50,21 @@ exports.reduceUI = (state, action) => {
 	return state;
 };
 
-exports.decorateHyper = (Hyper, { React }) => {
+exports.decorateTerm = (Term, { React }) => {
 	class Hypernasa extends React.Component {
 		constructor(...args) {
 			super(...args);
+
+			this._onDecorated = this._onDecorated.bind(this);
+
 			this.fetchImage();
+		}
+
+		_onDecorated(term) {
+			// set opacity as > 0 because of silly (IMO) xterm source code
+			// https://github.com/xtermjs/xterm.js/blob/d4b75e49092de01beca7628c0e37da6e1eea29ef/src/renderer/BaseRenderLayer.ts#L178-L185
+			const textLayer = term.term.renderer._renderLayers[0];
+			textLayer.setTransparency(term.term.renderer._terminal, 0.0001);
 		}
 
 		fetchImage() {
@@ -101,43 +141,29 @@ exports.decorateHyper = (Hyper, { React }) => {
 			videoURL += parsedURL.query === null ? '?' : '&';
 			videoURL += additionalParams.join('&');
 
-			// mute the video.
-			// directly accessing the video element inside the iframe and muting it
-			// does not work, I'm assuming because of some youtube embed javascript.
-			// the best way to mute the video is probably to load the external script
-			// that gives access to the youtube player API. I don't want to do this.
-			// instead, here's some messy logic with a timeout that sets the 'muted'
-			// property on the video. seems to work...
+			iframe.style.opacity = 0;
+
 			iframe.addEventListener('load', () => {
 				const video = iframe.contentDocument.querySelector('video');
 
-				// because we pause the video for a bit, hide the iframe to avoid the
-				// thumbnail flash
-				iframe.style.opacity = 0;
 				video.addEventListener('ended', () => iframe.style.opacity = 0);
 
-				const onPlay = () => {
-					// remove the event listener so that it doesn't fire when we play
-					// the video below
-					video.removeEventListener('play', onPlay);
+				// no idea why but the video changes volume for no apparent reason.
+				// keep it muted always.
+				video.addEventListener('volumechange', () => video.muted = true);
 
-					video.pause();
+				video.addEventListener('play', async () => {
+					video.muted = true;
 
-					setTimeout(() => {
-						video.muted = true;
-						video.play();
-						console.log('her');
+					// wait a little before showing the video (avoids ugly flashing)
+					// for some reason setTimeout callbacks are NEVER called.
+					// setTimeout(() => console.log('wtf electron?'), 0);
+					for (let i = 0; i < 10; i++) {
+						await new Promise(resolve => requestAnimationFrame(resolve));
+					}
 
-						// add this listener back after the video plays and fires the 'play'
-						// event (hopefully)
-						setTimeout(() => {
-							video.addEventListener('play', onPlay);
-							iframe.style.opacity = '';
-						}, 1000);
-					}, 1000);
-				};
-
-				video.addEventListener('play', onPlay);
+					iframe.style.opacity = '';
+				});
 			});
 
 			iframe.setAttribute('src', videoURL);
@@ -145,27 +171,8 @@ exports.decorateHyper = (Hyper, { React }) => {
 		}
 
 		render() {
-			return React.createElement(Hyper, Object.assign({}, this.props, {
-				customCSS: `
-					${this.props.customCSS}
-
-					.hypernasa, .hypernasa-image {
-						position: absolute;
-						left: 0;
-						top: 0;
-						width: 100%;
-						height: 100%;
-					}
-
-					.hypernasa-image {
-						background-size: cover;
-						background-position: center;
-					}
-
-					.hypernasa-iframe {
-						border: none;
-					}
-				`
+			return React.createElement(Term, Object.assign({}, this.props, {
+				onDecorated: this._onDecorated
 			}));
 		}
 	}
