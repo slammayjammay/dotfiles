@@ -10,6 +10,7 @@
     "dev:fallout": "node scripts/plugin-dev fallout-theme",
     "dev:typed": "node scripts/plugin-dev hyper-typed-output",
     "dev:nasa": "node scripts/plugin-dev hypernasa",
+    "dev:post": "node scripts/plugin-dev hyper-postprocessing",
     "lint": "eslint **/*.js",
     "lint:fix": "eslint --fix **/*.js",
     "setup": "node scripts/install.js",

@@ -128,8 +128,8 @@ module.exports = {
   //   `@company/project`
   //   `project#1.0.1`
   plugins: [
-		'hyperterm-cursor',
-		'hyper-blink',
+		// 'hyperterm-cursor',
+		// 'hyper-blink',
 		'hypercwd',
 		'gitrocket',
 		'hyperterm-tabs'
@@ -141,6 +141,7 @@ module.exports = {
   localPlugins: [
 		// 'fallout-theme',
 		// 'hyper-typed-output',
-		'hypernasa'
+		'hypernasa',
+		'hyper-postprocessing'
 	]
 };
