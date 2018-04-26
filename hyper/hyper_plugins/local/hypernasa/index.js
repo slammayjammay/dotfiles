@@ -43,7 +43,7 @@ exports.reduceUI = (state, action) => {
 	switch (action.type) {
 		case 'CONFIG_LOAD':
 		case 'CONFIG_RELOAD': {
-			Object.assign(OPTIONS, action.config.hypernasa);
+			Object.assign(OPTIONS, action.config.hypernasa || {});
 		}
 	}
 
@@ -54,6 +54,10 @@ exports.decorateTerm = (Term, { React }) => {
 	class Hypernasa extends React.Component {
 		constructor(...args) {
 			super(...args);
+
+			if (document.querySelector('.hypernasa')) {
+				return;
+			}
 
 			this.fetchImage();
 		}
@@ -66,6 +70,10 @@ exports.decorateTerm = (Term, { React }) => {
 					console.warn(reason);
 					this.setBackground();
 				});
+		}
+
+		isImage(url) {
+			return /\.(jpg|png)$/.exec(url);
 		}
 
 		isVideo(url) {
@@ -86,6 +94,9 @@ exports.decorateTerm = (Term, { React }) => {
 				} else {
 					backgroundEl = this.createVideoEl(imageURL);
 				}
+			} else if (!this.isImage(imageURL)) {
+				// i've seen some html files as pictures -- wut
+				backgroundEl = this.createImageEl(OPTIONS.fallbackImageURL);
 			} else {
 				backgroundEl = this.createImageEl(imageURL);
 			}

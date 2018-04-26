@@ -2,7 +2,7 @@
   "name": "hypernasa",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/built.js",
   "scripts": {
     "build": "webpack"
   },
