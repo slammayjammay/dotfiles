@@ -133,7 +133,8 @@ module.exports = {
   plugins: [
 		'hypercwd',
 		'gitrocket',
-		'hyperterm-tabs'
+		'hyperterm-tabs',
+		'hyper-postprocessing'
 	],
 
   // in development, you can create a directory under
@@ -141,7 +142,6 @@ module.exports = {
   // to load it and avoid it being `npm install`ed
   localPlugins: [
 		'hypernasa',
-		'hyper-postprocessing',
 		'hyper-xterm-transparent'
 	]
 };
