@@ -7,6 +7,10 @@ exports.decorateTerm = (Term, { React }) => {
 		}
 
 		_onDecorated(term) {
+			if (!term) {
+				return;
+			}
+
 			// set XTerm terminal as transparent. I think this is okay? the background
 			// color set in .hyper.js will still show through.
 			setTimeout(() => term.term.setOption('allowTransparency', true), 0);
