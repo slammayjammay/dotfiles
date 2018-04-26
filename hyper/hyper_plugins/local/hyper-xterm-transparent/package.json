@@ -1,0 +1,15 @@
+{
+  "name": "hyper-xterm-transparent",
+  "version": "1.0.0",
+  "description": "Sets the XTerm canvas background to transparent.",
+  "main": "dist/built.js",
+  "scripts": {
+    "build": "webpack"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack-cli": "^2.0.15"
+  }
+}
