@@ -120,7 +120,7 @@ module.exports = {
 			initialWorkingDirectory: '~/Desktop'
 		},
 		hyperPostprocessing: {
-			entry: '/Users/Scott/dotfiles/hyper/hyper-postprocessing.js'
+			entry: '/Users/Scott/dotfiles/hyper/hyper-postprocessing/index.js'
 		}
   },
 
