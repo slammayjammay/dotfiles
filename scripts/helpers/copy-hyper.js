@@ -29,9 +29,13 @@ module.exports = (homeDirectory) => {
 	}
 
 	function copyPlugin(path) {
-		process.stdout.write(chalk.bold(`Copying plugin ${basename(path)}...`));
+		const pluginName = basename(path);
+		process.stdout.write(chalk.bold(`Copying plugin ${pluginName}...`));
 
-		execSync(`cp -r ${path} ${PLUGINS_DESTINATION} || true`, { stdio: 'inherit' });
+		execSync(`mkdir -p ${PLUGINS_DESTINATION}/${pluginName}/dist`);
+
+		execSync(`cp -r ${path}/dist/ ${PLUGINS_DESTINATION}/${pluginName}/dist`, { stdio: 'inherit' });
+		execSync(`cp ${path}/package.json ${PLUGINS_DESTINATION}/${pluginName}/`, { stdio: 'inherit' });
 		console.log('done.');
 	}
 
