@@ -5,7 +5,7 @@
 module.exports = {
   config: {
     // default font size in pixels for all tabs
-    fontSize: 14,
+    fontSize: 16,
 
     // font family with optional fallbacks
     fontFamily: 'Menlo, "DejaVu Sans Mono", Consolas, "Lucida Console", monospace',
@@ -23,7 +23,7 @@ module.exports = {
     foregroundColor: '#fff',
 
     // terminal background color
-    backgroundColor: 'rgba(0, 0, 0, 0.9999)',
+    backgroundColor: '#000',
 
     // border color (window, tabs)
     borderColor: '#333',
@@ -118,6 +118,9 @@ module.exports = {
 		},
 		hypercwd: {
 			initialWorkingDirectory: '~/Desktop'
+		},
+		hyperPostprocessing: {
+			entry: '/Users/Scott/dotfiles/hyper/hyper-postprocessing.js'
 		}
   },
 
@@ -128,8 +131,6 @@ module.exports = {
   //   `@company/project`
   //   `project#1.0.1`
   plugins: [
-		// 'hyperterm-cursor',
-		// 'hyper-blink',
 		'hypercwd',
 		'gitrocket',
 		'hyperterm-tabs'
@@ -139,9 +140,8 @@ module.exports = {
   // `~/.hyper_plugins/local/` and include it here
   // to load it and avoid it being `npm install`ed
   localPlugins: [
-		// 'fallout-theme',
-		// 'hyper-typed-output',
 		'hypernasa',
-		'hyper-postprocessing'
+		'hyper-postprocessing',
+		'hyper-xterm-transparent'
 	]
 };
