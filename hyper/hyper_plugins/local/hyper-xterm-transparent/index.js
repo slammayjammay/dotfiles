@@ -7,6 +7,10 @@ exports.decorateTerm = (Term, { React }) => {
 		}
 
 		_onDecorated(term) {
+			if (this.props.onDecorated) {
+				this.props.onDecorated(term);
+			}
+
 			if (!term) {
 				return;
 			}
