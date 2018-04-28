@@ -39,8 +39,8 @@ function copyPlugin(path) {
 	mkdirp.sync(pluginDestination);
 
 	// files/directories to copy
-	const distSource = join(path);
-	const distDestination = join(pluginDestination, '');
+	const distSource = join(path, 'dist');
+	const distDestination = join(pluginDestination);
 	const packageSource = join(path, 'package.json');
 	const packageDestination = join(pluginDestination)
 
