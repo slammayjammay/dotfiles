@@ -1,16 +1,15 @@
+const { homedir } = require('os');
 const { join } = require('path');
 const { execSync } = require('child_process');
 const webpack = require('webpack');
 const chalk = require('chalk');
 
-const HOME_DIRECTORY = execSync('cd ~ && pwd').toString().trim();
-
-const { copy } = require('./helpers/copy-hyper')(HOME_DIRECTORY);
+const { copy } = require('./helpers/copy-hyper');
 
 const args = process.argv.slice(2);
 const pluginName = args[0];
 
-const PLUGIN_BASE_PATH = join(HOME_DIRECTORY, 'dotfiles', 'hyper/hyper_plugins/local/');
+const PLUGIN_BASE_PATH = join(homedir(), 'dotfiles', 'hyper/hyper_plugins/local/');
 const PLUGIN_PATH = join(PLUGIN_BASE_PATH, pluginName);
 const PLUGIN_CONFIG = require(join(PLUGIN_PATH, 'webpack.config.js'));
 
