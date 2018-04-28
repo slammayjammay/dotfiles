@@ -1,0 +1,16 @@
+{
+  "name": "hyper-postprocessing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "postprocessing": "^4.4.2",
+    "three": "^0.92.0"
+  }
+}
