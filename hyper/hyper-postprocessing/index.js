@@ -1,4 +1,11 @@
-const curvedMonitorFragment = require('./curved-monitor-fragment');
-const scanLinesFragment = require('./scan-lines-fragment');
+const curvedMonitorShader = require('./curved-monitor-shader');
+const createRippleShader = require('./ripple-shader');
+const createGlitchShader = require('./glitch-shader');
 
-module.exports = [curvedMonitorFragment, scanLinesFragment];
+module.exports = ({ ShaderPass, ShaderMaterial }) => {
+	const rippleShader = createRippleShader({ ShaderMaterial });
+	const glitchShader = createGlitchShader({ ShaderMaterial });
+
+	// return rippleShader;
+	// return [...glitchShader, curvedMonitorShader];
+};
