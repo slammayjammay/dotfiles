@@ -151,6 +151,7 @@ module.exports = {
   localPlugins: [
 		// 'hypernasa',
 		'hyper-xterm-transparent',
-		'hyper-postprocessing'
+		'hyper-postprocessing',
+		'hyper-cursorfade'
 	]
 };
