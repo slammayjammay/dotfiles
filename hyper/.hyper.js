@@ -2,35 +2,10 @@
 // which will not automatically be merged into this file.
 // See https://hyper.is#cfg for all currently supported options.
 
-const css = `
-/* why isn't backgroundColor taking effect? */
-	._main {
-		background-color: #000;
-	}
-/* make tab borders more visible */
-	._tab {
-		border-color: #777777 !important;
-		color: white !important;
-	}
-	._tab:not(._active) {
-		color: gray !important;
-	}
-
-// /* blinking cursor with opacity animation */
-// 	.xterm-cursor-layer {
-// 		@keyframes fade-in-out {
-// 			0% { opacity: 0; }
-// 			50% { opacity: 1; }
-// 			100% { opacity: 0; }
-// 		}
-// 		animation: fade-in-out 1s infinite;
-// 	}
-`;
-
 module.exports = {
   config: {
     // default font size in pixels for all tabs
-    fontSize: 12,
+    fontSize: 16,
 
     // font family with optional fallbacks
     fontFamily: 'Menlo, "DejaVu Sans Mono", Consolas, "Lucida Console", monospace',
@@ -42,7 +17,7 @@ module.exports = {
     cursorShape: 'BLOCK',
 
     // set to true for blinking cursor
-    cursorBlink: false,
+    cursorBlink: true,
 
     // color of the text
     foregroundColor: '#fff',
@@ -54,7 +29,7 @@ module.exports = {
     borderColor: '#333',
 
     // custom css to embed in the main window
-    css: css,
+    css: '',
 
     // set to `true` (without backticks) if you're using a Linux setup that doesn't show native menus
     // default: `false` on Linux, `true` on Windows (ignored on macOS)
@@ -142,16 +117,14 @@ module.exports = {
   plugins: [
 		'hypercwd',
 		'gitrocket',
-		'hyperterm-tabs'
+		'hyperterm-tabs',
+		'hyper-postprocessing'
 	],
 
   // in development, you can create a directory under
   // `~/.hyper_plugins/local/` and include it here
   // to load it and avoid it being `npm install`ed
   localPlugins: [
-		// 'hypernasa',
-		'hyper-xterm-transparent',
-		'hyper-postprocessing',
-		'hyper-cursorfade'
+		'hyper-xterm-transparent'
 	]
 };

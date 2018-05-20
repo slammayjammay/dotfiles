@@ -12,5 +12,8 @@
   "dependencies": {
     "postprocessing": "^4.4.2",
     "three": "^0.92.0"
+  },
+  "devDependencies": {
+    "glsl-blend": "^1.0.3"
   }
 }
