@@ -11,10 +11,8 @@ const CONFIG_DESTINATION = join(homedir(), '.hyper.js');
 const PLUGINS_DESTINATION = join(homedir(), '.hyper_plugins/local');
 
 function getPluginPaths() {
-	return readdirSync(PLUGINS_BASE_PATH)
-		.map(file => join(PLUGINS_BASE_PATH, file))
-	// only directories
-		.filter(file => statSync(file).isDirectory());
+	const plugins = require(join(SOURCE, '.hyper.js')).localPlugins;
+	return plugins.map(plugin => join(PLUGINS_BASE_PATH, plugin));
 }
 
 function installPlugin(path) {
