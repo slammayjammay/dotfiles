@@ -1,4 +1,3 @@
-const fragmentShader = `
 uniform sampler2D tDiffuse;
 uniform float timeElapsed;
 varying vec2 vUv;
@@ -66,8 +65,3 @@ void main() {
 	vec4 c1 = vec4(r, g, b, 1.0);
 	gl_FragColor = c1;
 }
-`;
-
-module.exports = ({ ShaderMaterial }) => {
-	return fragmentShader;
-};
