@@ -14,7 +14,7 @@ module.exports = () => {
 				}
 			})
 			.catch(error => {
-				resolve(DEFAULTS.fallbackImageURL, error);
+				resolve(FALLBACK_URL, error);
 			});
 	});
 };
