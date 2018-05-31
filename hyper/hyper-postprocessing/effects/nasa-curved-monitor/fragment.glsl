@@ -5,8 +5,8 @@ uniform float timeElapsed;
 uniform float timeDelta;
 varying vec2 vUv;
 
-#pragma glslify: curvedMonitorShader = require('../../curved-monitor-shader/fragment')
-#pragma glslify: backgroundShader = require('../../background-shader/fragment')
+#pragma glslify: curvedMonitorShader = require('../../glsl/curved-monitor')
+#pragma glslify: backgroundShader = require('../../glsl/background-image')
 
 void main() {
 	vec2 pos = curvedMonitorShader(vUv);
