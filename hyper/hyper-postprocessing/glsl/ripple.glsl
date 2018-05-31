@@ -1,15 +1,4 @@
-const { Vector2, TextureLoader, LinearFilter } = require('three');
-
-const path = 'file:///Users/Scott/dotfiles/hyper/hyper-postprocessing/images/underwater.jpg';
-
 // https://www.shadertoy.com/view/4slGRM
-const fragmentShader = `
-uniform sampler2D tDiffuse;
-uniform sampler2D backgroundTexture;
-uniform vec2 resolution;
-uniform float timeElapsed;
-varying vec2 vUv;
-
 const float PI = 3.1415926535897932;
 
 // play with these parameters to custimize the effect
@@ -53,10 +42,10 @@ float col(vec2 coord,float time) {
 
 //---------- main
 
-void main() {
+vec2 ripple(vec2 inputUV) {
 	float time = timeElapsed*1.3;
 
-	vec2 p = vUv.xy, c1 = p, c2 = p;
+	vec2 p = inputUV.xy, c1 = p, c2 = p;
 	float cc1 = col(c1,time);
 
 	c2.x += resolution.x/delta;
@@ -74,40 +63,16 @@ void main() {
 	float ddx = dx - reflectionCutOff;
 	float ddy = dy - reflectionCutOff;
 	if (ddx > 0. && ddy > 0.)
-		alpha = pow(alpha, ddx*ddy*reflectionIntence);
+	alpha = pow(alpha, ddx*ddy*reflectionIntence);
 
-	////////// not part of the original shader
-	c1.x -= 0.1;
-	c1.y -= 0.1;
-	c1 *= 0.9;
-	c1.x += 0.1;
-	c1.y += 0.1;
-	vec4 col = texture2D(backgroundTexture,c1)*(alpha); // ...except this
-	vec4 color1 = texture2D(tDiffuse, vUv);
-	col.a = 0.4;
-	vec3 blended = color1.rgb * color1.a + col.rgb * col.a * (1.0 - color1.a);
-	////////// not part of the original shader
-	gl_FragColor = vec4(blended, 1.0);
+
+
+
+
+	return c1;
+
+	// vec4 color = texture2D(inputTexture,c1)*(alpha);
+	// return color;
 }
-`;
 
-
-module.exports = ({ ShaderMaterial }) => {
-	const loader = new TextureLoader();
-
-	const options = {
-		uniforms: {
-			backgroundTexture: { value: null }
-		},
-		fragmentShader
-	};
-
-	const shaderMaterial = new ShaderMaterial(options);
-
-	loader.load(path, texture => {
-		texture.minFilter = LinearFilter;
-		shaderMaterial.uniforms.backgroundTexture.value = texture;
-	});
-
-	return { shaderMaterial };
-};
+#pragma glslify: export(ripple)
