@@ -41,6 +41,10 @@ vec4 backgroundImage(vec4 bg, vec4 fg) {
 void main() {
 	vec2 pos = curvedMonitor(vUv);
 
+	pos -= 0.5;
+	pos *= 1.1;
+	pos += 0.5;
+
 	// if the pixel is off the edge of the screen, set it transparent
 	// avoids awkward texture sampling when pixel is not constrained to (0, 1)
 	if (pos.x < 0.0 || pos.y < 0.0 || pos.x > 1.0 || pos.y > 1.0) {

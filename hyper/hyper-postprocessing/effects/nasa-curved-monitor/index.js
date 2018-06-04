@@ -1,6 +1,7 @@
 const { readFileSync } = require('fs');
 const { homedir } = require('os');
 const { TextureLoader, LinearFilter, Vector4 } = require('three');
+const { BloomPass } = require('postprocessing');
 const fetchNasaImage = require('./fetch-nasa-image');
 
 module.exports = ({ ShaderMaterial }) => {
@@ -26,6 +27,11 @@ module.exports = ({ ShaderMaterial }) => {
 			shaderMaterial.uniforms.backgroundTexture.value = texture;
 		});
 	});
+
+	return [
+		{ shaderMaterial },
+		{ shaderPass: new BloomPass({ intensity: 1.8 }) }
+	];
 
 	return { shaderMaterial };
 };
