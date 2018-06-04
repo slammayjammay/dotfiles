@@ -4,33 +4,6 @@ uniform vec2 resolution;
 uniform float timeElapsed;
 varying vec2 vUv;
 
-// pythagorean theorem
-float distanceFromOrigin(vec2 point, vec2 origin) {
-	float deltaX = (point.x - origin.x);
-	float deltaY = (point.y - origin.y);
-	return sqrt(pow(deltaX, 2.0) + pow(deltaY, 2.0));
-}
-
-float easeInQuart(float time, float begin, float change, float duration) {
-	return change * (time /= duration) * time * time * time + begin;
-}
-
-vec2 curvedMonitor(vec2 inputUV) {
-	vec2 screenCenter = vec2(0.5, 0.5);
-	float radius = 0.5;
-	float magnitude = 0.15; // how far the center of the "monitor" points out
-	float cutShort = 0.3; // how far along the the easing curve we travel...I think...
-
-	vec2 coords = vec2(inputUV.x - screenCenter.x, inputUV.y - screenCenter.y);
-
-	float distFromOrigin = distanceFromOrigin(inputUV, screenCenter);
-
-	float scalar = easeInQuart(distFromOrigin, 1.0 / cutShort - magnitude, magnitude, radius);
-	coords *= scalar * cutShort;
-
-	return vec2(coords.x + screenCenter.x, coords.y + screenCenter.y);
-}
-
 vec4 backgroundImage(vec4 bg, vec4 fg) {
 	vec3 blended = bg.rgb * bg.a + fg.rgb * fg.a * (1.0 - bg.a);
 	return vec4(blended, 1.0);
@@ -56,11 +29,11 @@ vec4 backgroundImage(vec4 bg, vec4 fg) {
 #define distfading 0.730
 #define saturation 0.850
 
-vec4 spaceTravel(vec2 pos) {
+vec4 spaceTravel() {
 	//get coords and direction
 
 	// vec2 uv=fragCoord.xy/resolution.xy-.5;
-	vec2 uv = pos - 0.5;
+	vec2 uv = vUv - 0.5;
 
 	uv.y*=resolution.y/resolution.x;
 	vec3 dir=vec3(uv*zoom,1.);
@@ -106,22 +79,24 @@ vec4 spaceTravel(vec2 pos) {
 }
 
 void main() {
-	vec2 pos = curvedMonitor(vUv);
+	vec4 spaceColor = spaceTravel();
+
+	vec2 pos = vUv;
 
 	pos -= 0.5;
 	pos *= 1.1;
+
+	bool outOfBounds = (abs(pos.x) >= 0.5 || abs(pos.y) >= 0.5);
+
 	pos += 0.5;
 
-	vec4 spaceColor = spaceTravel(pos);
+	vec4 color;
 
-	// if the pixel is off the edge of the screen, set it transparent
-	// avoids awkward texture sampling when pixel is not constrained to (0, 1)
-	if (pos.x < 0.0 || pos.y < 0.0 || pos.x > 1.0 || pos.y > 1.0) {
-		gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
-		return;
+	if (outOfBounds) {
+		color = vec4(0.0);
+	} else {
+		color = texture2D(tDiffuse, pos);
 	}
-
-	vec4 color = texture2D(tDiffuse, pos);
 	// vec4 backgroundColor = texture2D(backgroundTexture, pos);
 	// spaceColor.a = 0.4;
 
