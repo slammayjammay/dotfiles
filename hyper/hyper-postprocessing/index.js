@@ -1,4 +1,4 @@
-const postprocessingEffect = require('./effects/nasa-curved-monitor');
+const postprocessingEffect = require('./effects/space-window');
 
 module.exports = ({ ShaderMaterial }) => {
 	return postprocessingEffect({ ShaderMaterial });
