@@ -18,11 +18,11 @@
 #define distfading 0.730
 #define saturation 0.850
 
-vec4 spaceTravel(vec2 pos) {
+vec4 spaceTravel() {
 	//get coords and direction
 
 	// vec2 uv=fragCoord.xy/resolution.xy-.5;
-	vec2 uv = pos - 0.5;
+	vec2 uv = vUv - 0.5;
 
 	uv.y*=resolution.y/resolution.x;
 	vec3 dir=vec3(uv*zoom,1.);
