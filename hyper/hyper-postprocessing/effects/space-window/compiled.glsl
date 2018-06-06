@@ -9,6 +9,33 @@ vec4 backgroundImage(vec4 bg, vec4 fg) {
 	return vec4(blended, 1.0);
 }
 
+// pythagorean theorem
+float distanceFromOrigin(vec2 point, vec2 origin) {
+	float deltaX = (point.x - origin.x);
+	float deltaY = (point.y - origin.y);
+	return sqrt(pow(deltaX, 2.0) + pow(deltaY, 2.0));
+}
+
+float easeInQuart(float time, float begin, float change, float duration) {
+	return change * (time /= duration) * time * time * time + begin;
+}
+
+vec2 curvedMonitor(vec2 inputUV) {
+	vec2 screenCenter = vec2(0.5, 0.5);
+	float radius = 0.5;
+	float magnitude = 0.15; // how far the center of the "monitor" points out
+	float cutShort = 0.3; // how far along the the easing curve we travel...I think...
+
+	vec2 coords = vec2(inputUV.x - screenCenter.x, inputUV.y - screenCenter.y);
+
+	float distFromOrigin = distanceFromOrigin(inputUV, screenCenter);
+
+	float scalar = easeInQuart(distFromOrigin, 1.0 / cutShort - magnitude, magnitude, radius);
+	coords *= scalar * cutShort;
+
+	return vec2(coords.x + screenCenter.x, coords.y + screenCenter.y);
+}
+
 // https://www.shadertoy.com/view/XlfGRj
 // Star Nest by Pablo RomÃ¡n Andrioli
 
@@ -18,7 +45,7 @@ vec4 backgroundImage(vec4 bg, vec4 fg) {
 #define formuparam 0.53
 
 #define volsteps 5
-#define stepsize 0.2
+#define stepsize 0.25
 
 #define zoom   0.800
 #define tile   0.850
@@ -81,24 +108,26 @@ vec4 spaceTravel() {
 void main() {
 	vec4 spaceColor = spaceTravel();
 
-	vec2 pos = vUv;
+	vec2 pos = curvedMonitor(vUv);
 
-	pos -= 0.5;
-	pos *= 1.1;
+	vec4 color = texture2D(tDiffuse, pos);
 
-	bool outOfBounds = (abs(pos.x) >= 0.5 || abs(pos.y) >= 0.5);
-
-	pos += 0.5;
-
-	vec4 color;
-
-	if (outOfBounds) {
+	if (pos.x < 0.0 || pos.y < 0.0 || pos.x > 1.0 || pos.y > 1.0) {
 		color = vec4(0.0);
-	} else {
-		color = texture2D(tDiffuse, pos);
 	}
-	// vec4 backgroundColor = texture2D(backgroundTexture, pos);
-	// spaceColor.a = 0.4;
+
+	// pos -= 0.5;
+	// pos *= 1.1;
+	// bool outOfBounds = (abs(pos.x) >= 0.5 || abs(pos.y) >= 0.5);
+	// pos += 0.5;
+
+	// vec4 color;
+
+	// if (outOfBounds) {
+	// 	color = vec4(0.0);
+	// } else {
+	// 	color = texture2D(tDiffuse, pos);
+	// }
 
 	color = backgroundImage(color, spaceColor);
 

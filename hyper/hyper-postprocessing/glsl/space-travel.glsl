@@ -7,7 +7,7 @@
 #define formuparam 0.53
 
 #define volsteps 5
-#define stepsize 0.2
+#define stepsize 0.25
 
 #define zoom   0.800
 #define tile   0.850
