@@ -3,10 +3,10 @@
 
 // This content is under the MIT License.
 
-#define iterations 17
+#define iterations 12
 #define formuparam 0.53
 
-#define volsteps 5
+#define volsteps 6
 #define stepsize 0.25
 
 #define zoom   0.800
