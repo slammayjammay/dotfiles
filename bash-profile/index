@@ -3,6 +3,9 @@ export GITAWAREPROMPT=~/dotfiles/git-aware-prompt
 source "${GITAWAREPROMPT}/main.sh"
 export PS1="\u \W \[$txtcyn\]\$git_branch\[$txtred\]\$git_dirty\[$txtrst\]\$ "
 
+# $EDITOR
+export EDITOR="atom --wait"
+
 source ~/dotfiles/bash-profile/.git-completion.bash
 __git_complete go _git_checkout
 __git_complete gm _git_merge
