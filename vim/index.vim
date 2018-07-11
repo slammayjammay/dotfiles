@@ -2,6 +2,10 @@ source ~/dotfiles/vim/plugins.vim
 source ~/dotfiles/vim/commands.vim
 source ~/dotfiles/vim/keybindings.vim
 
+if has('python3')
+  silent! python3 1
+endif
+
 " options
 set backspace=indent,eol,start
 set relativenumber!
