@@ -3,7 +3,7 @@ const { readFileSync } = require('fs');
 const { TextureLoader, LinearFilter } = require('three');
 
 module.exports = ({ ShaderMaterial }) => {
-	const fragmentShaderPath = `${homedir()}/dotfiles/hyper/hyper-postprocessing/effects/film/compiled.glsl`;
+	const fragmentShaderPath = `${homedir()}/dotfiles/hyper/hyper-postprocessing/effects/film/first-pass-compiled.glsl`;
 	const fragmentShader = readFileSync(fragmentShaderPath).toString();
 
 	// first pass is to blend foreground and background
@@ -15,7 +15,7 @@ module.exports = ({ ShaderMaterial }) => {
 	});
 
 	// second pass is the film effect
-	const filmShaderPath = `${homedir()}/dotfiles/hyper/hyper-postprocessing/effects/film/film-pass.glsl`;
+	const filmShaderPath = `${homedir()}/dotfiles/hyper/hyper-postprocessing/effects/film/second-pass-compiled.glsl`;
 	const filmShader = readFileSync(filmShaderPath).toString();
 
 	// load background image
