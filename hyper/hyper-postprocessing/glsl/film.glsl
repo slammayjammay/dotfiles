@@ -1,7 +1,3 @@
-uniform sampler2D tDiffuse;
-uniform float timeElapsed;
-varying vec2 vUv;
-
 float hash(vec2 p) {
 	float h = dot(p,vec2(127.1,311.7));
 	return -1.0 + 2.0*fract(sin(h)*43758.5453123);
@@ -32,12 +28,10 @@ float noise(vec2 p, int oct) {
 	return f;
 }
 
-void main() {
+vec4 film(sampler2D texture) {
 	// port shadertoy over to threejs
 	vec2 uv = vUv;
 	float iTime = timeElapsed;
-
-	// vec2 uv = fragCoord.xy / iResolution.xy;
 
 	float glitch = pow(cos(iTime*0.5)*1.2+1.0, 1.0);
 
@@ -58,10 +52,12 @@ void main() {
 		}
 	}
 	nh *= glitch + rnd;
-	float r = texture2D(tDiffuse, uv+vec2(nh, 0.08)*nh).r;
-	float g = texture2D(tDiffuse, uv+vec2(nh-0.07, 0.0)*nh).g;
-	float b = texture2D(tDiffuse, uv+vec2(nh, 0.0)*nh).b;
+	float r = texture2D(texture, uv+vec2(nh, 0.08)*nh).r;
+	float g = texture2D(texture, uv+vec2(nh-0.07, 0.0)*nh).g;
+	float b = texture2D(texture, uv+vec2(nh, 0.0)*nh).b;
 
 	vec4 c1 = vec4(r, g, b, 1.0);
-	gl_FragColor = c1;
+	return c1;
 }
+
+#pragma glslify: export(film)

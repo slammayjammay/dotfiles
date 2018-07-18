@@ -1,4 +1,4 @@
-const postprocessingEffect = require('./effects/space-window');
+const postprocessingEffect = require('./effects/film');
 
 module.exports = ({ ShaderMaterial }) => {
 	return postprocessingEffect({ ShaderMaterial });
