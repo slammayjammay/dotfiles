@@ -3,7 +3,7 @@ const { readFileSync } = require('fs');
 const { TextureLoader, LinearFilter } = require('three');
 
 module.exports = ({ ShaderMaterial }) => {
-	const fragmentShaderPath = `${homedir()}/dotfiles/hyper/hyper-postprocessing/effects/edge-glow/compiled.glsl`;
+	const fragmentShaderPath = `${homedir()}/dotfiles/hyper/hyper-postprocessing/effects/chalk/compiled.glsl`;
 	const fragmentShader = readFileSync(fragmentShaderPath).toString();
 
 	const shaderMaterial = new ShaderMaterial({
