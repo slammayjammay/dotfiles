@@ -36,29 +36,19 @@ const float PI = 3.1415926536;
 const float PI2 = PI * 2.0;
 const int mSize = 4;
 
-//
-vec3 colorDodge(in vec3 src, in vec3 dst)
-{
+vec3 colorDodge(in vec3 src, in vec3 dst) {
     return step(0.0, dst) * mix(min(vec3(1.0), dst/ (1.0 - src)), vec3(1.0), step(1.0, src));
 }
 
-float greyScale(in vec3 col)
-{
+float greyScale(in vec3 col) {
     return dot(col, vec3(0.3, 0.59, 0.11));
     //return dot(col, vec3(0.2126, 0.7152, 0.0722)); //sRGB
 }
 
-vec2 random(vec2 p){
-	p = fract(p * (vec2(314.159, 314.265)));
+vec2 random(vec2 p) {
+		p = fract(p * (vec2(314.159, 314.265)));
     p += dot(p, p.yx + 17.17);
     return fract((p.xx + p.yx) * p.xy);
-}
-
-vec2 random2(vec2 p, sampler2D noiseTexture)
-{
-    return texture2D(noiseTexture, p / vec2(1024.0)).xy;
-    //blue1 = texture2D(noiseTexture, p / vec2(1024.0));
-    //blue2 = texture2D(noiseTexture, (p+vec2(137.0, 189.0)) / vec2(1024.0));
 }
 
 vec4 sketch(in sampler2D noiseTexture)

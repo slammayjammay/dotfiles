@@ -6,7 +6,7 @@ uniform float timeElapsed;
 uniform float timeDelta;
 varying vec2 vUv;
 
-#pragma glslify: edgeGlow = require('../../glsl/edge-glow', vUv=vUv, tDiffuse=tDiffuse, resolution=resolution, timeElapsed=timeElapsed)
+#pragma glslify: edgeGlow = require('../../glsl/chalk', vUv=vUv, tDiffuse=tDiffuse, resolution=resolution, timeElapsed=timeElapsed)
 
 void main() {
 	vec4 color = edgeGlow(noiseTexture);
