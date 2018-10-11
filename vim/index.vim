@@ -16,6 +16,7 @@ set autoindent
 set colorcolumn=80
 set splitright
 set expandtab
+set tabpagemax=40
 
 " colors
 syntax on
