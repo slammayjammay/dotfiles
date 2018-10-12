@@ -15,11 +15,15 @@ inoremap ∆ <esc>:tabprevious<CR>
 inoremap ¬ <esc>:tabnext<CR>
 
 " SNIPPETS
-" append console.log() with indent
-nnoremap <leader>log aconsole.log()<esc>==f)i
-
 " surround entire line inside a console.log()
 nnoremap <leader>c ^iconsole.log(<esc>$a);<esc>
 
 " alternative mapping for saving
 nnoremap <leader>w :w<CR>
+
+" Comment/uncomment out line (normal)
+nnoremap <C-m> :normal I// <CR>
+nnoremap <C-c> :normal ^vlld<CR>
+" ...and for visual
+vnoremap <C-m> :normal I// <CR>
+vnoremap <C-c> :normal ^vlld<CR>
