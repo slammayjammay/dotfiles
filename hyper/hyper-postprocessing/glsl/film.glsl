@@ -28,36 +28,28 @@ float noise(vec2 p, int oct) {
 	return f;
 }
 
-vec4 film(sampler2D texture) {
-	// port shadertoy over to threejs
-	vec2 uv = vUv;
-	float iTime = timeElapsed;
+void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor) {
+	vec2 pos = uv;
+	float glitch = pow(cos(time*0.5)*1.2+1.0, 1.0);
 
-	float glitch = pow(cos(iTime*0.5)*1.2+1.0, 1.0);
-
-
-	if(noise(iTime+vec2(0, 0))*glitch > 0.62){
-		uv.y = mod(uv.y+noise(vec2(iTime*4.0, 0)), 1.0);
+	if(noise(time+vec2(0, 0))*glitch > 0.62){
+		pos.y = mod(pos.y+noise(vec2(time*4.0, 0)), 1.0);
 	}
 
-
-	vec2 hp = vec2(0.0, uv.y);
-	float nh = noise(hp*7.0+iTime*10.0, 3) * (noise(hp+iTime*0.3)*0.8);
-	nh += noise(hp*100.0+iTime*10.0, 3)*0.02;
+	vec2 hp = vec2(0.0, pos.y);
+	float nh = noise(hp*7.0+time*10.0, 3) * (noise(hp+time*0.3)*0.8);
+	nh += noise(hp*100.0+time*10.0, 3)*0.02;
 	float rnd = 0.0;
 	if(glitch > 0.0){
-		rnd = hash(uv);
+		rnd = hash(pos);
 		if(glitch < 1.0){
 			rnd *= glitch;
 		}
 	}
 	nh *= glitch + rnd;
-	float r = texture2D(texture, uv+vec2(nh, 0.08)*nh).r;
-	float g = texture2D(texture, uv+vec2(nh-0.07, 0.0)*nh).g;
-	float b = texture2D(texture, uv+vec2(nh, 0.0)*nh).b;
+	float r = texture2D(inputBuffer, pos+vec2(nh, 0.08)*nh).r;
+	float g = texture2D(inputBuffer, pos+vec2(nh-0.07, 0.0)*nh).g;
+	float b = texture2D(inputBuffer, pos+vec2(nh, 0.0)*nh).b;
 
-	vec4 c1 = vec4(r, g, b, 1.0);
-	return c1;
+	outputColor = vec4(r, g, b, 1.0);
 }
-
-#pragma glslify: export(film)

@@ -11,7 +11,7 @@ module.exports = {
     fontFamily: 'Menlo, "DejaVu Sans Mono", Consolas, "Lucida Console", monospace',
 
     // terminal cursor background color and opacity (hex, rgb, hsl, hsv, hwb or cmyk)
-    cursorColor: 'white', // stolen from hyper-krftwrk
+    cursorColor: 'white',
 
     // `BEAM` for |, `UNDERLINE` for _, `BLOCK` for █
     cursorShape: 'BLOCK',
@@ -97,9 +97,6 @@ module.exports = {
     // ==================================================================
     // Plugin options
     // ==================================================================
-		hyperTypedOutput: {
-			enabled: false
-		},
 		hypercwd: {
 			initialWorkingDirectory: '~/Desktop'
 		},
@@ -125,6 +122,6 @@ module.exports = {
   // `~/.hyper_plugins/local/` and include it here
   // to load it and avoid it being `npm install`ed
   localPlugins: [
-		'hyper-xterm-transparent'
+		// 'hyper-postprocessing'
 	]
 };
