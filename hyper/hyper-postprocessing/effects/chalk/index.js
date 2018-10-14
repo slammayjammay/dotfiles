@@ -1,24 +1,24 @@
 const { homedir } = require('os');
 const { readFileSync } = require('fs');
-const { TextureLoader, LinearFilter } = require('three');
+const { TextureLoader, LinearFilter, Uniform } = require('three');
+const { EffectPass, Effect } = require('postprocessing');
 
-module.exports = ({ ShaderMaterial }) => {
-	const fragmentShaderPath = `${homedir()}/dotfiles/hyper/hyper-postprocessing/effects/chalk/compiled.glsl`;
-	const fragmentShader = readFileSync(fragmentShaderPath).toString();
+const BASE = `${homedir()}/dotfiles/hyper/hyper-postprocessing`;
 
-	const shaderMaterial = new ShaderMaterial({
-		uniforms: {
-			noiseTexture: { value: null }
-		},
-		fragmentShader
-	});
+module.exports = ({ hyperTerm, xTerm }) => {
+	const effect = new Effect(
+		'chalkEffect',
+		readFileSync(`${BASE}/glsl/chalk.glsl`).toString(),
+		{
+			attributes: 2,
+			uniforms: new Map([['noiseTexture', new Uniform(null)]])
+		}
+	);
 
-	const imagePath = `${homedir()}/dotfiles/hyper/hyper-postprocessing/images/noise.png`;
-
-	new TextureLoader().load(imagePath, texture => {
+	new TextureLoader().load(`${BASE}/images/noise.png`, texture => {
 		texture.minFilter = LinearFilter;
-		shaderMaterial.uniforms.noiseTexture.value = texture;
+		effect.uniforms.get('noiseTexture').value = texture;
 	});
 
-	return { shaderMaterial };
+	return { pass: new EffectPass(null, effect) };
 };

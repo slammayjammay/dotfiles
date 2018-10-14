@@ -1,5 +1,5 @@
-const postprocessingEffect = require('./effects/glitch');
+const postprocessingEffect = require('./effects/ripple');
 
-module.exports = ({ ShaderMaterial }) => {
-	return postprocessingEffect({ ShaderMaterial });
+module.exports = () => {
+	return postprocessingEffect(...arguments);
 };

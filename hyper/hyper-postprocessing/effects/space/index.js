@@ -5,13 +5,10 @@ const { EffectPass, Effect } = require('postprocessing');
 const BASE = `${homedir()}/dotfiles/hyper/hyper-postprocessing`;
 
 module.exports = ({ hyperTerm, xTerm }) => {
-	const filmEffect = new Effect(
-		'filmEffect',
-		readFileSync(`${BASE}/glsl/film.glsl`).toString(),
-		{
-			blendFunction: 12 // normal -- overwrite
-		}
+	const spaceEffect = new Effect(
+		'space',
+		readFileSync(`${BASE}/glsl/space-travel.glsl`).toString()
 	);
 
-	return { pass: new EffectPass(null, filmEffect) };
+	return { pass: new EffectPass(null, spaceEffect) };
 };

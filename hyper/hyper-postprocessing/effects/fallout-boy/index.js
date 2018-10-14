@@ -1,25 +1,33 @@
 const { homedir } = require('os');
 const { readFileSync } = require('fs');
-const { TextureLoader, LinearFilter } = require('three');
+const { TextureLoader, LinearFilter, Uniform } = require('three');
+const { EffectPass, Effect } = require('postprocessing');
 
-module.exports = ({ ShaderMaterial }) => {
-	const fragmentShaderPath = `${homedir()}/dotfiles/hyper/hyper-postprocessing/effects/fallout-boy/fragment.glsl`;
-	const fragmentShader = readFileSync(fragmentShaderPath).toString();
+const BASE = `${homedir()}/dotfiles/hyper/hyper-postprocessing`;
 
-	const options = {
-		fragmentShader,
-		uniforms: {
-			backgroundTexture: { value: null }
+module.exports = ({ hyperTerm, xTerm }) => {
+	// turn all colors that aren't black into white -- then we can multiply the
+	// image against this to "shine" through only the text
+	const textEffect = new Effect(
+		'textEffect',
+		readFileSync(`${BASE}/glsl/black-and-white.glsl`).toString()
+	);
+
+	// move background image left
+	const backgroundEffect = new Effect(
+		'backgroundEffect',
+		readFileSync(`${BASE}/glsl/background-image.glsl`).toString(),
+		{
+			uniforms: new Map([['backgroundImage', new Uniform(null)]]),
+			defines: new Map([['motionX', '-0.1']]),
+			blendFunction: 10 // multiply
 		}
-	};
+	);
 
-	const shaderMaterial = new ShaderMaterial(options);
-
-	const imagePath = `file://${homedir()}/dotfiles/hyper/hyper-postprocessing/images/fallout-boy.jpg`;
-	new TextureLoader().load(imagePath, texture => {
+	new TextureLoader().load(`${BASE}/images/fallout-boy.jpg`, texture => {
 		texture.minFilter = LinearFilter;
-		shaderMaterial.uniforms.backgroundTexture.value = texture;
+		backgroundEffect.uniforms.get('backgroundImage').value = texture;
 	});
 
-	return { shaderMaterial };
+	return { pass: new EffectPass(null, textEffect, backgroundEffect) };
 };
