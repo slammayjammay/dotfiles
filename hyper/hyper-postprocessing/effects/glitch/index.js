@@ -42,7 +42,12 @@ module.exports = ({ hyperTerm, xTerm }) => {
 		{
 			blendFunction: 12 // normal -- overwrite
 		}
-	))
+	));
+
+	effects.push(new Effect(
+		'space',
+		readFileSync(`${BASE}/glsl/space-travel.glsl`).toString()
+	));
 
 	return { pass: new EffectPass(null, ...effects) };
 };
