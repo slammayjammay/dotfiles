@@ -27,3 +27,6 @@ nnoremap <C-c> :normal ^vlld<CR>
 " ...and for visual
 vnoremap <C-m> :normal I// <CR>
 vnoremap <C-c> :normal ^vlld<CR>
+
+" shortcut for CtrlPBuffer
+nnoremap <leader>b :CtrlPBuffer<CR>
