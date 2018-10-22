@@ -9,6 +9,7 @@ Plug 'tpope/vim-surround'
 Plug 'vim-syntastic/syntastic'
 Plug 'https://github.com/vim-scripts/SyntaxAttr.vim'
 Plug 'posva/vim-vue'
+Plug 'terryma/vim-multiple-cursors'
 call plug#end()
 
 " ctrlp options
