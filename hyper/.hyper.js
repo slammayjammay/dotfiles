@@ -114,7 +114,6 @@ module.exports = {
   plugins: [
 		'hypercwd',
 		'gitrocket',
-		'hyperterm-tabs',
 		'hyper-postprocessing'
 	],
 
