@@ -1,14 +1,10 @@
-const { homedir } = require('os');
+const { resolve } = require('path');
 const { readFileSync } = require('fs');
-const { EffectPass, Effect } = require('postprocessing');
+const { Effect } = require('postprocessing');
 
-const BASE = `${homedir()}/dotfiles/hyper/hyper-postprocessing`;
+const spaceEffect = new Effect(
+	'space',
+	readFileSync(resolve(__dirname, '../../glsl/space-travel.glsl')).toString()
+);
 
-module.exports = ({ hyperTerm, xTerm }) => {
-	const spaceEffect = new Effect(
-		'space',
-		readFileSync(`${BASE}/glsl/space-travel.glsl`).toString()
-	);
-
-	return { pass: new EffectPass(null, spaceEffect) };
-};
+module.exports = [spaceEffect];

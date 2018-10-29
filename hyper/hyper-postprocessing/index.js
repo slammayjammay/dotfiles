@@ -1,5 +1,8 @@
-const postprocessingEffect = require('./effects/glitch');
+const { EffectPass } = require('postprocessing');
+const chalkEffects = require('./effects/chalk');
 
-module.exports = () => {
-	return postprocessingEffect(...arguments);
-};
+const effects = [
+	...chalkEffects
+];
+
+module.exports = { pass: new EffectPass(null, ...effects) };
