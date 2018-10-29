@@ -1,24 +1,20 @@
-const { homedir } = require('os');
+const { resolve } = require('path');
 const { readFileSync } = require('fs');
 const { TextureLoader, LinearFilter, Uniform } = require('three');
-const { EffectPass, Effect } = require('postprocessing');
+const { Effect } = require('postprocessing');
 
-const BASE = `${homedir()}/dotfiles/hyper/hyper-postprocessing`;
+const chalkEffect = new Effect(
+	'chalkEffect',
+	readFileSync(resolve(__dirname, '../../glsl/chalk.glsl')).toString(),
+	{
+		attributes: 2,
+		uniforms: new Map([['noiseTexture', new Uniform(null)]])
+	}
+);
 
-module.exports = ({ hyperTerm, xTerm }) => {
-	const effect = new Effect(
-		'chalkEffect',
-		readFileSync(`${BASE}/glsl/chalk.glsl`).toString(),
-		{
-			attributes: 2,
-			uniforms: new Map([['noiseTexture', new Uniform(null)]])
-		}
-	);
+new TextureLoader().load(resolve(__dirname, '../../images/noise.png'), texture => {
+	texture.minFilter = LinearFilter;
+	chalkEffect.uniforms.get('noiseTexture').value = texture;
+});
 
-	new TextureLoader().load(`${BASE}/images/noise.png`, texture => {
-		texture.minFilter = LinearFilter;
-		effect.uniforms.get('noiseTexture').value = texture;
-	});
-
-	return { pass: new EffectPass(null, effect) };
-};
+module.exports = [chalkEffect];
