@@ -37,22 +37,15 @@ alias ga="git-add-file"
 
 # other
 alias desktop="cd ~/Desktop"
-alias cleark="clear && printf '\e[3J'"
 
-# alternate screen stuff
-function newscreen() {
-	name=$1
+function gitboy() {
+	check_if_git_repo=$(git rev-parse --is-inside-work-tree)
 
-	screen -dmS $name
-	screen -S $name -p 0 -X stuff "cd `pwd`
-	cleark
+	if [ $? != 0 ]; then
+		printf "$check_if_git_repo"
+		return 1;
+	fi
 
-	"
+	modified_files=`git status --porcelain | awk '{ if ($1 == "M") print $2 }'`
+	pipe-boy "$modified_files"
 }
-
-function killscreens() {
-	for name in "$@"; do
-		screen -S $name -X quit
-	done
-}
-
