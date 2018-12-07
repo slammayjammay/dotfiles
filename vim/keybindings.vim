@@ -18,6 +18,9 @@ inoremap ¬ <esc>:tabnext<CR>
 " surround entire line inside a console.log()
 nnoremap <leader>c ^iconsole.log(<esc>$a);<esc>
 
+" setTimeout
+nnoremap <leader>set SsetTimeout(() => {})<left><left><CR><esc>O
+
 " alternative mapping for saving
 nnoremap <leader>w :w<CR>
 
