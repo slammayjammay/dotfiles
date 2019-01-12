@@ -4,6 +4,7 @@ source "${GITAWAREPROMPT}/main.sh"
 export PS1="\u \W \[$txtcyn\]\$git_branch\[$txtred\]\$git_dirty\[$txtrst\]\$ "
 
 # $EDITOR
+export VISUAL="vim"
 export EDITOR="atom --wait"
 
 source ~/dotfiles/bash-profile/.git-completion.bash
