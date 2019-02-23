@@ -48,5 +48,5 @@ function gitboy() {
 	fi
 
 	modified_files=`git status --porcelain | awk '{ if ($1 == "M") print $2 }'`
-	pipe-boy "$modified_files"
+	pipe-boy "$modified_files" --banner.text GitBoy --banner.font reverse --banner.horizontalLayout "controlled smushing"
 }
