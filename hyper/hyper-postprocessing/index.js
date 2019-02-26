@@ -23,7 +23,7 @@ passes.push(new EffectPass(null,
 passes.push(new EffectPass(null,
 	new BloomEffect({
 		kernelSize: 3,
-		distinction: -0.6
+		distinction: -0.4
 	}))
 );
 
