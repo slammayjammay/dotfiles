@@ -37,6 +37,7 @@ alias goof="git-checkout-file"
 alias ga="git-add-file"
 
 # other
+alias tovim="xargs -o vim -p"
 alias desktop="cd ~/Desktop"
 
 function gitboy() {
