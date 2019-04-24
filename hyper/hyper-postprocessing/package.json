@@ -10,8 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "postprocessing": "^5.0.0",
-    "three": "^0.92.0"
+    "postprocessing": "^6.2.2",
+    "three": "^0.103.0"
   },
   "devDependencies": {
     "glsl-blend": "^1.0.3"
