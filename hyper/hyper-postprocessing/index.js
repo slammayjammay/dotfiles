@@ -1,7 +1,7 @@
 const { resolve } = require('path');
 const { readFileSync } = require('fs');
 const { Uniform, LinearFilter, TextureLoader } = require('three');
-const { EffectPass, Effect, BloomEffect } = require('postprocessing');
+const { EffectPass, Effect, BloomEffect, BlendFunction } = require('postprocessing');
 
 const PATH = '../hyper_plugins/local/hyper-postprocessing/examples/';
 
@@ -16,7 +16,7 @@ passes.push(new EffectPass(null,
 	new Effect(
 		'sampling',
 		readFileSync(resolve(__dirname, PATH, 'glsl/sampling.glsl')).toString(),
-		{ blendFunction: 12 }
+		{ blendFunction: BlendFunction.NORMAL }
 	)
 ));
 
