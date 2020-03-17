@@ -22,6 +22,9 @@ alias gc="git commit -m"
 alias stash="git stash"
 alias pop="git stash pop"
 alias goma="git checkout master"
+alias untracked="git ls-files -o --exclude-standard"
+alias modified="git ls-files --modified"
+alias conflicts="git diff --name-only --diff-filter U"
 
 # npm aliases
 alias nr="npm run"
@@ -52,9 +55,24 @@ function gitboy() {
 }
 
 function go() {
-	if [ $# -ne 0 ]; then
-		git checkout `gb | grep "$1"`
+	local OPTARG OPTIND opt
+	local doalias=false
+
+	if [ $# -eq 0 ]; then
+		return 1
+	fi
+
+	while getopts ':b' opt "$@"; do
+		case ${opt} in
+			b)
+				doalias=true
+				;;
+		esac
+	done
+
+	if [ "$doalias" = true ]; then
+		git checkout "$@"
 	else
-		echo "where?"
+		git checkout `gb | grep "$1" -m 1`
 	fi
 }
