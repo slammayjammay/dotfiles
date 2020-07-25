@@ -33,3 +33,6 @@ vnoremap <C-c> :normal ^vlld<CR>
 
 " shortcut for CtrlPBuffer
 nnoremap <leader>b :CtrlPBuffer<CR>
+
+" shortcut to view previous buffer
+nnoremap <leader>3 :b#<CR>
