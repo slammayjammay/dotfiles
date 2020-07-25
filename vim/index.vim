@@ -30,5 +30,6 @@ highlight Identifier ctermfg=blue
 highlight es6InstanceMethod ctermfg=red
 highlight es6InstanceMethodArgs ctermfg=white
 " set `.inc` syntax to html
-au BufReadPost *.inc set syntax=html
-au BufReadPost *.hbs set syntax=html
+au BufRead *.inc set syntax=html
+au BufRead *.hbs set syntax=html
+au BufRead *.ejs set syntax=html
