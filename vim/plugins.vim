@@ -11,6 +11,7 @@ Plug 'https://github.com/vim-scripts/SyntaxAttr.vim'
 Plug 'posva/vim-vue'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'francoiscabrol/ranger.vim'
+Plug 'https://github.com/MaxMEllon/vim-jsx-pretty'
 call plug#end()
 
 " ctrlp options
