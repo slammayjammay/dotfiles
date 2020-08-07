@@ -36,3 +36,6 @@ nnoremap <leader>b :CtrlPBuffer<CR>
 
 " shortcut to view previous buffer
 nnoremap <leader>3 :b#<CR>
+
+" shortcut to copy current filename to clipboard
+nnoremap <leader>y :let @* = expand('%')<CR>
