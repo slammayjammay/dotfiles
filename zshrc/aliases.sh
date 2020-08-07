@@ -1,19 +1,3 @@
-# show git branch
-export GITAWAREPROMPT=~/dotfiles/git-aware-prompt
-source "${GITAWAREPROMPT}/main.sh"
-export PS1="\W \j \[$txtcyn\]\$git_branch\[$txtred\]\$git_dirty\[$txtrst\] \$ "
-
-# $EDITOR
-export VISUAL="vim"
-export EDITOR="sublime -w"
-
-alias subl="sublime"
-
-source ~/dotfiles/bash-profile/.git-completion.bash
-__git_complete go _git_checkout
-__git_complete gm _git_merge
-__git_complete gb _git_branch
-
 # git aliases
 alias gm="git merge"
 alias push="git push"
@@ -43,19 +27,10 @@ alias ga="git-add-file"
 # other
 alias tovim="xargs -o vim -p"
 alias desktop="cd ~/Desktop"
+alias subl="sublime"
+alias ll="ls -alG"
 
-function gitboy() {
-	check_if_git_repo=$(git rev-parse --is-inside-work-tree)
-
-	if [ $? != 0 ]; then
-		printf "$check_if_git_repo"
-		return 1;
-	fi
-
-	modified_files=`git diff --name-only --relative --diff-filter M`
-	pipe-boy "$modified_files" --banner.text GitBoy --banner.font reverse --banner.horizontalLayout "controlled smushing"
-}
-
+# alias for `git checkout`
 function go() {
 	local OPTARG OPTIND opt
 	local doalias=false
