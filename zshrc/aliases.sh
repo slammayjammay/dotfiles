@@ -53,3 +53,12 @@ function go() {
 		git checkout `gb | grep "$1" -m 1`
 	fi
 }
+
+get_cmd() {
+	[[ -z ${aliases[$1]} ]] && echo "$1" || echo "$aliases[$1]"
+}
+
+function z() {
+	cmd=$(get_cmd $1)
+	stout=$(eval "$cmd $@[2,-1]")
+}
