@@ -1,4 +1,4 @@
-export PATH="/Users/Scott/.nvm/versions/node/v8.9.4/bin:$PATH"
+export PATH="/Users/Scott/.nvm/versions/node/v12.18.2/bin:$PATH"
 
 is_nvm_loaded=false
 
