@@ -39,3 +39,9 @@ nnoremap <leader>3 :b#<CR>
 
 " shortcut to copy current filename to clipboard
 nnoremap <leader>y :let @* = expand('%')<CR>
+
+" shortcut to redraw
+nnoremap <leader>r :redraw!<CR>
+
+" shortcut to copy to clipboard
+vnoremap <leader>8 "*y<CR>

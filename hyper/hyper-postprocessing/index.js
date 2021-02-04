@@ -1,14 +1,14 @@
 const { resolve } = require('path');
 const { readFileSync } = require('fs');
 const { Uniform, LinearFilter, TextureLoader } = require('three');
-const { EffectPass, Effect, BloomEffect, BlendFunction } = require('postprocessing');
+const { EffectPass, Effect, BloomEffect, BrightnessContrastEffect, BlendFunction } = require('postprocessing');
 
 const PATH = '../hyper_plugins/local/hyper-postprocessing/examples/';
 
 const fn = require(resolve(__dirname, PATH, 'effects/retro'));
 
-module.exports = function() {
-	return fn(...arguments);
+module.exports = (...args) => {
+	return fn(...args);
 };
 
 // const passes = [];
