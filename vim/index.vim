@@ -17,6 +17,7 @@ set colorcolumn=80
 set splitright
 set expandtab
 set tabpagemax=40
+set hidden
 
 " colors
 syntax on
@@ -30,6 +31,6 @@ highlight Identifier ctermfg=blue
 highlight es6InstanceMethod ctermfg=red
 highlight es6InstanceMethodArgs ctermfg=white
 " set `.inc` syntax to html
-au BufRead *.inc set syntax=html
-au BufRead *.hbs set syntax=html
-au BufRead *.ejs set syntax=html
+au BufRead *.inc set ft=html
+au BufRead *.hbs set ft=html
+au BufRead *.ejs set ft=html
