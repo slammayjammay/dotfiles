@@ -16,6 +16,7 @@ __git_complete gb _git_branch
 
 # git aliases
 alias gm="git merge"
+alias gl="git log"
 alias push="git push"
 alias pull="git pull"
 alias gs="git status"
@@ -36,13 +37,13 @@ alias publish="npm publish"
 # aliases for github packages
 alias gd="git-diff-glob --pager"
 alias gall="git-commit-all"
-alias gl="git-log --pager"
 alias goof="git-checkout-file"
 alias ga="git-add-file"
 
 # other
 alias tovim="xargs -o vim -p"
 alias desktop="cd ~/Desktop"
+alias say="say -v yuri"
 
 function gitboy() {
 	check_if_git_repo=$(git rev-parse --is-inside-work-tree)
