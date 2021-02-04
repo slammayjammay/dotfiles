@@ -36,3 +36,9 @@ nnoremap <leader>b :CtrlPBuffer<CR>
 
 " shortcut to view previous buffer
 nnoremap <leader>3 :b#<CR>
+
+" shortcut to redraw
+nnoremap <leader>r :redraw!<CR>
+
+" shortcut to copy to clipboard
+vnoremap <leader>8 "*y<CR>

@@ -17,6 +17,7 @@ set colorcolumn=80
 set splitright
 set expandtab
 set tabpagemax=40
+set hidden
 
 " colors
 syntax on
