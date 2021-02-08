@@ -49,7 +49,7 @@ function go() {
 	if [ "$doalias" = true ]; then
 		git checkout "$@"
 	else
-		git checkout `gb -r | grep "$1" -m 1`
+		git checkout `gb -a | grep HEAD -v | grep "$1" -m 1 | sed -e 's/remotes\/origin\///'`
 	fi
 }
 
