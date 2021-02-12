@@ -10,6 +10,7 @@ alias tovim="xargs -o vim -p"
 alias desktop="cd ~/Desktop"
 alias subl="sublime"
 alias ll="ls -alG"
+alias say="say -v yuri"
 
 get_cmd() {
 	[[ -z ${aliases[$1]} ]] && echo "$1" || echo "$aliases[$1]"
