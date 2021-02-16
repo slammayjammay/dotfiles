@@ -1,7 +1,7 @@
 alias gl="git log"
 alias gm="git merge"
 alias push="git push"
-alias pushu="git push origin HEAD"
+alias pushu="git push -u origin HEAD"
 alias pull="git pull"
 alias gs="git status"
 alias gb="git branch"
