@@ -21,6 +21,9 @@ nnoremap <leader>c ^iconsole.log(<esc>$a);<esc>
 " setTimeout
 nnoremap <leader>set SsetTimeout(() => {})<left><left><CR><esc>O
 
+" alternative mapping for quitting
+nnoremap <leader>q :q<CR>
+
 " alternative mapping for saving
 nnoremap <leader>w :w<CR>
 
