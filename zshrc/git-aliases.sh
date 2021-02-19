@@ -48,7 +48,7 @@ function go() {
 		esac
 	done
 
-	if [ "$doalias" = true ]; then
+	if [ "$doalias" = true ] || [ "$1" = "-" ]; then
 		git checkout "$@"
 	else
 		git checkout `gb -a | grep HEAD -v | grep "$1" -m 1 | sed -e 's/remotes\/origin\///'`
