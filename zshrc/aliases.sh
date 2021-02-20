@@ -8,7 +8,6 @@ alias publish="npm publish"
 # other
 alias tovim="xargs -o vim -p"
 alias desktop="cd ~/Desktop"
-alias subl="sublime"
 alias ll="ls -alG"
 alias say="say -v yuri"
 
