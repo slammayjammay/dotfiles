@@ -7,6 +7,7 @@ if has('python3')
 endif
 
 " options
+set tabstop=2
 set backspace=indent,eol,start
 set relativenumber!
 set number
