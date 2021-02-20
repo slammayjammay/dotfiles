@@ -1,4 +1,4 @@
-source "/Users/Scott/dotfiles/zshrc/git-aliases.sh"
+source ~/dotfiles/zshrc/git-aliases.sh
 
 # npm aliases
 alias nr="npm run"
