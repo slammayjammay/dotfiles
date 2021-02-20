@@ -2,8 +2,12 @@ source ~/dotfiles/vim/plugins.vim
 source ~/dotfiles/vim/commands.vim
 source ~/dotfiles/vim/keybindings.vim
 
+if has('linux')
+        source ~/dotfiles/vim/keybindings-linux.vim
+endif
+
 if has('python3')
-  silent! python3 1
+        silent! python3 1
 endif
 
 " options
