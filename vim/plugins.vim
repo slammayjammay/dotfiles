@@ -12,14 +12,11 @@ Plug 'posva/vim-vue'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'francoiscabrol/ranger.vim'
 Plug 'https://github.com/MaxMEllon/vim-jsx-pretty'
+Plug 'https://github.com/ctrlpvim/ctrlp.vim'
 call plug#end()
 
 " ctrlp options
-set runtimepath^=~/.vim/bundle/ctrlp.vim
-set wildignore+=*/.git/*
-set wildignore+=*/node_modules/*
-set wildignore+=*/.svn/*
-set wildignore+=*/.DS_Store
+let g:ctrlp_custom_ignore = 'node_modules\|git'
 let g:ctrlp_show_hidden = 1
 let g:ctrlp_dont_split = 'NERD'
 let g:ctrlp_working_path_mode = 0
