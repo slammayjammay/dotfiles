@@ -1,1 +1,2 @@
-google-chrome --new-window "https://www.youtube.com/results?search_query=$@"
+query=$(node -e "process.stdout.write(encodeURIComponent('$(echo $@)'))")
+google-chrome --new-window "https://www.youtube.com/results?search_query=$query"
