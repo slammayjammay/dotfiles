@@ -59,15 +59,6 @@ function goof() {
 	git checkout `git_status_files | grep $1`
 }
 
-function pipe-boy() {
-	node_version=$(node -v)
-	needs_swap=false; [ "$node_version" != "v8.9.4" ] && needs_swap=true
-
-	$needs_swap && nvm use 8.9.4 &> /dev/null
-	npx pipe-boy "$@"
-	$needs_swap && nvm use $node_version &> /dev/null
-}
-
 function gitboy() {
 	is_git_repo=$(git rev-parse --is-inside-work-tree)
 
@@ -77,5 +68,5 @@ function gitboy() {
 	fi
 
 	modified_files=`git diff --name-only --relative --diff-filter M`
-	pipe-boy "$modified_files" --banner.text GitBoy --banner.font reverse --banner.horizontalLayout "controlled smushing"
+	pipe-boy "$modified_files" --banner.text GitBoy --banner.font Reverse --banner.horizontalLayout "controlled smushing"
 }
