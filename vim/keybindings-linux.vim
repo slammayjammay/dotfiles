@@ -1,1 +1,1 @@
-vnoremap <leader>8 :w !xclip -selection clipboard<CR><CR>
+vnoremap <leader>8 y:silent !echo -n <C-R>" \| xclip -sel clip<CR>:redraw!<CR>
