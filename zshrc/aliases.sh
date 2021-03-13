@@ -17,6 +17,11 @@ get_cmd() {
 
 function z() {
 	cmd=$(get_cmd $1)
+	vim -c "set noro" <(eval "$cmd $@[2,-1]")
+}
+
+function zz() {
+	cmd=$(get_cmd $1)
 	stout=$(eval "$cmd $@[2,-1]")
 	echo $stout
 }
