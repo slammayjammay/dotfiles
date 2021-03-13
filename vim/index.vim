@@ -23,6 +23,7 @@ set splitright
 set expandtab
 set tabpagemax=40
 set hidden
+set shortmess=a
 
 " colors
 syntax on
