@@ -1,1 +1,1 @@
-vnoremap <leader>8 y:silent !echo -n <C-R>" \| xsel -b<CR>:redraw!<CR>
+vnoremap <leader>8 y:call system('cat \| xsel -b', getreg('"'))<CR>
