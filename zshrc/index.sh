@@ -1,6 +1,7 @@
 # $EDITOR
 export VISUAL="vim"
 export EDITOR="sublime -w"
+export LESS="-Rc"
 
 fpath=(~/dotfiles/zshrc/completion $fpath)
 autoload -U compinit && compinit
