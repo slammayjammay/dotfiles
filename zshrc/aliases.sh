@@ -6,6 +6,7 @@ alias npmi="npm install"
 alias publish="npm publish"
 
 # other
+alias vi="vim"
 alias tovim="xargs -o vim -p"
 alias desktop="cd ~/Desktop"
 alias ll="ls -alG"

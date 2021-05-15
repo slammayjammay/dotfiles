@@ -70,3 +70,8 @@ function gitboy() {
 	modified_files=`git diff --name-only --relative --diff-filter M`
 	pipe-boy "$modified_files" --banner.text GitBoy --banner.font Reverse --banner.horizontalLayout "controlled smushing"
 }
+
+function start-ssh() {
+	eval "$(ssh-agent -s)"
+	ssh-add ~/.ssh/id_ed25519
+}
