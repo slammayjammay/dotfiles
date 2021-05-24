@@ -1,6 +1,6 @@
 # $EDITOR
 export VISUAL="vim"
-export EDITOR="sublime -w"
+export EDITOR="vim"
 export LESS="-Rc"
 
 fpath=(~/dotfiles/zshrc/completion $fpath)
