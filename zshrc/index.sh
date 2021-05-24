@@ -3,6 +3,8 @@ export VISUAL="vim"
 export EDITOR="vim"
 export LESS="-Rc"
 
+bindkey -v
+
 fpath=(~/dotfiles/zshrc/completion $fpath)
 autoload -U compinit && compinit
 
