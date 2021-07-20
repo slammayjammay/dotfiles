@@ -13,6 +13,7 @@ Plug 'francoiscabrol/ranger.vim'
 Plug 'https://github.com/MaxMEllon/vim-jsx-pretty'
 Plug 'https://github.com/ctrlpvim/ctrlp.vim'
 Plug 'https://github.com/mg979/vim-visual-multi'
+Plug 'https://github.com/instant-markdown/vim-instant-markdown', {'for': 'markdown'}
 call plug#end()
 
 " ctrlp options
@@ -32,3 +33,6 @@ let g:syntastic_sass_checkers = ['sass']
 let g:syntastic_scss_checkers = ['sass']
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+
+" Instant Markdown options
+let g:instant_markdown_autostart = 0
