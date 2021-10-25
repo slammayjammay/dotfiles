@@ -1,2 +1,0 @@
-query=$(node -e "process.stdout.write(encodeURIComponent('$(echo $@)'))")
-google-chrome --new-window "https://google.com/search?q=$query"

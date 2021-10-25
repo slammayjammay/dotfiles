@@ -24,7 +24,7 @@ function gd() {
 	if [[ -z $1 ]]; then
 		git diff "$@"
 	else
-		git -c color.ui=always diff `git_status_files | grep $1` | less -R
+		git -c color.ui=always diff `git_status_files | grep -i $1` | less -R
 	fi
 }
 
