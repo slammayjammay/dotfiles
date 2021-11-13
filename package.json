@@ -2,22 +2,8 @@
   "name": "dotfiles",
   "version": "1.0.0",
   "description": "Dotfiles",
-  "main": "install.js",
-  "scripts": {
-    "copy": "node scripts/copy",
-    "copy:config": "node scripts/copy --copy-config",
-    "build": "node scripts/copy --build",
-    "dev:cursor": "node scripts/plugin-dev hyper-cursorfade",
-    "dev:fallout": "node scripts/plugin-dev fallout-theme",
-    "dev:typed": "node scripts/plugin-dev hyper-typed-output",
-    "dev:nasa": "node scripts/plugin-dev hypernasa",
-    "dev:post": "node scripts/plugin-dev hyper-postprocessing",
-    "dev:transparent": "node scripts/plugin-dev hyper-xterm-transparent",
-    "lint": "eslint **/*.js",
-    "lint:fix": "eslint --fix **/*.js",
-    "setup": "node scripts/install.js",
-    "setup:build": "node scripts/install.js --build"
-  },
+  "main": "zsh/index.sh",
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/slammayjammay/dotfiles.git"
@@ -29,12 +15,5 @@
     "url": "https://github.com/slammayjammay/dotfiles/issues"
   },
   "homepage": "https://github.com/slammayjammay/dotfiles#readme",
-  "dependencies": {
-    "chalk": "^2.0.1",
-    "mkdirp": "^0.5.1"
-  },
-  "devDependencies": {
-    "eslint": "^4.5.0",
-    "webpack": "^4.6.0"
-  }
+  "dependencies": {}
 }
