@@ -8,7 +8,7 @@ function help() {
 }
 
 function git() {
-	/usr/local/bin/git -c color.ui=always $@
+	/usr/bin/git -c color.ui=always $@
 }
 
 function gd() {

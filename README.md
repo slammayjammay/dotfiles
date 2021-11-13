@@ -1,24 +1,29 @@
 # Dotfiles
+Expects to clone inside `$HOME` or `~` directory.
 
-There are really only two dotfile things here: `bash-profile` and `vim` (for now).
-These are expected to be installed under `~/`.
-
-The way to include them is to `source` them from the correct locations, i.e.:
+## Source these:
 ```sh
-# ---------- ~/.bash-profile ----------
-source ~/dotfiles/bash-profile/index
+# ~/.zshrc
+source ~/dotfiles/zsh/index.sh
 
-# ---------- ~/.vim/vimrc ----------
-source ~/dotfiles/vim/index
+# ~/.vim/vimrc
+source ~/dotfiles/vim/index.vim
 ```
 
-TODO: just copy these over, don't `source` them.
+## Copy these:
+```sh
+# pipe-boy
+cp -r ~/dotfiles/misc/pipe-boy ~/.pipe-boy
 
-## Setup
-Run `npm run setup` to copy all relevant files to the correct locations (with the exception of `~/.bash-profile` and `~/.vim/vimrc`). This will also build all local hyper plugins before copying them.
+# ranger
+cp ~/dotfiles/misc/ranger/rc.conf ~/.config/ranger/
+```
 
-## Hyper
-Hyper looks for a config file on load -- `~/.hyper.js`. That file exists in this project (`hyper/.hyper.js`) and is copied over when running `npm run setup`. The config file can take local hyper plugins and looks for them under `~/.hyper_plugins/local/`. Those local plugins are also in this project (`hyper/hyper_plugins/local/`) and are copied over on `npm run setup`.
+## Zsh
+Install through brew, apt, pacman, etc. Then run below, log out, log in.
+```sh
+chsh -s `which zsh` $YOUR_USERNAME
+```
 
-### Plugin development
-There is a watch script setup so that you can develop local plugins from the root of this folder. Run `node scripts/plugin-dev ${folder-of-plugin}` to setup the watch using `webpack` and copy the plugin on every compilation. There are also some npm scripts setup for shorthand: `npm run dev:typed` === `node scripts/plugin-dev hyper-typed-output`.
+## VimPlug
+Follow directions in the [VimPlug repo](https://github.com/junegunn/vim-plug): create file `~/.vim/autoload/plug.vim` and set contents to [this](https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim). Open vim and run `:PlugInstall`.

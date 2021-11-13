@@ -1,0 +1,13 @@
+{
+  "FORCE_COLOR": 1,
+  "setCwdOnCd": true,
+  "alwaysEscapeInput": false,
+  "shell": "/usr/bin/zsh",
+  "banner": {
+    "text": "PipeBoy",
+    "font": "Chunky",
+    "color": "green",
+    "horizontalLayout": "default",
+    "verticalLayout": "default"
+  }
+}
