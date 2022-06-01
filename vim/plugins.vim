@@ -14,6 +14,7 @@ Plug 'https://github.com/MaxMEllon/vim-jsx-pretty'
 Plug 'https://github.com/ctrlpvim/ctrlp.vim'
 Plug 'https://github.com/mg979/vim-visual-multi'
 Plug 'https://github.com/instant-markdown/vim-instant-markdown', {'for': 'markdown'}
+Plug 'https://github.com/TroyFletcher/vim-colors-synthwave'
 call plug#end()
 
 " ctrlp options
