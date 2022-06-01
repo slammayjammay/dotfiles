@@ -27,15 +27,7 @@ set shortmess=a
 
 " colors
 syntax on
-colorscheme slate
-highlight String ctermfg=darkgreen
-highlight Identifier ctermfg=blue
-highlight IncSearch ctermbg=blue
-highlight MatchParen ctermbg=blue
-highlight ColorColumn ctermbg=darkgray
-highlight Identifier ctermfg=blue
-highlight es6InstanceMethod ctermfg=red
-highlight es6InstanceMethodArgs ctermfg=white
+colorscheme synthwave
 " set `.inc` syntax to html
 au BufRead *.inc set ft=html
 au BufRead *.hbs set ft=html
