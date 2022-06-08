@@ -48,3 +48,6 @@ nnoremap <leader>r :redraw!<CR>
 
 " shortcut to copy to clipboard
 vnoremap <leader>8 "*y<CR>
+
+" Ctrl clear cache
+nnoremap <leader>p :CtrlPClearCache<CR>
