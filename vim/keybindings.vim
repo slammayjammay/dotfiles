@@ -26,6 +26,7 @@ nnoremap <leader>q :q<CR>
 
 " alternative mapping for saving
 nnoremap <leader>w :w<CR>
+nnoremap <leader>j :w<CR>
 
 " Comment/uncomment out line (normal)
 nnoremap <C-m> :normal I// <CR>
