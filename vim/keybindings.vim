@@ -8,6 +8,7 @@ nnoremap <C-S-l> :tabnext<CR>
 nnoremap <C-t> :tabnew<CR>:e .<CR>
 nnoremap ∆ :tabprevious<CR>
 nnoremap ¬ :tabnext<CR>
+nnoremap <leader>z :filetype detect<CR>
 inoremap <C-j> <esc>:tabprevious<CR>
 inoremap <C-S-l> <esc>:tabnext<CR>
 inoremap <C-t> <esc>:tabnew<CR>:e .<CR>
