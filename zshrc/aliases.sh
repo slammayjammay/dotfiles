@@ -12,6 +12,7 @@ alias tovim="tovi"
 alias desktop="cd ~/Desktop"
 alias ll="ls -alG"
 alias say="say -v yuri"
+alias loadruby=". $HOME/.rvm/scripts/rvm && rvm use default"
 
 get_cmd() {
 	[[ -z ${aliases[$1]} ]] && echo "$1" || echo "$aliases[$1]"
