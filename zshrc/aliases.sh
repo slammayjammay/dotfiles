@@ -12,6 +12,7 @@ alias tovim="tovi"
 alias dtop="cd ~/Desktop"
 alias ll="ls -alG"
 alias say="say -v yuri"
+alias g="grep"
 alias loadruby=". $HOME/.rvm/scripts/rvm && rvm use default"
 
 get_cmd() {
