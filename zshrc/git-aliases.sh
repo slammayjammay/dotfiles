@@ -12,10 +12,11 @@ alias reset="git reset HEAD^ && git reset ."
 alias prune="git remote prune origin"
 alias goma="git checkout master"
 alias gall="git add -A; git commit -m"
-alias gmod="git ls-files --modified"
 alias modified="git ls-files --modified"
 alias untracked="git ls-files -o --exclude-standard"
 alias conflicts="git diff --name-only --diff-filter U"
+alias gmod="modified"
+alias gun="untracked"
 
 function git_status_files() {
 	git status --porcelain | awk '{ print $2 }'
