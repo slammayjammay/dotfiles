@@ -20,3 +20,8 @@ function out() {
 	rm $HOME/.bash_history
 	exit
 }
+
+function start-ssh() {
+	eval "$(ssh-agent -s)"
+	ssh-add ~/.ssh/id_ed25519
+}
