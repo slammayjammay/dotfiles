@@ -53,3 +53,6 @@ vnoremap <leader>8 "*y<CR>
 
 " Ctrl clear cache
 nnoremap <leader>p :CtrlPClearCache<CR>
+
+" Move tab to beginning
+nnoremap <leader>t :tabm 0<CR>
