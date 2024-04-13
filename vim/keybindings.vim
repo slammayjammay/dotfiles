@@ -53,3 +53,6 @@ vnoremap <leader>8 "*y<CR>
 
 " Ctrl clear cache
 nnoremap <leader>p :CtrlPClearCache<CR>
+
+" ranger.vim breaks editor config...
+nnoremap <leader>e :EditorConfigReload<CR>
