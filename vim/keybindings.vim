@@ -56,3 +56,6 @@ nnoremap <leader>p :CtrlPClearCache<CR>
 
 " Move tab to beginning
 nnoremap <leader>t :tabm 0<CR>
+
+" ranger.vim breaks editor config...
+nnoremap <leader>e :EditorConfigReload<CR>
