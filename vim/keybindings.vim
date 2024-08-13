@@ -43,7 +43,7 @@ nnoremap <leader>b :CtrlPBuffer<CR>
 nnoremap <leader>3 :b#<CR>
 
 " shortcut to copy current filename to clipboard
-nnoremap <leader>y :let @* = expand('%')<CR>
+map <leader>y :let @* = expand('%')<CR>
 
 " shortcut to redraw
 nnoremap <leader>r :redraw!<CR>
