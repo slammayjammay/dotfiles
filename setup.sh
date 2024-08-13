@@ -13,6 +13,8 @@ echo "OK"
 
 [[ ! -d $HOME/slammayjammay ]] && mkdir $HOME/slammayjammay
 [[ ! -d $HOME/slammayjammay/pipe-boy ]] && git clone git@github.com:slammayjammay/pipe-boy $HOME/slammayjammay/pipe-boy
+cd $HOME/slammayjammay/pipe-boy
+npm install
 
 echo ""
 echo "Don't forget:"
