@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # create $HOME/.config folder if it doesn't exist, copy relevant files over
 [[ ! -d $HOME/.config ]] && mkdir $HOME/.config
 
