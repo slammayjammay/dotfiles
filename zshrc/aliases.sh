@@ -1,31 +1,19 @@
-source ~/dotfiles/zshrc/git-aliases.sh
-
-# npm aliases
 alias nr="npm run"
 alias npmi="npm install"
 alias publish="npm publish"
-
-# other
 alias vi="vim"
 alias tovi="xargs -o vim -p"
 alias tovim="tovi"
 alias dtop="cd ~/Desktop"
 alias ll="ls -alG"
 alias say="say -v yuri"
-alias g="grep"
 alias loadruby=". $HOME/.rvm/scripts/rvm && rvm use default"
-
-get_cmd() {
-	[[ -z ${aliases[$1]} ]] && echo "$1" || echo "$aliases[$1]"
-}
-
-function z() {
-	cmd=$(get_cmd $1)
-	vim -c "set noro" <(eval "$cmd $@[2,-1]")
-}
-
-function zz() {
-	cmd=$(get_cmd $1)
-	stout=$(eval "$cmd $@[2,-1]")
-	echo $stout
-}
+alias f="ag -g $1"
+alias -g g="| grep -i $1"
+alias -g awk1="| awk '{ print \$1 }'"
+alias -g awk2="| awk '{ print \$2 }'"
+alias -g vv="| xargs -o vim -p"
+alias -g z="| vim -R -"
+alias -g l="| less -Rf"
+alias -g x="| xargs "
+alias pipe-boy="$HOME/slammayjammay/pipe-boy/bin/pipe-boy.js"

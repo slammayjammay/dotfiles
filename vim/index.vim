@@ -24,6 +24,8 @@ set expandtab
 set tabpagemax=40
 set hidden
 set shortmess=a
+set ignorecase
+set smartcase
 
 " colors
 syntax on
