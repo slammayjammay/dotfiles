@@ -17,7 +17,9 @@ create file `~/.vim/autoload/plug.vim` and set contents to
 [this](https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim).
 Open vim and run `:PlugInstall`.
 
-## nvm
+## `nvm`
 
 Follow installation instructions from the
-[repo](https://github.com/nvm-sh/nvm).
+[repo](https://github.com/nvm-sh/nvm). To avoid the load time at the beginning
+of every session, and avoiding errors due to custom aliases, see
+[nvm/index.sh](nvm/index.sh).
