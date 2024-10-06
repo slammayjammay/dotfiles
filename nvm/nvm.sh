@@ -1,3 +1,3 @@
 #!/bin/bash
-source ~/.nvm/nvm.sh
+source $HOME/.nvm/nvm.sh
 nvm $@

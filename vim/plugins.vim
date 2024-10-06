@@ -1,5 +1,5 @@
 " vim-plug
-call plug#begin('~/.vim/autoload')
+call plug#begin('$HOME/.vim/autoload')
 Plug 'https://github.com/scrooloose/nerdtree'
 Plug 'jiangmiao/auto-pairs'
 Plug 'airblade/vim-gitgutter'
