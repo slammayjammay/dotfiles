@@ -55,5 +55,5 @@ function gitboy() {
 
 function start-ssh() {
 	eval "$(ssh-agent -s)"
-	ssh-add ~/.ssh/id_ed25519
+	ssh-add $HOME/.ssh/id_ed25519
 }

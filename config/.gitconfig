@@ -1,0 +1,7 @@
+[user]
+	name = Scott McKenzie
+	email = slammayjammay@gmail.com
+[core]
+	excludesFile = $HOME/.gitignore
+[pager]
+	branch = false

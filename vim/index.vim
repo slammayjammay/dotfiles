@@ -1,9 +1,9 @@
-source ~/dotfiles/vim/plugins.vim
-source ~/dotfiles/vim/commands.vim
-source ~/dotfiles/vim/keybindings.vim
+source $ME/dotfiles/vim/plugins.vim
+source $ME/dotfiles/vim/commands.vim
+source $ME/dotfiles/vim/keybindings.vim
 
 if has('linux')
-        source ~/dotfiles/vim/keybindings-linux.vim
+        source $ME/dotfiles/vim/keybindings-linux.vim
 endif
 
 if has('python3')
