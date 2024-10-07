@@ -10,16 +10,16 @@ echo -n "Copying 'pipe-boy'..."
 cp -r ./config/pipe-boy $HOME/.pipe-boy
 echo "OK"
 
-echo -n "Copying '.gitconfig'..."
-cp -r ./config/.gitconfig $HOME/.gitconfig
+echo -n "Copying 'gitconfig'..."
+cp -r ./config/gitconfig $HOME/.gitconfig
 echo "OK"
 
-echo -n "Copying '.gitignore'..."
-cp -r ./config/.gitignore $HOME/.gitignore
+echo -n "Copying 'gitignore'..."
+cp -r ./config/gitignore $HOME/.gitignore
 echo "OK"
 
-echo -n "Copying '.editorconfig'..."
-cp -r ./config/.editorconfig $HOME/.editorconfig
+echo -n "Copying 'editorconfig'..."
+cp -r ./config/editorconfig $HOME/.editorconfig
 echo "OK"
 
 [[ ! -d $ME/dotfiles-node ]] && mkdir $ME/dotfiles-node
