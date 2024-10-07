@@ -28,9 +28,10 @@ Open vim and run `:PlugInstall`.
 
 Follow NVM installation instructions from the
 [repo](https://github.com/nvm-sh/nvm). [nvm/index.sh](nvm/index.sh) gets around
-the load times and errors due to custom aliases. If `node` is not defined on
-the system, it may be necessary to create a simlink:
+the load times and errors due to custom aliases. If `node` or `npm` is not
+defined on the system, it may be necessary to create simlinks:
 
 ```sh
 sudo ln -s `whichnode` /usr/bin
+sudo ln -s `whichnpm` /usr/bin
 ```

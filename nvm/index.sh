@@ -13,6 +13,10 @@ function whichnode() {
 	echo $HOME/.nvm/versions/node/v$NODE_VERSION_JANK/bin/node
 }
 
+function whichnpm() {
+	echo $HOME/.nvm/versions/node/v$NODE_VERSION_JANK/bin/npm
+}
+
 function nuse() {
 	NODE_VERSION_JANK=$1
 }
