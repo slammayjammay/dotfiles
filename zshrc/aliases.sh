@@ -10,7 +10,6 @@ alias dot="cd $ME/dotfiles"
 alias dno="cd $ME/dotfiles-node"
 alias side="cd $ME/side"
 alias ll="ls -alG"
-alias loadrvm=". $HOME/.rvm/scripts/rvm && rvm use default"
 alias f="ag -l"
 alias ff="ag -g"
 alias -g g="| grep -i"
@@ -21,3 +20,15 @@ alias -g zz="| vim -R -"
 alias -g l="| less -Rf"
 alias -g xx="| xargs "
 alias pipe-boy="$ME/dotfiles-node/pipe-boy/bin/pipe-boy.js"
+
+function -nvm() {
+	unsetopt aliases
+	source ~/.nvm/nvm.sh
+	setopt aliases
+}
+
+function -rvm() {
+	unsetopt aliases
+	source ~/.rvm/scripts/rvm
+	setopt aliases
+}
