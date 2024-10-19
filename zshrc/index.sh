@@ -11,4 +11,3 @@ autoload -U compinit && compinit
 source $ME/dotfiles/zshrc/prompt.sh
 source $ME/dotfiles/zshrc/aliases.sh
 source $ME/dotfiles/zshrc/git-aliases.sh
-source $ME/dotfiles/nvm/index.sh
