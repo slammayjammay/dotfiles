@@ -3,8 +3,9 @@ alias gm="git merge"
 alias gs="git status"
 alias gb="git branch"
 alias gc="git commit -m"
-alias gd="git diff"
 alias go="git checkout"
+alias gd="git diff"
+alias gdn="git --no-pager diff --name-status"
 alias gsp="git status --porcelain"
 alias gsd="git status --porcelain | awk '{ print \$2 }' | grep -i $1"
 alias push="git push"
@@ -20,20 +21,12 @@ alias gmod="git status --porcelain | awk '{ if (\$1 == \"M\") print \$2 }'"
 alias gun="git ls-files -o --exclude-standard"
 alias conflicts="git diff --name-only --diff-filter U"
 
-function git_status_files() {
-	git status --porcelain | awk '{ print $2 }'
-}
-
-function gmod() {
-	git status --porcelain | awk '{ if (\$1 == \"M\") print \$2 }'
-}
-
 function ggd() {
 	git diff $(gmod | grep -i $1)
 }
 
 function gga() {
-	git add `git_status_files | grep $1`
+	git add `git status --porcelain | awk '{ print $2 }' | grep $1`
 	git status
 }
 
