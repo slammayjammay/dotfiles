@@ -4,7 +4,7 @@ First set the `$ME` env var to point to the this repo's containing directory.
 
 Then source both these:
 
-- in `$HOME/.zshrc`, source `$ME/dotfiles/zsh/index.sh`
+- in `$HOME/.zshrc`, source `$ME/dotfiles/zshrc/index.sh`
 - in `$HOME/.vim/vimrc`, source `$ME/dotfiles/vim/index.vim`
 
 Lastly run `setup.sh` script.
