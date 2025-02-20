@@ -18,7 +18,7 @@ Plug 'https://github.com/TroyFletcher/vim-colors-synthwave'
 call plug#end()
 
 " ctrlp options
-let g:ctrlp_custom_ignore = 'node_modules\|\.git'
+let g:ctrlp_custom_ignore = 'node_modules\|\.git\|\.next'
 let g:ctrlp_show_hidden = 1
 let g:ctrlp_dont_split = 'NERD'
 let g:ctrlp_working_path_mode = 0
