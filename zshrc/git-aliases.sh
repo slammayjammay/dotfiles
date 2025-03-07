@@ -31,6 +31,10 @@ function gga() {
 }
 
 function ggo() {
+	git checkout `gmod | grep -i $1`
+}
+
+function ggb() {
 	git checkout `gb | grep -i $1`
 }
 
