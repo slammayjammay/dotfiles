@@ -60,4 +60,4 @@ nnoremap <leader>t :tabm 0<CR>
 " ranger.vim breaks editor config...
 nnoremap <leader>e :EditorConfigReload<CR>
 
-nnoremap Q :qa<CR>
+nnoremap Q :q!<CR>

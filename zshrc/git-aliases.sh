@@ -26,7 +26,7 @@ function ggd() {
 }
 
 function gga() {
-	git add `git status --porcelain | awk '{ print $2 }' | grep $1`
+	git add `git status --porcelain | awk '{ print $2 }' | grep -i $1`
 	git status
 }
 
