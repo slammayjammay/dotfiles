@@ -24,14 +24,23 @@ create file `~/.vim/autoload/plug.vim` and set contents to
 [this](https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim).
 Open vim and run `:PlugInstall`.
 
-## Node and NVM
+## NVM+RVM
 
-Follow NVM installation instructions from the
-[repo](https://github.com/nvm-sh/nvm). [nvm/index.sh](nvm/index.sh) gets around
-the load times and errors due to custom aliases. If `node` or `npm` is not
-defined on the system, it may be necessary to create simlinks:
+- [nvm installation](https://github.com/nvm-sh/nvm)
+- [rvm installation](https://rvm.io/)
+
+## Node+Ruby paths
+
+`nvm` and `rvm` are not loaded on shell init due to slow load times. Commands
+to load these are defined in `zshrc/aliases.sh`: `-nvm` and `-rvm`.
+
+Create symlinks to allow use of these without loading, if not already installed
+on system:
 
 ```sh
-sudo ln -s `whichnode` /usr/bin
-sudo ln -s `whichnpm` /usr/bin
+$ -nvm
+$ -rvm
+$ sudo ln -s `which node` /usr/bin
+$ sudo ln -s `which npm` /usr/bin
+$ sudo ln -s `which ruby` /usr/bin
 ```
