@@ -20,6 +20,9 @@ alias -g zz="| vim -"
 alias -g l="| less -Rf"
 alias -g xx="| xargs "
 alias pipe-boy="$ME/dotfiles-node/pipe-boy/bin/pipe-boy.js"
+alias clipr="$ME/dotfiles-node/clipr/clipr.js"
+alias cliprg="$ME/dotfiles-node/clipr/clipr.js get"
+alias cliprp="$ME/dotfiles-node/clipr/clipr.js post"
 
 function -nvm() {
 	unsetopt aliases
