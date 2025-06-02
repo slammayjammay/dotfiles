@@ -13,8 +13,7 @@ alias ll="ls -alG"
 alias f="ag -l"
 alias ff="ag -g"
 alias -g g="| grep -i"
-alias -g awk1="| awk '{ print \$1 }'"
-alias -g awk2="| awk '{ print \$2 }'"
+alias -g ak="| _ak"
 alias -g v="| xargs -o vim -p"
 alias -g zz="| vim -"
 alias -g l="| less -Rf"
@@ -23,6 +22,12 @@ alias pipe-boy="$ME/dotfiles-node/pipe-boy/bin/pipe-boy.js"
 alias clipr="$ME/dotfiles-node/clipr/clipr.js"
 alias cliprg="$ME/dotfiles-node/clipr/clipr.js get"
 alias cliprp="$ME/dotfiles-node/clipr/clipr.js post"
+
+function _ak() {
+	while read -r line; do
+		echo $line | awk "{ if (\$1 == \"$1\") print \$${2-2} }";
+	done
+}
 
 function -nvm() {
 	unsetopt aliases
