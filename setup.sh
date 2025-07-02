@@ -24,6 +24,7 @@ echo "OK"
 
 [[ ! -d $ME/dotfiles-node ]] && mkdir $ME/dotfiles-node
 [[ ! -d $ME/dotfiles-node/pipe-boy ]] && git clone git@github.com:slammayjammay/pipe-boy $ME/dotfiles-node/pipe-boy
+[[ ! -d $ME/dotfiles-node/clipr ]] && git clone git@github.com:slammayjammay/clipr $ME/dotfiles-node/clipr
 
 echo ""
 echo "Don't forget:"
