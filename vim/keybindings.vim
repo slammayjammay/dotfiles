@@ -42,8 +42,15 @@ nnoremap <leader>b :CtrlPBuffer<CR>
 " shortcut to view previous buffer
 nnoremap <leader>3 :b#<CR>
 
+nnoremap <leader>a :argadd %<CR>
+nnoremap <leader>d :argdelete %<CR>:bd<CR>
+nnoremap <C-h> :silent! previous<CR>
+nnoremap <C-k> :silent! next<CR>
+nnoremap <leader>A :let args = join(argv(), "\n")<CR> :put=args<CR>
+vnoremap <leader>A JVd :execute 'args ' . getreg('"')<CR>
+
 " shortcut to copy current filename to clipboard
-map <leader>y :let @* = expand('%')<CR>
+map <leader>y :let @* = expand("%:~:.")<CR>
 
 " shortcut to redraw
 nnoremap <leader>r :redraw!<CR>
@@ -60,4 +67,5 @@ nnoremap <leader>t :tabm 0<CR>
 " ranger.vim breaks editor config...
 nnoremap <leader>e :EditorConfigReload<CR>
 
+" force quit
 nnoremap Q :q!<CR>
