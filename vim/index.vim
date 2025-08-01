@@ -35,3 +35,5 @@ colorscheme synthwave
 au BufRead *.inc set ft=html
 au BufRead *.hbs set ft=html
 au BufRead *.ejs set ft=html
+
+autocmd VimEnter * :arglocal
