@@ -47,7 +47,7 @@ nnoremap <leader>d :argdelete %<CR>:bd<CR>
 nnoremap <C-h> :silent! previous<CR>
 nnoremap <C-k> :silent! next<CR>
 nnoremap <leader>A :let args = join(argv(), "\n")<CR> :put=args<CR>
-vnoremap <leader>A JVd :execute 'args ' . getreg('"')<CR>
+vnoremap <leader>A JVd :w<CR> :execute 'args ' . getreg('"')<CR>
 
 " shortcut to copy current filename to clipboard
 map <leader>y :let @* = expand("%:~:.")<CR>
