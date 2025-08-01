@@ -5,7 +5,7 @@ imap <C-\> <esc>o
 " tabbing
 nnoremap <C-j> :tabprevious<CR>
 nnoremap <C-S-l> :tabnext<CR>
-nnoremap <C-t> :tabnew<CR>:e .<CR>
+nnoremap <C-t> :tabnew<CR>:e .<CR>:arglocal<CR>
 nnoremap ∆ :tabprevious<CR>
 nnoremap ¬ :tabnext<CR>
 nnoremap <leader>z :filetype detect<CR>
