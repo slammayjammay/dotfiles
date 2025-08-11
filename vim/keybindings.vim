@@ -26,7 +26,7 @@ nnoremap <leader>set SsetTimeout(() => {})<left><left><CR><esc>O
 nnoremap <leader>q :q<CR>
 
 " alternative mapping for saving
-nnoremap <leader>w :%s/\s\+$//ge<CR> :w<CR>
+nnoremap <leader>w :w<CR>
 nnoremap <leader>j :%s/\s\+$//ge<CR> :w<CR>
 
 " Comment/uncomment out line (normal)
