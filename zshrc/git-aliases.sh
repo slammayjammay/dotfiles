@@ -1,4 +1,5 @@
 alias gl="git log"
+alias ga="git add"
 alias gm="git merge"
 alias gs="git status"
 alias gb="git branch"
