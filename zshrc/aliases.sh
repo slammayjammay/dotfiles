@@ -1,6 +1,6 @@
 alias nr="npm run"
 alias nrs="npm run --silent"
-alias npmi="npm install"
+alias npmi="npm ci --ignore-scripts"
 alias publish="npm publish"
 alias vi="vim"
 alias tovi="xargs -o vim -p"
