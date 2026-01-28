@@ -55,3 +55,10 @@ function start-ssh() {
 	eval "$(ssh-agent -s)"
 	ssh-add $HOME/.ssh/id_ed25519
 }
+
+function remote() {
+	remote=$(git remote -v | grep push | awk '{ print $2 }')
+	remote="${remote/git@/https://}"
+	remote="${remote/com:/com/}"
+	echo $remote
+}
