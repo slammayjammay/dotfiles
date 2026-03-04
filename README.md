@@ -4,7 +4,7 @@ First set the `$ME` env var to point to the this repo's containing directory.
 
 Then source both these:
 
-- in `$HOME/.zshrc`, source `$ME/dotfiles/zshrc/index.sh`
+- in `$HOME/.zshrc`, source `$ME/dotfiles/shell/index.sh`
 - in `$HOME/.vim/vimrc`, source `$ME/dotfiles/vim/index.vim`
 
 Lastly run `setup.sh` script.
@@ -32,7 +32,7 @@ Open vim and run `:PlugInstall`.
 ## Node+Ruby paths
 
 `nvm` and `rvm` are not loaded on shell init due to slow load times. Commands
-to load these are defined in `zshrc/aliases.sh`: `-nvm` and `-rvm`.
+to load these are defined in `shell/aliases.sh`: `-nvm` and `-rvm`.
 
 Create symlinks to allow use of these without loading, if not already installed
 on system:
