@@ -1,8 +1,6 @@
 alias nr="npm run"
 alias nrs="npm run --silent"
 alias npmi="npm install --ignore-scripts"
-alias npmci="npm install --ignore-scripts"
-alias publish="npm publish"
 alias vi="vim"
 alias tovi="xargs -o vim -p"
 alias tovim="tovi"
@@ -17,8 +15,6 @@ alias f="ag -l"
 alias ff="ag -g"
 alias pipe-boy="$ME/dotfiles-node/pipe-boy/bin/pipe-boy.js"
 alias clipr="$ME/dotfiles-node/clipr/clipr.js"
-alias xg="$ME/dotfiles-node/clipr/clipr.js get"
-alias xp="$ME/dotfiles-node/clipr/clipr.js post"
 
 function _ak() {
 	while read -r line; do
