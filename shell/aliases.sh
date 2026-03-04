@@ -15,15 +15,6 @@ alias side="cd $ME/side"
 alias ll="ls -alG"
 alias f="ag -l"
 alias ff="ag -g"
-alias -g g="| grep -i"
-alias -g ak="| _ak"
-alias -g awk1="| awk '{ print \$1 }'"
-alias -g awk2="| awk '{ print \$2 }'"
-alias -g v="| xargs -o vim -p"
-alias -g iv="| vipe"
-alias -g ivs="| vipe | { eval \"\$(cat -)\" }"
-alias -g l="| less -Rf"
-alias -g xx="| xargs "
 alias pipe-boy="$ME/dotfiles-node/pipe-boy/bin/pipe-boy.js"
 alias clipr="$ME/dotfiles-node/clipr/clipr.js"
 alias xg="$ME/dotfiles-node/clipr/clipr.js get"
@@ -45,4 +36,9 @@ function -rvm() {
 	unsetopt aliases
 	source ~/.rvm/scripts/rvm
 	setopt aliases
+}
+
+function start-ssh() {
+	eval "$(ssh-agent -s)"
+	ssh-add $HOME/.ssh/id_ed25519
 }
