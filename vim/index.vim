@@ -27,6 +27,7 @@ set shortmess=a
 set ignorecase
 set smartcase
 set tabpagemax=200
+set shortmess=aF
 
 " colors
 syntax on
