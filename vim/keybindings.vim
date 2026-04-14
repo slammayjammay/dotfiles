@@ -75,7 +75,6 @@ nnoremap <leader>Q :qa!<CR>
 " easily group file paths into register v
 nnoremap <leader>V :let @v = "\n"<CR>
 nnoremap <leader>v :let @v = @v . expand("%:~:.") . "\n"<CR>
-nnoremap <leader><leader>v :call system('xsel -b', @v)<CR>
 
 " full file base64 encode/decode
 nnoremap <leader><leader>B :%!base64<CR>
