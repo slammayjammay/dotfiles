@@ -15,6 +15,9 @@ alias f="ag -l"
 alias ff="ag -g"
 alias pipe-boy="$ME/dotfiles-node/pipe-boy/bin/pipe-boy.js"
 alias clipr="$ME/dotfiles-node/clipr/clipr.js"
+alias cc="xsel -b"
+alias cget="xsel -b"
+alias cset="xsel -b"
 
 function _ak() {
 	while read -r line; do
