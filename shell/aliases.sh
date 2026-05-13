@@ -39,5 +39,5 @@ function -rvm() {
 
 function start-ssh() {
 	eval "$(ssh-agent -s)"
-	ssh-add $HOME/.ssh/id_ed25519
+	ssh-add "$HOME/.ssh/id_${1:-ed25519}"
 }
