@@ -3,17 +3,13 @@ imap <C-]> <esc>O
 imap <C-\> <esc>o
 
 " tabbing
-nnoremap <C-j> :tabprevious<CR>
-nnoremap <C-S-l> :tabnext<CR>
+nnoremap <C-j> :tabprevious<CR><C-g>
+nnoremap <C-S-l> :tabnext<CR><C-g>
 nnoremap <C-t> :tabnew<CR>:e .<CR>:arglocal<CR>
-nnoremap ∆ :tabprevious<CR>
-nnoremap ¬ :tabnext<CR>
 nnoremap <leader>z :filetype detect<CR>
-inoremap <C-j> <esc>:tabprevious<CR>
-inoremap <C-S-l> <esc>:tabnext<CR>
+inoremap <C-j> <esc>:tabprevious<CR><C-g>
+inoremap <C-S-l> <esc>:tabnext<CR><C-g>
 inoremap <C-t> <esc>:tabnew<CR>:e .<CR>
-inoremap ∆ <esc>:tabprevious<CR>
-inoremap ¬ <esc>:tabnext<CR>
 
 " SNIPPETS
 " surround entire line inside a console.log()
@@ -69,7 +65,7 @@ nnoremap <leader>t :tabm 0<CR>
 nnoremap <leader>e :EditorConfigReload<CR>
 
 " force quit
-nnoremap Q :qa
+nnoremap Q :qa<CR>
 nnoremap <leader>Q :qa!<CR>
 
 " easily group file paths into register v
