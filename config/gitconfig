@@ -1,6 +1,6 @@
 [user]
 	name = Scott McKenzie
-	email = slammayjammay@gmail.com
+	email = scott.osmckenzie@proton.me
 [core]
 	excludesFile = ~/.gitignore
 [pager]
