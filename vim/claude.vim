@@ -3,7 +3,6 @@ command! -nargs=* C call Claude(<f-args>)
 function! Claude(...)
 	exe 'terminal ++curwin claude' . (a:0 ? ' ' . join(a:000, ' ') : '')
 
-	setlocal ttimeoutlen=0
 	setlocal norelativenumber
 	setlocal nonumber
 	set autoread

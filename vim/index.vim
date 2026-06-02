@@ -3,6 +3,7 @@ source $ME/dotfiles/vim/commands.vim
 source $ME/dotfiles/vim/keybindings.vim
 " source $ME/dotfiles/vim/claude.vim
 source $ME/dotfiles/vim/navver.vim
+source $ME/dotfiles/vim/gitter.vim
 
 if has('linux')
         source $ME/dotfiles/vim/keybindings-linux.vim
@@ -13,6 +14,7 @@ if has('python3')
 endif
 
 " options
+set ttimeoutlen=0
 set tabstop=2
 set backspace=indent,eol,start
 set relativenumber!
