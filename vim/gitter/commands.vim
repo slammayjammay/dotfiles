@@ -1,7 +1,7 @@
 vim9script
 
 export def GetLog(): list<string>
-	var output = system('git log --oneline -20')
+	var output = system('git log --oneline')
 	return split(output, '\n')
 enddef
 
