@@ -3,7 +3,7 @@ source $ME/dotfiles/vim/commands.vim
 source $ME/dotfiles/vim/keybindings.vim
 " source $ME/dotfiles/vim/claude.vim
 source $ME/dotfiles/vim/navver.vim
-source $ME/dotfiles/vim/gitter.vim
+source $ME/dotfiles/vim/gitter/index.vim
 
 if has('linux')
         source $ME/dotfiles/vim/keybindings-linux.vim
