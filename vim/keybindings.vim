@@ -3,12 +3,12 @@ imap <C-]> <esc>O
 imap <C-\> <esc>o
 
 " tabbing
-nnoremap <C-j> :tabprevious<CR><C-g>
-nnoremap <C-S-l> :tabnext<CR><C-g>
+nnoremap <C-j> :tabprevious<CR>
+nnoremap <C-S-l> :tabnext<CR>
 nnoremap <C-t> :tabnew<CR>:e .<CR>:arglocal<CR>
 nnoremap <leader>z :filetype detect<CR>
-inoremap <C-j> <esc>:tabprevious<CR><C-g>
-inoremap <C-S-l> <esc>:tabnext<CR><C-g>
+inoremap <C-j> <esc>:tabprevious<CR>
+inoremap <C-S-l> <esc>:tabnext<CR>
 inoremap <C-t> <esc>:tabnew<CR>:e .<CR>
 
 " SNIPPETS
