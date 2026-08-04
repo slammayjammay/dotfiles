@@ -7,7 +7,8 @@ var OnExitCb: func()
 
 export def Enter(Cb: func): void
 	OnExitCb = Cb
-	enew
+	tabnew
+	execute 'file Differ'
 	set buftype=nofile
 	set bufhidden=hide
 	set filetype=diff
@@ -26,5 +27,7 @@ enddef
 
 def Exit(): void
 	execute 'bd!'
-	OnExitCb()
+	if exists('OnExitCb')
+		OnExitCb()
+	endif
 enddef

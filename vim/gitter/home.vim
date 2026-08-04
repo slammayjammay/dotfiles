@@ -8,7 +8,8 @@ var commit_from = 'HEAD'
 var commit_to = ''
 
 export def Enter(): void
-  enew
+	enew
+	execute 'file Gitter'
 	nnoremap <buffer> <CR> <ScriptCmd>HandleEnter()<CR>
 	nnoremap <buffer> q <ScriptCmd>Cancel()<CR>
 	Render()
