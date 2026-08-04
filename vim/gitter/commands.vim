@@ -11,7 +11,7 @@ enddef
 
 export def GetDiffFiles(start: string, end: string): list<string>
 	var range = GetCommitRange(start, end)
-	var output = system('git diff --name-status ' .. range)
+	var output = system('{ git diff --name-status ' .. range .. '; git status --porcelain | grep "??" }')
 	return split(output, '\n')
 enddef
 

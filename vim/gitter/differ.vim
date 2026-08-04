@@ -3,7 +3,7 @@ vim9script
 import './home.vim' as home
 import './commands.vim' as commands
 
-var OnExitCb: func()
+var OnExitCb: func
 
 export def Enter(Cb: func): void
 	OnExitCb = Cb
@@ -25,9 +25,13 @@ export def Show(filename: string, start: string, end: string): void
 	execute 'normal gg'
 enddef
 
+export def ShowUntracked(filename: string): void
+	var diff_content = systemlist('git diff --no-index /dev/null ' .. shellescape(filename) .. ' 2>/dev/null')
+	append(0, diff_content)
+	execute 'normal gg'
+enddef
+
 def Exit(): void
 	execute 'bd!'
-	if exists('OnExitCb')
-		OnExitCb()
-	endif
+	OnExitCb()
 enddef

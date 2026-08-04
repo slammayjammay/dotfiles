@@ -70,8 +70,12 @@ def HandleEnter(): void
 		var status = parts[0]
 		var filename = parts[1]
 
-		differ.Enter(Render)
-		differ.Show(filename, commit_from, commit_to)
+		differ.Enter(() => null)
+		if status == '??'
+			differ.ShowUntracked(filename)
+		else
+			differ.Show(filename, commit_from, commit_to)
+		endif
 	endif
 enddef
 
