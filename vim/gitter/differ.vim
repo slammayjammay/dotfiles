@@ -8,7 +8,6 @@ var OnExitCb: func
 export def Enter(Cb: func): void
 	OnExitCb = Cb
 	tabnew
-	execute 'file Differ'
 	set buftype=nofile
 	set bufhidden=hide
 	set filetype=diff
