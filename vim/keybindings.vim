@@ -48,6 +48,7 @@ vnoremap <leader>A JVd :w<CR> :execute 'args ' . getreg('"')<CR>
 
 " shortcut to copy current filename to clipboard
 map <leader>y :let @* = expand("%:~:.")<CR>
+map <leader><leader>y :let @* = expand("%:t")<CR>
 
 " shortcut to redraw
 nnoremap <leader>r :redraw!<CR>
