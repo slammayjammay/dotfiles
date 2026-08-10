@@ -1,9 +1,11 @@
 source $ME/dotfiles/vim/plugins.vim
 source $ME/dotfiles/vim/commands.vim
 source $ME/dotfiles/vim/keybindings.vim
-" source $ME/dotfiles/vim/claude.vim
-source $ME/dotfiles/vim/navver.vim
-source $ME/dotfiles/vim/gitter/index.vim
+source $ME/dotfiles/vim/claude.vim
+source $ME/dotfiles/vim/navver/navver.vim
+source $ME/dotfiles/vim/gitter/gitter.vim
+source $ME/dotfiles/vim/vimterm/vimterm.vim
+source $ME/dotfiles/vim/dispuffer/dispuffer.vim
 
 if has('linux')
         source $ME/dotfiles/vim/keybindings-linux.vim
@@ -36,7 +38,7 @@ set shortmess=aF
 " colors
 syntax on
 colorscheme synthwave
-" set `.inc` syntax to html
+
 au BufRead *.inc set ft=html
 au BufRead *.hbs set ft=html
 au BufRead *.ejs set ft=html

@@ -11,6 +11,9 @@ inoremap <C-j> <esc>:tabprevious<CR>
 inoremap <C-S-l> <esc>:tabnext<CR>
 inoremap <C-t> <esc>:tabnew<CR>:e .<CR>
 
+" screw Ex mode
+nnoremap Q <nop>
+
 " SNIPPETS
 " surround entire line inside a console.log()
 nnoremap <leader>c ^iconsole.log(<esc>$a);<esc>
@@ -66,7 +69,6 @@ nnoremap <leader>t :tabm 0<CR>
 nnoremap <leader>e :EditorConfigReload<CR>
 
 " force quit
-nnoremap Q :qa<CR>
 nnoremap <leader>Q :qa!<CR>
 
 " easily group file paths into register v
