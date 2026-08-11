@@ -28,5 +28,6 @@ echo "OK"
 
 echo ""
 echo "Don't forget:"
-echo "- in \$HOME/.zshrc, source \$ME/dotfiles/shell/index.sh"
+echo "- in \$HOME/.zshenv, source \$ME/dotfiles/shell/env.sh"
+echo "- in \$HOME/.zshrc, source \$ME/dotfiles/shell/rc.sh"
 echo "- in \$HOME/.vim/vimrc, source \$ME/dotfiles/vim/index.vim"
